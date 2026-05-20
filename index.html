@@ -3,47 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>爱意隐晦，岁岁私藏</title>
+    <title>我的女孩</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
         body {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background-color: #fdf6f8;
-            color: #333;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-            padding: 20px;
+            background: linear-gradient(to bottom, #ffebff, #ffeeff);
             text-align: center;
+            padding: 20px;
+            font-family: 'Arial', sans-serif;
+            color: #333;
         }
         h1 {
-            font-size: 24px;
-            font-weight: 500;
-            margin-bottom: 24px;
-            letter-spacing: 1px;
+            color: #ff4d79;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        .love {
+            font-size: 18px;
+            color: #555;
+            margin: 30px auto;
+            line-height: 1.8;
+            max-width: 600px;
+        }
+        .heart {
+            color: red;
+            font-size: 80px;
+            animation: beat 1s infinite;
+        }
+        @keyframes beat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
         }
         p {
-            font-size: 17px;
-            margin: 10px 0;
-            line-height: 1.6;
-            color: #555;
+            font-size: 1.2em;
+            color: #447799;
+            margin-top: 20px;
         }
-        .signature {
-            margin-top: 30px;
-            font-size: 15px;
-            color: #777;
+        /* 手机适配 */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            .love {
+                font-size: 16px;
+            }
+            .heart {
+                font-size: 60px;
+            }
+            p {
+                font-size: 1em;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>爱意隐晦，岁岁私藏</h1>
-    <p>山野万里，我独偏爱你这一隅温柔</p >
-    <p class="signature">——520</p >
+    <div class="heart">❤</div>
+    <h1>写给最爱的你</h1>
+    <div class="love">
+        遇见你爱意汹涌<br>
+        看世间万物都浪漫心动<br>
+        岁岁年年 满心是你
+    </div>
+    <p>永远偏爱你，我的女孩</p>
 </body>
 </html>
