@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的女孩</title>
+    <title>致我的女孩</title>
     <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
         body {
             background: linear-gradient(to bottom, #ffebff, #ffeeff);
             text-align: center;
-            padding: 20px;
-            font-family: 'Arial', sans-serif;
+            padding: 30px 20px;
+            font-family: "微软雅黑", sans-serif;
             color: #333;
+            overflow-x: hidden;
         }
         h1 {
             color: #ff4d79;
@@ -25,19 +27,41 @@
             max-width: 600px;
         }
         .heart {
-            color: red;
+            color: #ff3366;
             font-size: 80px;
-            animation: beat 1s infinite;
+            animation: beat 1s infinite ease-in-out;
+            margin: 20px 0;
         }
         @keyframes beat {
             0% { transform: scale(1); }
             50% { transform: scale(1.2); }
             100% { transform: scale(1); }
         }
+        .day-box{
+            background:rgba(255,100,150,0.15);
+            padding:15px 25px;
+            border-radius:30px;
+            display: inline-block;
+            margin:15px 0;
+            color:#ff4d79;
+            font-size:17px;
+        }
         p {
             font-size: 1.2em;
             color: #447799;
-            margin-top: 20px;
+            margin-top: 25px;
+        }
+        /* 飘落爱心 */
+        .fall-heart{
+            position:fixed;
+            color:#ff6688;
+            top:-10%;
+            z-index:-1;
+            animation: fall linear infinite;
+        }
+        @keyframes fall{
+            0%{transform:translateY(0) rotate(0deg);opacity:1;}
+            100%{transform:translateY(110vh) rotate(360deg);opacity:0;}
         }
         /* 手机适配 */
         @media (max-width: 768px) {
@@ -64,6 +88,49 @@
         看世间万物都浪漫心动<br>
         岁岁年年 满心是你
     </div>
+
+    <div class="day-box">
+        我们在一起 <span id="loveDays">0</span> 天啦 💖
+    </div>
+
     <p>永远偏爱你，我的女孩</p>
+
+    <!-- 已替换为温柔告白纯音乐 -->
+    <audio id="bgMusic" loop>
+        <source src="https://music.163.com/song/media/outer/url?id=1901371911.mp3" type="audio/mpeg">
+        你的浏览器不支持音频播放
+    
+
+    <script>
+        // 1. 恋爱天数计算（已改成2025-09-14）
+        const startDate = new Date("2025-09-14");
+        function updateDays() {
+            const today = new Date();
+            const diff = today - startDate;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById("loveDays").textContent = days;
+        }
+        updateDays();
+
+        // 2. 飘落爱心效果
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.classList.add("fall-heart");
+            heart.innerHTML = "❤";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.fontSize = Math.random() * 20 + 10 + "px";
+            heart.style.animationDuration = Math.random() * 3 + 2 + "s";
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+        setInterval(createHeart, 300);
+
+        // 3. 背景音乐自动播放优化（点击页面后播放，避免浏览器拦截）
+        document.addEventListener("click", function() {
+            const audio = document.getElementById("bgMusic");
+            audio.volume = 0.3; // 音量调为30%，不吵人
+            audio.play().catch(() => {});
+        });
+    </script>
 </body>
 </html>
