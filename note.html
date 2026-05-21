@@ -3,397 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>私人心事卷宗 | 独藏心语</title>
+    <title>私密心事 | 心底情话</title>
     <style>
-        *{margin: 0; padding: 0; box-sizing: border-box;}
+        *{margin:0;padding:0;box-sizing:border-box;}
         :root{
-            --gold: #d4af37;
-            --deep: #1c1710;
-            --soft-gold: #e6d2a8;
-            --trans: rgba(212,175,55,0.15);
-            --bg-color: linear-gradient(160deg,#1c1710,#2b2216,#352a1c);
+            --main:#8e44ad;
+            --light:#d7bde2;
+            --text:#2c2c44;
+            --glass:rgba(255,255,255,0.2);
+            --bg-color:linear-gradient(145deg,#342748,#40305a,#4c3b6b);
         }
-        body.morning{background:var(--bg-color);}
-        body.noon{background:var(--bg-color);}
-        body.night{background:var(--bg-color);}
-        body.deepnight{background:var(--bg-color);}
         body{
-            min-height: 100vh;
-            font-family:"STSong", "SimSun", "serif"; /* 瘦金体 */
-            color: var(--soft-gold);
-            overflow-x: hidden;
-            cursor: pointer;
-        }
-        .bg-dot{
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            background-image: radial-gradient(var(--trans) 1px,transparent 1px);
-            background-size: 30px 30px;
-            z-index: -1;
-        }
-        .main-nav{
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            padding: 28px 15px;
-            flex-wrap: wrap;
-        }
-        .main-nav a{
-            text-decoration: none;
-            color: var(--soft-gold);
-            padding: 7px 16px;
-            border-radius: 25px;
-            border: 1px solid rgba(212,175,55,0.3);
-            background: rgba(255,255,255,0.05);
-            font-size: 14px;
-            transition: 0.3s ease;
-        }
-        .main-nav a.active{
-            background: var(--gold);
-            color: #1c1710;
-            border-color: var(--gold);
-        }
-        .main-nav a:hover{
-            background: rgba(212,175,55,0.25);
-        }
-        .page-title{
-            text-align: center;
-            margin: 10px 0 20px;
-        }
-        .page-title h2{
-            color: var(--gold);
-            letter-spacing: 6px;
-            font-weight: normal;
-        }
-        .line-split{
-            width: 60%;
-            height: 1px;
-            margin: 12px auto;
-            background: linear-gradient(90deg,transparent,var(--gold),transparent);
-        }
-        .note-say{text-align:center;color:var(--gold);margin:8px 0;}
-        .lock-box{
-            max-width: 580px;
-            margin: 25px auto;
-            padding: 20px;
-            background: rgba(0,0,0,0.25);
-            border-radius: 18px;
-            border: 1px solid rgba(212,175,55,0.25);
-            text-align: center;
-        }
-        .lock-tip{
-            color: var(--gold);
-            margin-bottom: 15px;
-            font-size: 15px;
-        }
-        .lock-input{
-            padding: 9px 15px;
-            width: 65%;
-            background: rgba(255,255,255,0.08);
-            border: none;
-            outline: none;
-            border-radius: 22px;
-            color: var(--soft-gold);
-            text-align: center;
-            font-size: 15px;
-        }
-        .lock-btn{
-            margin-left: 10px;
-            padding: 9px 20px;
-            background: var(--gold);
-            color: #1c1710;
-            border: none;
-            border-radius: 22px;
-            cursor: pointer;
-        }
-        .skip-btn{
-            margin-top:12px;
-            padding:8px 18px;
-            background:rgba(212,175,55,0.2);
-            color:var(--soft-gold);
-            border:none;
-            border-radius:22px;
+            min-height:100vh;
+            font-family:"STSong",SimSun,serif;
+            color:var(--light);
+            overflow-x:hidden;
+            transition:all 0.6s ease;
             cursor:pointer;
+            padding-bottom:50px;
         }
-        .write-wrap{
-            max-width: 580px;
-            margin: 0 auto 30px;
-            padding: 22px;
-            background: rgba(212,175,55,0.08);
-            border-radius: 20px;
-            border: 1px solid rgba(212,175,55,0.2);
-            display: none;
+        .nav{display:flex;justify-content:center;gap:12px;padding:25px 10px;flex-wrap:wrap;}
+        .nav a{
+            min-width:90px;text-align:center;padding:8px 16px;border-radius:30px;
+            text-decoration:none;color:var(--light);background:var(--glass);
+            backdrop-filter:blur(8px);transition:0.3s;font-size:15px;
         }
-        .write-top{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            gap:10px;
-        }
-        .note-tag{
-            padding:5px 12px;
-            border-radius:15px;
-            background:rgba(212,175,55,0.15);
-            font-size:13px;
+        .nav a.active{background:var(--main);color:#fff;}
+        h1{text-align:center;color:var(--main);letter-spacing:5px;margin:20px 0;}
+        .divider{width:80%;max-width:400px;height:1px;background:linear-gradient(90deg,transparent,var(--main),transparent);margin:15px auto 20px;}
+        .tip-text{text-align:center;color:#b8a8d8;margin-bottom:25px;}
+        .write-box{
+            max-width:600px;margin:0 auto 30px;padding:20px;
+            background:rgba(142,68,173,0.15);border-radius:20px;border:1px solid rgba(142,68,173,0.3);
         }
         textarea{
-            width: 100%;
-            height: 130px;
-            background: rgba(0,0,0,0.15);
-            border: none;
-            outline: none;
-            padding: 14px;
-            border-radius: 15px;
-            color: var(--soft-gold);
-            font-size: 15px;
-            line-height: 1.8;
-            resize: none;
+            width:100%;height:130px;background:rgba(0,0,0,0.25);border:none;
+            outline:none;border-radius:15px;padding:15px;color:var(--light);
+            font-size:15px;resize:none;
         }
-        .btn-group{
-            margin-top:15px;
-            display:flex;
-            gap:12px;
+        .send-btn{
+            margin-top:15px;padding:9px 28px;background:var(--main);
+            color:#fff;border:none;border-radius:30px;cursor:pointer;
         }
-        .save-btn{
-            padding:8px 22px;
-            background:var(--gold);
-            color:#1c1710;
-            border:none;
-            border-radius:20px;
-            cursor:pointer;
+        .list{max-width:600px;margin:0 auto;padding:0 15px;}
+        .item{
+            padding:18px;margin:15px 0;background:rgba(142,68,173,0.1);
+            border-radius:16px;border-left:3px solid var(--main);
         }
-        .top-btn{
-            padding:8px 22px;
-            background:rgba(212,175,55,0.2);
-            color:var(--soft-gold);
-            border:none;
-            border-radius:20px;
-            cursor:pointer;
-        }
-        .note-container{
-            max-width:580px;
-            margin:0 auto 50px;
-            padding:0 15px;
-            display:none;
-        }
-        .single-note{
-            padding:18px;
-            background:rgba(0,0,0,0.2);
-            border-radius:16px;
-            margin-bottom:16px;
-            border-left:3px solid var(--gold);
-            position:relative;
-        }
-        .note-type{
-            font-size:13px;
-            color:var(--gold);
-            margin-bottom:8px;
-        }
-        .note-content{
-            line-height:1.8;
-            font-size:15px;
-        }
-        .note-date{
-            margin-top:10px;
-            font-size:12px;
-            color:#b9a786;
-        }
-        .operate{
-            position:absolute;
-            right:15px;
-            top:15px;
-            font-size:13px;
-            color:#b9a786;
-            cursor:pointer;
-        }
-        .foot-text{
-            text-align:center;
-            font-size:13px;
-            color:#948265;
-            padding:30px 0;
-        }
+        .time{font-size:12px;color:#a088b8;margin-top:10px;}
+        .empty{text-align:center;padding:40px;color:#8877a0;}
         .random-pattern {
-            position: fixed;
-            z-index: -1;
-            pointer-events: none;
-            opacity: 0.7;
+            position: fixed;z-index:-1;pointer-events:none;opacity:0.6;
         }
     </style>
 </head>
-<body id="noteBody" onclick="changeThemeAndPattern()">
-<div class="bg-dot"></div>
-
-<div class="main-nav">
+<body onclick="changeThemeAndPattern()">
+<div class="nav">
     <a href="index.html">相恋首页</a>
     <a href="time.html">时光回忆</a>
     <a href="words.html">百件小事</a>
-    <a href="note.html" class="active">私人卷宗</a>
+    <a href="note.html" class="active">私密心事</a>
     <a href="message.html">公开留言</a>
-    <a href="privatemsg.html">隐秘留言</a>
+    <a href="javascript:goPrivate()">隐秘留言</a>
 </div>
 
-<div class="page-title">
-    <h2>私人心事卷宗</h2>
-    <div class="line-split"></div>
-</div>
-<div class="note-say" id="noteGreet"></div>
+<h1>藏在心底的温柔心事</h1>
+<div class="divider"></div>
+<div class="tip-text">写下心里话，留存专属温柔</div>
 
-<div class="lock-box" id="lockArea">
-    <div class="lock-tip">输入专属翻阅密码，开启私人心事</div>
-    <input class="lock-input" id="lookPwd" placeholder="输入翻阅密码">
-    <button class="lock-btn" onclick="unLockNote()">解锁翻阅</button>
-    <br>
-    <button class="skip-btn" onclick="skipPwd()">暂无密码 直接跳过</button>
+<div class="write-box">
+    <textarea id="noteInput" placeholder="写下此刻想说的心里话..."></textarea>
+    <button class="send-btn" onclick="addNote()">保存心事</button>
 </div>
 
-<div class="write-wrap" id="writeArea">
-    <div class="write-top">
-        <span class="note-tag">心情寄语</span>
-        <select id="noteClass" style="background:rgba(0,0,0,0.2);color:var(--soft-gold);border:none;padding:4px 8px;border-radius:10px;">
-            <option value="日常随笔">日常随笔</option>
-            <option value="心底秘密">心底秘密</option>
-            <option value="未来期许">未来期许</option>
-            <option value="独处感悟">独处感悟</option>
-        </select>
-    </div>
-    <textarea id="noteInput" placeholder="写下只属于自己的心声，封存此间情绪..."></textarea>
-    <div class="btn-group">
-        <button class="save-btn" onclick="storeNote()">封存心事</button>
-        <button class="top-btn" onclick="clearInput()">清空文稿</button>
-    </div>
-</div>
-
-<div class="note-container" id="noteListBox"></div>
-
-<div class="foot-text">世间万般言语，不及心底一字真情</div>
-
-<audio id="bgMusic" loop preload="auto">
-    <source src="https://music.163.com/song/media/outer/url?id=1901371911.mp3">
+<div class="list" id="noteList"></div>
 
 <script>
-const viewPassword = "99";
-const noteWish = ["心藏温柔，静守本心","沉淀思绪，安然度日"];
-function setNoteTime(){
-    let h=new Date().getHours();
-    let b=document.getElementById("noteBody");
-    let g=document.getElementById("noteGreet");
-    if(h>=5&&h<9){b.className="morning";g.innerText="清晨静心，书写心绪";}
-    else if(h>=9&&h<17){b.className="noon";g.innerText=noteWish[Math.floor(Math.random()*noteWish.length)];}
-    else if(h>=17&&h<23){b.className="night";g.innerText="夜色安然，诉说心底话语";}
-    else{b.className="deepnight";g.innerText="夜深人静，别熬太晚啦";}
+function getNote(){
+    return JSON.parse(localStorage.getItem("loveNote"))||[];
 }
-setNoteTime();
-const music = document.getElementById("bgMusic");
-music.volume = 0.2;
-document.addEventListener("click",()=>music.play().catch(e=>{}),{once:true});
-function unLockNote(){
-    let pwd = document.getElementById("lookPwd").value.trim();
-    pwd===viewPassword?openAll():(alert("翻阅密码错误"),document.getElementById("lookPwd").value="");
+function saveNote(arr){
+    localStorage.setItem("loveNote",JSON.stringify(arr));
 }
-function skipPwd(){openAll();}
-function openAll(){
-    document.getElementById("lockArea").style.display = "none";
-    document.getElementById("writeArea").style.display = "block";
-    document.getElementById("noteListBox").style.display = "block";
-    renderAllNote();
-}
-function getLocalNote(){return JSON.parse(localStorage.getItem("ownPrivateNoteBook")) || [];}
-function saveLocalNote(arr){localStorage.setItem("ownPrivateNoteBook",JSON.stringify(arr));}
-function storeNote(){
-    let text = document.getElementById("noteInput").value.trim();
-    let type = document.getElementById("noteClass").value;
-    if(!text){alert("请写下心事再进行封存");return;}
-    let now = new Date();
-    let fullTime = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日`;
-    let arr = getLocalNote();
-    arr.unshift({sort:type,content:text,time:fullTime});
-    saveLocalNote(arr);
+function addNote(){
+    let val=document.getElementById("noteInput").value.trim();
+    if(!val){alert("内容不能为空");return;}
+    let now=new Date();
+    let t=`${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()} ${now.getHours()}:${now.getMinutes()}`;
+    let arr=getNote();
+    arr.unshift({txt:val,time:t});
+    saveNote(arr);
     document.getElementById("noteInput").value="";
-    renderAllNote();
+    renderNote();
 }
-function clearInput(){document.getElementById("noteInput").value="";}
-function deleteSingle(index){
-    let arr = getLocalNote();
-    arr.splice(index,1);
-    saveLocalNote(arr);
-    renderAllNote();
+function renderNote(){
+    let arr=getNote();
+    let html="";
+    if(arr.length<=0){
+        html='<div class="empty">还没有写下心事，快来记录心情</div>';
+    }else{
+        arr.forEach(v=>{
+            html+=`<div class="item"><div>${v.txt}</div><div class="time">${v.time}</div></div>`;
+        })
+    }
+    document.getElementById("noteList").innerHTML=html;
 }
-function renderAllNote(){
-    let data = getLocalNote();
-    let html = data.length===0?'<div style="text-align:center;color:#948265;padding:20px;">暂未封存任何心事</div>':"";
-    data.forEach((item,idx)=>{
-        html += `<div class="single-note"><div class="note-type">${item.sort}</div><div class="note-content">${item.content}</div><div class="note-date">记录日期：${item.time}</div><span class="operate" onclick="deleteSingle(${idx})">移除封存</span></div>`;
-    });
-    document.getElementById("noteListBox").innerHTML = html;
-}
+renderNote();
 
-// 随机配色和图案生成函数
-function changeThemeAndPattern() {
-    // 清除旧图案
-    document.querySelectorAll('.random-pattern').forEach(el => el.remove());
-    
-    // 生成随机颜色
-    const randomHue = Math.floor(Math.random() * 360);
-    const mainColor = `hsl(${randomHue}, 70%, 50%)`;
-    const lightColor = `hsl(${randomHue}, 80%, 80%)`;
-    const textColor = `hsl(${randomHue}, 20%, 85%)`;
-    const bgColor1 = `hsl(${randomHue}, 30%, 15%)`;
-    const bgColor2 = `hsl(${randomHue}, 30%, 20%)`;
-    const bgColor3 = `hsl(${randomHue}, 30%, 25%)`;
-
-    // 更新CSS变量
-    const root = document.documentElement;
-    root.style.setProperty('--gold', mainColor);
-    root.style.setProperty('--soft-gold', lightColor);
-    root.style.setProperty('--bg-color', `linear-gradient(160deg, ${bgColor1}, ${bgColor2}, ${bgColor3})`);
-
-    // 生成随机图案
-    const patterns = ['star', 'heart', 'circle', 'square'];
-    const patternCount = Math.floor(Math.random() * 10) + 5; // 5-15个图案
-
-    for (let i = 0; i < patternCount; i++) {
-        const pattern = document.createElement('div');
-        pattern.classList.add('random-pattern');
-        
-        const patternType = patterns[Math.floor(Math.random() * patterns.length)];
-        switch(patternType) {
-            case 'star':
-                pattern.innerHTML = '★';
-                break;
-            case 'heart':
-                pattern.innerHTML = '❤';
-                break;
-            case 'circle':
-                pattern.innerHTML = '●';
-                break;
-            case 'square':
-                pattern.innerHTML = '■';
-                break;
-        }
-
-        pattern.style.left = Math.random() * 100 + '%';
-        pattern.style.top = Math.random() * 100 + '%';
-        pattern.style.fontSize = Math.random() * 30 + 10 + 'px';
-        pattern.style.color = lightColor;
-        pattern.style.animation = `float ${Math.random() * 3 + 2}s linear infinite`;
-
-        document.body.appendChild(pattern);
+// 点击换主题+图案
+function changeThemeAndPattern(){
+    document.querySelectorAll('.random-pattern').forEach(e=>e.remove());
+    let hue=Math.floor(Math.random()*360);
+    let root=document.documentElement;
+    root.style.setProperty('--main',`hsl(${hue},65%,55%)`);
+    root.style.setProperty('--light',`hsl(${hue},50%,80%)`);
+    root.style.setProperty('--text',`hsl(${hue},25%,30%)`);
+    root.style.setProperty('--bg-color',`linear-gradient(145deg,hsl(${hue},35%,18%),hsl(${hue},35%,24%),hsl(${hue},35%,30%))`);
+    let icon=['❤','★','●','■','✧'];
+    let num=Math.floor(Math.random()*8)+4;
+    for(let i=0;i<num;i++){
+        let d=document.createElement('div');
+        d.className='random-pattern';
+        d.innerText=icon[Math.floor(Math.random()*icon.length)];
+        d.style.left=Math.random()*100+'%';
+        d.style.top=Math.random()*100+'%';
+        d.style.fontSize=(Math.random()*22+8)+'px';
+        document.body.appendChild(d);
     }
 }
+const sty=document.createElement('style');
+sty.innerHTML=`@keyframes float{0%{transform:translateY(0)rotate(0deg)}50%{transform:translateY(-20px)rotate(180deg)}100%{transform:translateY(0)rotate(360deg)}} .random-pattern{animation:float 3s linear infinite}`;
+document.head.appendChild(sty);
 
-// 添加浮动动画
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes float {
-        0% { transform: translateY(0) rotate(0deg); }
-        50% { transform: translateY(-20px) rotate(180deg); }
-        100% { transform: translateY(0) rotate(360deg); }
-    }
-`;
-document.head.appendChild(style);
+// 权限跳转
+function goPrivate(){
+    let s=localStorage.getItem("privateOpen");
+    if(s==="1")location.href="privatemsg.html";
+    else{alert("请先去首页输入专属暗号解锁！");location.href="index.html";}
+}
 </script>
 </body>
 </html>
