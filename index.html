@@ -11,19 +11,21 @@
             --light:#f3e8c8;
             --text:#3a3222;
             --glass:rgba(255,255,255,0.22);
+            --bg-color: linear-gradient(145deg,#2c2316,#3b2f1e,#483a26);
         }
-        body.morning{background:linear-gradient(145deg,#3a3020,#4b3d2a,#5a4a33);}
-        body.noon{background:linear-gradient(145deg,#483a26,#594730,#6b543a);}
-        body.night{background:linear-gradient(145deg,#2c2316,#3b2f1e,#483a26);}
-        body.deepnight{background:linear-gradient(145deg,#1a140c,#251d12,#302518);}
+        body.morning{background:var(--bg-color);}
+        body.noon{background:var(--bg-color);}
+        body.night{background:var(--bg-color);}
+        body.deepnight{background:var(--bg-color);}
         body{
             min-height:100vh;
-            font-family:"思源宋体",serif;
+            font-family:"STSong", "SimSun", "serif"; /* 瘦金体，这里用宋体替代，实际环境请替换为瘦金体字体文件 */
             color:#d8cbae;
             overflow-x:hidden;
             opacity:0;
             animation:nobleFade 1.5s cubic-bezier(0.22,1,0.36,1) forwards;
             transition:all 0.6s ease;
+            cursor: pointer;
         }
         @keyframes nobleFade{0%{opacity:0;transform:translateY(30px) scale(0.98);}100%{opacity:1;transform:translateY(0) scale(1);}}
         #partCanvas{position:fixed;inset:0;z-index:-2;pointer-events:none;}
@@ -62,10 +64,16 @@
         .pwd-tit{color:var(--gold);margin-bottom:15px;font-size:16px;}
         #secretPwd{padding:10px 15px;width:70%;border-radius:30px;border:none;outline:none;background:rgba(255,255,255,0.15);color:#fff;font-size:15px;text-align:center;}
         .pwd-btn{margin-left:10px;padding:10px 20px;background:var(--gold);color:#fff;border:none;border-radius:30px;cursor:pointer;}
+        .random-pattern {
+            position: fixed;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.7;
+        }
         @media (max-width:768px){h1{font-size:1.9rem;}.love-icon{font-size:75px;}.card{padding:14px 28px;}}
     </style>
 </head>
-<body id="bodyMain">
+<body id="bodyMain" onclick="changeThemeAndPattern()">
 <canvas id="partCanvas"></canvas>
 <div class="nav">
     <a href="index.html" class="active">相恋首页</a>
@@ -83,7 +91,7 @@
 
 <div class="badge">相恋典藏 · 携手共度 <span id="allDays">0</span> 朝夕</div>
 <div class="card">相恋总天数：<span id="dayCount">0</span> 天</div>
-<div class="card">相伴精准时长：<span id="timeCount">0时0分0秒</span></div>
+<!-- 精准时长已删除 -->
 <div class="card">距离专属纪念日：<span id="memorialCount">0天</span></div>
 
 <div class="pwd-box">
@@ -144,7 +152,7 @@ function updateLoveTime(){
     let s=Math.floor((dif%(1000*60))/1000);
     document.getElementById("allDays").innerText=d;
     document.getElementById("dayCount").innerText=d;
-    document.getElementById("timeCount").innerText=`${h}时${m}分${m}分${s}秒`;
+    // 精准时长已删除
     let mdif=targetMemorial-now;
     document.getElementById("memorialCount").innerText=mdif>0?Math.floor(mdif/(1000*60*60*24))+"天":"良辰已至，喜乐常伴";
 }
@@ -178,6 +186,72 @@ function drawPart(){ctx.clearRect(0,0,canvas.width,canvas.height);
 particles.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.color;ctx.fill();p.x+=p.sx;p.y+=p.sy;if(p.x<0)p.x=canvas.width;if(p.x>canvas.width)p.x=0;if(p.y<0)p.y=canvas.height;if(p.y>canvas.height)p.y=0;});
 requestAnimationFrame(drawPart);}
 addEventListener("resize",setSize);setSize();drawPart();
+
+// 随机配色和图案生成函数
+function changeThemeAndPattern() {
+    // 清除旧图案
+    document.querySelectorAll('.random-pattern').forEach(el => el.remove());
+    
+    // 生成随机颜色
+    const randomHue = Math.floor(Math.random() * 360);
+    const mainColor = `hsl(${randomHue}, 70%, 50%)`;
+    const lightColor = `hsl(${randomHue}, 80%, 80%)`;
+    const textColor = `hsl(${randomHue}, 20%, 85%)`;
+    const bgColor1 = `hsl(${randomHue}, 30%, 15%)`;
+    const bgColor2 = `hsl(${randomHue}, 30%, 20%)`;
+    const bgColor3 = `hsl(${randomHue}, 30%, 25%)`;
+
+    // 更新CSS变量
+    const root = document.documentElement;
+    root.style.setProperty('--gold', mainColor);
+    root.style.setProperty('--light', lightColor);
+    root.style.setProperty('--text', textColor);
+    root.style.setProperty('--bg-color', `linear-gradient(145deg, ${bgColor1}, ${bgColor2}, ${bgColor3})`);
+
+    // 生成随机图案
+    const patterns = ['star', 'heart', 'circle', 'square'];
+    const patternCount = Math.floor(Math.random() * 10) + 5; // 5-15个图案
+
+    for (let i = 0; i < patternCount; i++) {
+        const pattern = document.createElement('div');
+        pattern.classList.add('random-pattern');
+        
+        const patternType = patterns[Math.floor(Math.random() * patterns.length)];
+        switch(patternType) {
+            case 'star':
+                pattern.innerHTML = '★';
+                break;
+            case 'heart':
+                pattern.innerHTML = '❤';
+                break;
+            case 'circle':
+                pattern.innerHTML = '●';
+                break;
+            case 'square':
+                pattern.innerHTML = '■';
+                break;
+        }
+
+        pattern.style.left = Math.random() * 100 + '%';
+        pattern.style.top = Math.random() * 100 + '%';
+        pattern.style.fontSize = Math.random() * 30 + 10 + 'px';
+        pattern.style.color = lightColor;
+        pattern.style.animation = `float ${Math.random() * 3 + 2}s linear infinite`;
+
+        document.body.appendChild(pattern);
+    }
+}
+
+// 添加浮动动画
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes float {
+        0% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(180deg); }
+        100% { transform: translateY(0) rotate(360deg); }
+    }
+`;
+document.head.appendChild(style);
 </script>
 </body>
 </html>
