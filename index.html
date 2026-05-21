@@ -2,8 +2,8 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
-    <title>恋爱酷跑 | 休闲小游戏</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>相恋主页 | 岁岁相依</title>
     <style>
         * {
             margin: 0;
@@ -16,15 +16,101 @@
             color: #d4af37;
             min-height: 100vh;
             padding: 20px 15px;
+            position: relative;
             overflow-x: hidden;
             background-image: linear-gradient(to bottom, rgba(43, 34, 26, 0.95), rgba(43, 34, 26, 0.85));
+        }
+        .decoration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .star, .heart {
+            position: absolute;
+            opacity: 0.7;
+            animation: float 8s linear infinite;
+        }
+        .star {
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+        }
+        .heart {
+            width: 20px;
+            height: 20px;
+            background: #d4af37;
+            clip-path: path("M10 3 C12 0, 16 0, 18 3 C20 6, 10 15, 10 15 C10 15 0 6, 2 3 C4 0, 8 0, 10 3 Z");
+        }
+        @keyframes float {
+            0% {transform: translateY(100vh) rotate(0deg);opacity: 0;}
+            10% {opacity: 0.7;}
+            90% {opacity: 0.7;}
+            100% {transform: translateY(-100vh) rotate(360deg);opacity: 0;}
+        }
+        .verify-overlay{
+            position:fixed;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background:rgba(0,0,0,0.85);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            z-index:9999;
+        }
+        .verify-box{
+            background:#2b221a;
+            border:1px solid #d4af37;
+            border-radius:20px;
+            padding:30px;
+            text-align:center;
+            width:90%;
+            max-width:400px;
+        }
+        .verify-title{
+            font-size:1.3rem;
+            margin-bottom:20px;
+            color:#f0d88c;
+        }
+        .verify-question{
+            font-size:1.2rem;
+            margin:20px 0;
+        }
+        .verify-input{
+            width:100%;
+            padding:12px;
+            border-radius:10px;
+            border:1px solid #d4af37;
+            background:rgba(0,0,0,0.2);
+            color:#d4af37;
+            text-align:center;
+            font-size:1rem;
+            outline:none;
+        }
+        .verify-btn{
+            margin-top:20px;
+            padding:12px 30px;
+            background:#d4af37;
+            color:#2b221a;
+            border:none;
+            border-radius:30px;
+            cursor:pointer;
+            font-size:1rem;
         }
         .nav {
             display: flex;
             justify-content: center;
             gap: 12px;
-            margin-bottom: 30px;
+            margin-bottom: 60px;
             flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
         }
         .nav a {
             text-decoration: none;
@@ -45,173 +131,356 @@
             transform: translateY(-2px);
             box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
         }
-        .title{text-align:center;font-size:2rem;margin-bottom:20px;letter-spacing:2px;}
-        .tip{text-align:center;color:#f0d88c;margin-bottom:15px;}
-        #gameBox{
-            width:320px;height:500px;margin:0 auto;border:2px solid #d4af37;
-            background:#000;position:relative;overflow:hidden;
+        .title-section {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            z-index: 1;
         }
-        .player{
-            width:40px;height:60px;background:#fff;position:absolute;
-            bottom:30px;left:50%;transform:translateX(-50%);
+        .main-title {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            letter-spacing: 3px;
+            animation: fadeInUp 1s ease;
         }
-        .block{
-            width:40px;height:60px;background:#666;position:absolute;bottom:30px;
+        .divider {
+            width: 80%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #d4af37, transparent);
+            margin: 0 auto 30px;
         }
-        .score-text{position:absolute;top:10px;left:10px;color:#fff;font-size:18px;}
-        .game-over{
-            position:absolute;top:0;left:0;width:100%;height:100%;
-            background:rgba(0,0,0,0.85);color:#fff;text-align:center;
-            padding-top:180px;display:none;
+        .dynamic-greeting {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            color: #f0d88c;
+            animation: fadeInUp 1.2s ease;
         }
-        .restart{
-            margin-top:20px;padding:8px 20px;background:#fff;color:#000;
-            border:none;border-radius:6px;cursor:pointer;
+        .love-quote {
+            font-size: 1.3rem;
+            line-height: 2;
+            color: #e0c880;
+            animation: fadeInUp 1.4s ease;
         }
-        .rank-box{
-            max-width:320px;margin:30px auto 0;padding:15px;
-            border:1px solid #d4af37;border-radius:15px;
-            background:rgba(212,175,55,0.1);
+        @keyframes fadeInUp {
+            from {opacity: 0;transform: translateY(20px);}
+            to {opacity: 1;transform: translateY(0);}
         }
-        .rank-title{text-align:center;font-size:1.3rem;margin-bottom:15px;}
-        .rank-item{
-            display:flex;justify-content:space-between;padding:8px 0;
-            border-bottom:1px solid rgba(212,175,55,0.2);
+        .count-section {
+            text-align: center;
+            position: relative;
+            z-index: 1;
         }
-        .empty-rank{text-align:center;padding:20px;color:#f0d88c;}
+        .count-btn {
+            display: block;
+            width: 85%;
+            max-width: 400px;
+            margin: 0 auto 20px;
+            padding: 18px 20px;
+            border-radius: 30px;
+            background: #d4af37;
+            color: #2b221a;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+            animation: breathe 3s ease-in-out infinite;
+        }
+        .count-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.6);
+        }
+        @keyframes breathe {
+            0%,100%{transform:scale(1);}
+            50%{transform:scale(1.02);}
+        }
+        .days-info {
+            font-size: 1.4rem;
+            color: #d4af37;
+            margin-bottom: 20px;
+            background: rgba(212, 175, 55, 0.15);
+            padding: 15px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        .progress-tip {
+            font-size: 1.1rem;
+            color: #e0c880;
+            margin-top: 10px;
+        }
+        .safe-bottom {height: 80px;}
+        .admin-btn{
+            position:fixed;
+            bottom:20px;
+            right:20px;
+            padding:10px 15px;
+            background:#d4af37;
+            color:#2b221a;
+            border-radius:20px;
+            text-decoration:none;
+            z-index:999;
+            display:none;
+        }
+        .hidden-content{
+            display:none;
+        }
+        .pwd-input-box{
+            position:fixed;
+            bottom:80px;
+            right:20px;
+            z-index:998;
+        }
+        .owner-input{
+            padding:8px 10px;
+            border-radius:15px;
+            border:1px solid #d4af37;
+            background:rgba(0,0,0,0.2);
+            color:#d4af37;
+            outline:none;
+            width:120px;
+        }
+
+        /* 彩蛋弹出层 */
+        .easter-egg-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #2b221a;
+            border: 2px solid #d4af37;
+            border-radius: 20px;
+            padding: 30px;
+            color: #d4af37;
+            text-align: center;
+            z-index: 10000;
+            display: none;
+        }
+        .easter-egg-popup h3 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        .easter-egg-popup p {
+            font-size: 1.1rem;
+        }
     </style>
 </head>
 <body>
-    <div class="nav">
-        <a href="index.html">相恋首页</a>
-        <a href="time.html">时光回忆</a>
-        <a href="words.html">百件小事</a>
-        <a href="note.html">私密心事</a>
-        <a href="message.html">公开留言</a>
-        <a href="privatemsg.html">隐秘留言</a>
-        <a href="diary.html">恋爱日记</a>
-        <a href="lovecool.html" class="active">恋爱酷跑</a>
-    </div>
-
-    <h2 class="title">恋爱酷跑</h2>
-    <p class="tip">左右滑动切换道路躲避障碍</p>
-
-    <div id="gameBox">
-        <div class="score-text">分数：<span id="score">0</span></div>
-        <div class="player" id="player"></div>
-        <div class="game-over" id="gameOver">
-            <div>游戏结束</div>
-            <div>本次得分：<span id="finalScore">0</span></div>
-            <button class="restart" onclick="startGame()">重新开始</button>
+    <div class="verify-overlay" id="verifyOverlay">
+        <div class="verify-box">
+            <h3 class="verify-title">完成简易验证即可进入</h3>
+            <div class="verify-question" id="verifyQuestion"></div>
+            <input type="text" class="verify-input" id="verifyInput" placeholder="填写答案">
+            <br>
+            <button class="verify-btn" onclick="checkVerify()">确认进入</button>
         </div>
     </div>
 
-    <div class="rank-box">
-        <div class="rank-title">游戏高分排行榜</div>
-        <div id="rankList"></div>
+    <div class="hidden-content" id="pageContent">
+        <div class="decoration" id="decoration"></div>
+
+        <!-- 导航已删掉恋爱酷跑 -->
+        <div class="nav">
+            <a href="index.html" class="active">相恋首页</a>
+            <a href="time.html">时光回忆</a>
+            <a href="words.html">百件小事</a>
+            <a href="note.html">私密心事</a>
+            <a href="message.html">公开留言</a>
+            <a href="privatemsg.html">隐秘留言</a>
+            <a href="diary.html">恋爱日记</a>
+        </div>
+
+        <div class="title-section">
+            <h1 class="main-title">岁岁相依 · 满心予你</h1>
+            <div class="divider"></div>
+            <p class="dynamic-greeting" id="dynamicGreeting"></p>
+            <div class="love-quote" id="loveQuote">
+                世间风月皆过客<br>
+                唯有良人入心窝<br>
+                朝暮相伴，情深不渝
+            </div>
+        </div>
+
+        <div class="count-section">
+            <button class="count-btn" id="countBtn">相恋典藏 · 携手共度 <span id="totalDays">0</span> 朝夕</button>
+            <div class="days-info">相恋总天数：<span id="daysText">0</span> 天</div>
+            <p class="progress-tip" id="progressTip">已完成 <span id="completedCount">0</span>/100 件小事</p>
+        </div>
+
+        <!-- 暗号框：已去掉主人，只剩“输入暗号” -->
+        <div class="pwd-input-box">
+            <input class="owner-input" id="ownerPwd" placeholder="输入暗号" onkeyup="unlockAdmin(); checkEasterEggPwd(this.value);">
+        </div>
+        <a href="visitor.html" class="admin-btn" id="adminBtn">访客管理</a>
+
+        <div class="safe-bottom"></div>
+    </div>
+
+    <!-- 彩蛋弹窗 -->
+    <div class="easter-egg-popup" id="eggPopup">
+        <h3>🎉 你发现了隐秘彩蛋！</h3>
+        <p id="eggText"></p>
     </div>
 
 <script>
-let gameRun,score=0,speed=6,isPlay=false;
-let player=document.getElementById("player");
-let gameBox=document.getElementById("gameBox");
-let gameOver=document.getElementById("gameOver");
-let scoreDom=document.getElementById("score");
-let finalScore=document.getElementById("finalScore");
-let blockArr=[];
-let roadPos=[60,140,220];
-let nowRoad=1;
+let enterTime = Date.now();
+let verifyAnswer = 0;
+const MASTER_KEY = "owner";
 
-function getRank(){
-    return JSON.parse(localStorage.getItem("loveGameRank")||"[]");
+function generateVerifyQuestion(){
+    let a = Math.floor(Math.random()*10)+1;
+    let b = Math.floor(Math.random()*10)+1;
+    verifyAnswer = a + b;
+    document.getElementById("verifyQuestion").innerText = `${a} + ${b} = ?`;
 }
-function saveRank(s){
-    let list=getRank();
-    list.push(s);
-    list.sort((a,b)=>b-a);
-    if(list.length>10)list.length=10;
-    localStorage.setItem("loveGameRank",JSON.stringify(list));
-    renderRank();
-}
-function renderRank(){
-    let list=getRank();
-    let html="";
-    if(list.length===0){
-        html='<div class="empty-rank">暂无游戏记录</div>';
+
+function checkVerify(){
+    let val = parseInt(document.getElementById("verifyInput").value.trim());
+    if(val === verifyAnswer){
+        document.getElementById("verifyOverlay").style.display = "none";
+        document.getElementById("pageContent").style.display = "block";
+        initPage();
+        saveVisitor();
     }else{
-        list.forEach((item,i)=>{
-            html+=`<div class="rank-item"><span>第${i+1}名</span><span>${item}分</span></div>`;
-        })
+        alert("答案错误，请重新输入");
+        document.getElementById("verifyInput").value = "";
+        generateVerifyQuestion();
     }
-    document.getElementById("rankList").innerHTML=html;
 }
 
-function startGame(){
-    score=0;speed=6;nowRoad=1;isPlay=true;
-    scoreDom.innerText=0;
-    gameOver.style.display="none";
-    blockArr.forEach(b=>b.remove());
-    blockArr=[];
-    clearInterval(gameRun);
-    player.style.left=roadPos[nowRoad]+"px";
-    gameRun=setInterval(gameUpdate,25);
+function unlockAdmin(){
+    let input = document.getElementById("ownerPwd").value.trim();
+    document.getElementById("adminBtn").style.display = input === MASTER_KEY ? "block" : "none";
 }
 
-function gameUpdate(){
-    score++;
-    scoreDom.innerText=score;
-    if(score%500===0&&speed<12)speed+=0.5;
-    if(Math.random()>0.92){
-        let r=Math.floor(Math.random()*3);
-        let b=document.createElement("div");
-        b.className="block";
-        b.style.left=roadPos[r]+"px";
-        b.style.top="-60px";
-        gameBox.appendChild(b);
-        blockArr.push(b);
+async function saveVisitor(){
+    let ip = "";
+    try{
+        let res = await fetch("https://api64.ipify.org?format=json");
+        let d = await res.json();
+        ip = d.ip;
+    }catch(e){ip="未知IP"}
+    const stayTime = Math.floor((Date.now()-enterTime)/1000);
+    const info = {time:new Date().toLocaleString(),ip:ip,device:navigator.userAgent,page:location.pathname,staySecond:stayTime};
+    let all = JSON.parse(localStorage.getItem("cloudVisitorData")||"[]");
+    all.push(info);
+    localStorage.setItem("cloudVisitorData",JSON.stringify(all));
+}
+
+const LOVE_START_DATE = new Date("2025-09-14");
+const completedKey = "love_things_completed";
+
+function createDecoration() {
+    const container = document.getElementById("decoration");
+    for (let i = 0; i < 30; i++) {
+        const star = document.createElement("div");
+        star.classList.add("star");
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.animationDuration = `${6 + Math.random() * 6}s`;
+        star.style.animationDelay = `${Math.random() * 8}s`;
+        container.appendChild(star);
     }
-    blockArr.forEach((b,idx)=>{
-        let t=parseInt(b.style.top)||-60;
-        b.style.top=(t+speed)+"px";
-        let pTop=500-90;
-        if(t+60>pTop&&t<500-30){
-            if(b.style.left===player.style.left){
-                gameEnd();
-            }
+    for (let i = 0; i < 10; i++) {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.style.left = `${Math.random() * 100}%`;
+        heart.style.animationDuration = `${8 + Math.random() * 6}s`;
+        heart.style.animationDelay = `${Math.random() * 8}s`;
+        container.appendChild(heart);
+    }
+}
+
+function updateGreeting() {
+    const hour = new Date().getHours();
+    let greeting;
+    if (hour >= 5 && hour < 12) greeting = "早安，今天也要和你好好相爱呀";
+    else if (hour >= 12 && hour < 18) greeting = "午安，和你在一起的每一刻都很温柔";
+    else if (hour >= 18 && hour < 22) greeting = "傍晚好，和你一起吹过的风都带着甜";
+    else greeting = "晚安，该睡觉啦，梦里也要和你相遇";
+    document.getElementById("dynamicGreeting").textContent = greeting;
+}
+
+function calculateLoveDays() {
+    const today = new Date();
+    const diffTime = Math.abs(today - LOVE_START_DATE);
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    document.getElementById("totalDays").textContent = diffDays;
+    document.getElementById("daysText").textContent = diffDays;
+}
+
+function updateProgress() {
+    const completedList = JSON.parse(localStorage.getItem(completedKey) || "[]");
+    document.getElementById("completedCount").textContent = completedList.length;
+}
+
+function initPage(){
+    createDecoration();
+    updateGreeting();
+    calculateLoveDays();
+    updateProgress();
+}
+
+window.onload = function(){
+    generateVerifyQuestion();
+    initEasterEggs(); // 初始化彩蛋
+};
+
+// -------------------------- 彩蛋部分 --------------------------
+let konamiCode = [];
+const konami = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","KeyB","KeyA"];
+
+function initEasterEggs(){
+    // 1. Konami代码彩蛋
+    document.addEventListener("keydown", e => {
+        konamiCode.push(e.code);
+        konamiCode = konamiCode.slice(-10);
+        if(konamiCode.join(",") === konami.join(",")){
+            showEasterEgg("🎮 经典Konami秘钥触发！<br>你是懂彩蛋的人～");
+            document.body.style.filter = "hue-rotate(180deg)";
+            setTimeout(()=>document.body.style.filter="none",2000);
         }
-        if(t>500)b.remove(),blockArr.splice(idx,1);
-    })
+    });
+
+    // 2. 双击标题彩蛋
+    const title = document.querySelector(".main-title");
+    title.addEventListener("dblclick", () => {
+        showEasterEgg("💖 双击触发隐秘告白：<br>岁岁年年，唯你一人。");
+        document.getElementById("loveQuote").innerHTML = "❤ 隐秘彩蛋已激活 ❤<br>你找到了藏在岁月里的温柔";
+    });
+
+    // 3. 控制台彩蛋（开发者工具）
+    console.log("%c✨ 隐秘彩蛋已就位 ✨","color:#d4af37;font-size:18px;font-weight:bold;");
+    console.log("%c输入专属暗号可解锁隐藏内容","color:#f0d88c;font-size:12px;");
+
+    // 4. 随机飘爱心彩蛋（每30秒）
+    setInterval(()=>{
+        for(let i=0;i<5;i++){
+            let h = document.createElement("div");
+            h.className = "heart";
+            h.style.left = Math.random()*100+"%";
+            h.style.top = Math.random()*50+"%";
+            h.style.opacity = "0.8";
+            document.getElementById("decoration").appendChild(h);
+            setTimeout(()=>h.remove(),3000);
+        }
+    },30000);
 }
 
-function gameEnd(){
-    isPlay=false;
-    clearInterval(gameRun);
-    finalScore.innerText=score;
-    gameOver.style.display="block";
-    saveRank(score);
+// 5. 暗号彩蛋（输入特定文字触发）
+function checkEasterEggPwd(val){
+    if(val === "secret"){
+        showEasterEgg("🔐 隐秘暗号正确！<br>你解锁了专属秘密空间～");
+    }
+    if(val === "love"){
+        showEasterEgg("❤️ 爱意暗号触发成功！<br>爱意藏于细节，温柔留给你。");
+    }
 }
 
-document.addEventListener("keydown",e=>{
-    if(!isPlay)return;
-    if(e.key==="ArrowLeft"&&nowRoad>0)nowRoad--;
-    if(e.key==="ArrowRight"&&nowRoad<2)nowRoad++;
-    player.style.left=roadPos[nowRoad]+"px";
-})
-
-let startX=0;
-gameBox.addEventListener("touchstart",e=>startX=e.touches[0].clientX);
-gameBox.addEventListener("touchend",e=>{
-    if(!isPlay)return;
-    let endX=e.changedTouches[0].clientX;
-    let d=endX-startX;
-    if(d<-30&&nowRoad>0)nowRoad--;
-    if(d>30&&nowRoad<2)nowRoad++;
-    player.style.left=roadPos[nowRoad]+"px";
-})
-
-window.onload=function(){
-    renderRank();
-    startGame();
+// 彩蛋弹出
+function showEasterEgg(text){
+    const popup = document.getElementById("eggPopup");
+    document.getElementById("eggText").innerHTML = text;
+    popup.style.display = "block";
+    setTimeout(()=>popup.style.display="none",3000);
 }
 </script>
 </body>
