@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>时光回忆 | 温柔岁月</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        :root{--main:#e05275;--light:#ffd6e0;--text:#4a3b42;--glass:rgba(255,255,255,0.25);}
+        body{
+            background:linear-gradient(145deg,#f3e8f8,#fcf0f6,#ffeef4);
+            min-height:100vh;font-family:"思源宋体",serif;color:var(--text);
+            overflow-x:hidden;position:relative;
+            opacity:0;animation:nobleFade 1.5s cubic-bezier(0.22,1,0.36,1) forwards;
+            transition:all 0.6s ease;
+        }
+        @keyframes nobleFade{0%{opacity:0;transform:translateY(30px) scale(0.98);}100%{opacity:1;transform:translateY(0) scale(1);}}
+        #partCanvas{position:fixed;inset:0;z-index:-2;pointer-events:none;}
+        .nav{text-align:center;padding:25px 0;}
+        .nav a{margin:0 12px;padding:8px 18px;border-radius:30px;text-decoration:none;color:var(--text);
+        background:var(--glass);backdrop-filter:blur(8px);transition:0.3s;}
+        .nav a.active{background:var(--main);color:#fff;}
+        h1{text-align:center;color:var(--main);letter-spacing:5px;margin:20px 0;}
+        .timeline{max-width:600px;margin:50px auto;padding:0 20px;}
+        .time-item{margin:30px 0;padding:20px;background:var(--glass);
+        backdrop-filter:blur(10px);border-radius:20px;border:1px solid rgba(255,255,255,0.4);transition:0.3s;}
+        .time-item:hover{transform:translateY(-4px);}
+        .time-item h3{color:var(--main);margin-bottom:10px;}
+        .foot{text-align:center;margin:80px 0 30px;font-size:14px;color:#b495a2;}
+    </style>
+</head>
+<body>
+<canvas id="partCanvas"></canvas>
+<div class="nav">
+    <a href="index.html">相恋首页</a>
+    <a href="time.html" class="active">时光回忆</a>
+    <a href="words.html">暖心情话</a>
+    <a href="note.html">私密心事</a>
+</div>
+<h1>岁月温柔 · 皆是回忆</h1>
+<div class="timeline">
+    <div class="time-item">
+        <h3>初见之日</h3>
+        <p>人海茫茫，有幸与你相逢，一眼便是满心欢喜。</p>
+    </div>
+    <div class="time-item">
+        <h3>确定心意</h3>
+        <p>褪去所有浮躁，只想安稳陪在彼此身边。</p>
+    </div>
+    <div class="time-item">
+        <h3>朝夕相伴</h3>
+        <p>平淡日常皆是浪漫，岁岁年年不离不弃。</p>
+    </div>
+    <div class="time-item">
+        <h3>未来期许</h3>
+        <p>往后余生，风雨同舟，喜乐共享。</p>
+    </div>
+</div>
+<div class="foot">珍藏每一段与你走过的温柔时光</div>
+<audio id="bgAudio" loop><source src="https://music.163.com/song/media/outer/url?id=1901371911.mp3">
+<script>
+const audio=document.getElementById("bgAudio");audio.volume=0.25;
+document.addEventListener("click",()=>audio.play().catch(e=>{}),{once:true});
+const canvas=document.getElementById("partCanvas"),ctx=canvas.getContext("2d");
+let particles=[];
+function setSize(){canvas.width=innerWidth;canvas.height=innerHeight;initPart();}
+function initPart(){particles=[];for(let i=0;i<150;i++)particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2+0.4,sx:Math.random()*0.2-0.1,sy:Math.random()*0.2-0.1,color:Math.random()>0.5?"#ffb8cc":"#f8c8d8"});}
+function drawPart(){ctx.clearRect(0,0,canvas.width,canvas.height);
+particles.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.color;ctx.fill();p.x+=p.sx;p.y+=p.sy;if(p.x<0)p.x=canvas.width;if(p.x>canvas.width)p.x=0;if(p.y<0)p.y=canvas.height;if(p.y>canvas.height)p.y=0;});
+requestAnimationFrame(drawPart);}
+addEventListener("resize",setSize);setSize();drawPart();
+</script>
+</body>
+</html>
