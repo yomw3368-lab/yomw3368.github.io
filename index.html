@@ -3,365 +3,387 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>致我的女孩 · 专属告白</title>
+    <title>专属浪漫 · 岁岁相依</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box;}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --main: #e05275;
+            --light: #ffd6e0;
+            --text: #4a3b42;
+            --glass: rgba(255, 255, 255, 0.25);
+        }
         body {
-            background: linear-gradient(160deg, #fff0f8, #ffe6f2, #ffecf7);
+            background: radial-gradient(circle at top, #ffe8f0, #fff5f9);
             min-height: 100vh;
-            text-align: center;
-            padding: 40px 20px;
-            font-family: "PingFang SC", "思源黑体", sans-serif;
-            color: #333;
+            font-family: "思源宋体", "PingFang SC", serif;
+            color: var(--text);
             overflow-x: hidden;
             position: relative;
+            /* 高级渐入动画 */
+            opacity: 0;
+            animation: nobleFade 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
-        /* 星空画布层级 */
-        #starCanvas{
+        @keyframes nobleFade {
+            0% { opacity: 0; transform: translateY(30px) scale(0.98); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        /* 粒子背景画布 */
+        #partCanvas {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             z-index: -2;
             pointer-events: none;
         }
-        /* 主跳动爱心 */
-        .main-heart {
-            color: #ff3e6c;
-            font-size: 90px;
-            animation: softBeat 1.2s infinite ease-in-out;
-            margin-bottom: 15px;
-            text-shadow: 0 0 15px #ff6b8b;
+        /* 顶部主爱心 3D柔跳动 */
+        .love-icon {
+            font-size: 95px;
+            color: var(--main);
+            text-shadow: 0 0 20px rgba(224, 82, 117, 0.4);
+            margin: 40px 0 10px;
+            animation: nobleBeat 1.4s ease-in-out infinite;
             cursor: pointer;
-            user-select: none;
-        }
-        @keyframes softBeat {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-            100% { transform: scale(1); }
-        }
-        h1 {
-            color: #e83e6c;
-            font-size: 2.6em;
-            margin-bottom: 25px;
-            font-weight: 600;
-            letter-spacing: 3px;
-            text-shadow: 0 2px 6px rgba(255,62,108,0.2);
-        }
-        .love-text {
-            font-size: 19px;
-            color: #664455;
-            margin: 35px auto;
-            line-height: 2;
-            max-width: 620px;
-            letter-spacing: 1px;
-        }
-        /* 通用磨砂卡片样式 */
-        .card{
-            background:rgba(255, 120, 160, 0.18);
-            backdrop-filter: blur(6px);
-            padding: 18px 35px;
-            border-radius: 50px;
-            display: inline-block;
-            margin: 12px 0;
-            color: #e83e6c;
-            font-size: 18px;
-            box-shadow: 0 6px 18px rgba(255, 80, 120, 0.15);
-            border: 1px solid rgba(255,150,180,0.3);
             transition: all 0.3s ease;
         }
-        .card:hover{
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(255,80,120,0.22);
+        .love-icon:hover {
+            filter: brightness(1.15);
         }
-        .end-say {
-            font-size: 1.3em;
-            color: #556688;
-            margin-top: 35px;
-            letter-spacing: 2px;
+        @keyframes nobleBeat {
+            0%,100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.12) rotate(2deg); }
+        }
+        h1 {
+            font-size: 2.4rem;
+            color: var(--main);
             font-weight: 500;
+            letter-spacing: 6px;
+            text-align: center;
+            margin-bottom: 28px;
+            text-shadow: 0 3px 8px rgba(224,82,117,0.15);
         }
-        /* 留言区域 */
-        .msg-box{
-            max-width: 500px;
-            margin: 40px auto 0;
+        .subtitle-text {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 45px;
+            font-size: 18px;
+            line-height: 2.1;
+            color: #6b5760;
+            letter-spacing: 1.2px;
         }
-        .msg-box textarea{
+        /* 高级渐变纪念徽章 */
+        .noble-badge {
+            display: block;
+            width: fit-content;
+            margin: 0 auto 25px;
+            padding: 10px 32px;
+            background: linear-gradient(135deg, #f87494, #e05275);
+            border-radius: 999px;
+            color: #fff;
+            font-size: 16px;
+            box-shadow: 0 6px 20px rgba(224,82,117,0.3);
+        }
+        /* 轻奢磨砂玻璃卡片 */
+        .lux-card {
+            width: fit-content;
+            margin: 14px auto;
+            padding: 16px 40px;
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            border-radius: 60px;
+            box-shadow: 0 8px 25px rgba(180, 120, 140, 0.12);
+            transition: all 0.4s cubic-bezier(0.22,1,0.36,1);
+            font-size: 17px;
+            color: var(--main);
+        }
+        .lux-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 35px rgba(224,82,117,0.2);
+        }
+        .end-word {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 1.25rem;
+            letter-spacing: 3px;
+            color: #5c4a53;
+        }
+        /* 留言轻奢样式 */
+        .note-box {
+            max-width: 520px;
+            margin: 50px auto 0;
+            padding: 0 20px;
+        }
+        .note-box textarea {
             width: 100%;
-            border: 1px solid #ffc8d8;
-            border-radius: 20px;
-            padding: 15px;
-            background: rgba(255,255,255,0.6);
+            padding: 18px;
+            border: 1px solid var(--light);
+            border-radius: 24px;
+            background: rgba(255,255,255,0.55);
             outline: none;
             font-size: 16px;
-            color: #664455;
+            color: var(--text);
             resize: none;
+            transition: 0.3s;
         }
-        .msg-box button{
-            margin-top: 12px;
-            padding: 10px 30px;
+        .note-box textarea:focus {
+            border-color: var(--main);
+            box-shadow: 0 0 12px rgba(224,82,117,0.15);
+        }
+        .save-btn {
+            margin-top: 15px;
+            padding: 11px 36px;
             border: none;
-            border-radius: 30px;
-            background: #ff6b8b;
+            border-radius: 999px;
+            background: var(--main);
             color: #fff;
             font-size: 16px;
             cursor: pointer;
             transition: 0.3s;
         }
-        .msg-box button:hover{
-            background: #e83e6c;
+        .save-btn:hover {
+            background: #c94665;
         }
-        /* 飘落爱心优化 */
-        .fall-heart{
-            position:fixed;
-            color:#ff7799;
-            top:-10%;
-            z-index:-1;
-            animation: fallSlow linear infinite;
-            opacity: 0.85;
+        .tip-text {
+            margin-top: 12px;
+            font-size: 14px;
+            color: var(--main);
         }
-        @keyframes fallSlow{
-            0%{transform:translateY(0) rotate(0deg);opacity:0.9;}
-            100%{transform:translateY(110vh) rotate(360deg);opacity:0;}
+        /* 飘落柔心 */
+        .float-heart {
+            position: fixed;
+            color: #f487a1;
+            top: -8%;
+            z-index: -1;
+            opacity: 0.75;
+            animation: floatDown ease-in-out infinite;
         }
-        /* 情话弹窗 */
-        .love-popup{
+        @keyframes floatDown {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+        /* 高级情话弹窗 */
+        .sweet-pop {
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%,-50%) scale(0);
-            padding: 25px 40px;
-            background: #fff;
-            border-radius: 20px;
-            box-shadow: 0 8px 30px rgba(255,62,108,0.3);
-            color: #e83e6c;
-            font-size: 18px;
+            transform: translate(-50%,-50%) scale(0.8) opacity(0);
+            padding: 30px 45px;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(10px);
+            border-radius: 28px;
+            box-shadow: 0 10px 40px rgba(224,82,117,0.25);
             z-index: 999;
-            transition: all 0.4s ease;
+            transition: all 0.5s cubic-bezier(0.22,1,0.36,1);
         }
-        .love-popup.show{
+        .sweet-pop.show {
             transform: translate(-50%,-50%) scale(1);
+            opacity: 1;
         }
-        .close-pop{
-            margin-top: 15px;
-            padding: 6px 20px;
+        .pop-close {
+            margin-top: 18px;
+            padding: 8px 26px;
+            border-radius: 30px;
             border: none;
-            border-radius: 20px;
-            background: #ff6b8b;
+            background: var(--main);
             color: #fff;
             cursor: pointer;
         }
-        /* 底部温柔小字 */
-        .footer-tip{
-            margin-top: 60px;
+        .footer-sign {
+            text-align: center;
+            margin: 70px 0 40px;
             font-size: 14px;
-            color: #bb8899;
+            color: #b495a2;
+            letter-spacing: 2px;
         }
-        /* 手机完美适配 */
+        /* 移动端极致适配 */
         @media (max-width: 768px) {
-            h1 {
-                font-size: 2em;
-                letter-spacing: 2px;
-            }
-            .love-text {
-                font-size: 17px;
-            }
-            .main-heart {
-                font-size: 70px;
-            }
-            .card{
-                padding: 15px 28px;
-                font-size: 16px;
-            }
-            .end-say {
-                font-size: 1.1em;
-            }
-            .love-popup{
-                padding: 20px 25px;
-                font-size: 16px;
-            }
+            h1 { font-size: 1.9rem; letter-spacing: 4px; }
+            .love-icon { font-size: 75px; }
+            .lux-card { padding: 14px 28px; font-size: 16px; }
+            .sweet-pop { padding: 22px 28px; }
         }
     </style>
 </head>
 <body>
-    <!-- 星空背景画布 -->
-    <canvas id="starCanvas"></canvas>
+    <!-- 高级粒子花海背景 -->
+    <canvas id="partCanvas"></canvas>
 
     <!-- 情话弹窗 -->
-    <div class="love-popup" id="popBox">
-        <p id="popText"></p>
-        <button class="close-pop" onclick="closePop()">收下心意</button>
+    <div class="sweet-pop" id="popModal">
+        <p id="popSentence" style="font-size:18px;color:var(--main);"></p>
+        <button class="pop-close" onclick="closePop()">欣然收下</button>
     </div>
 
-    <div class="main-heart" id="clickHeart">❤</div>
-    <h1>写给最爱的你</h1>
-    <div class="love-text">
-        遇见你爱意汹涌<br>
-        看世间万物都浪漫心动<br>
-        岁岁年年 满心是你<br>
-        朝朝暮暮 唯念一人
+    <div class="love-icon" id="clickLove">❤</div>
+    <h1>岁岁相依 · 满心予你</h1>
+    <div class="subtitle-text">
+        世间风月皆过客<br>
+        唯有良人入心窝<br>
+        朝暮相伴，情深不渝
     </div>
 
-    <!-- 在一起总天数 -->
-    <div class="card">
-        我们在一起 <span id="loveDays">0</span> 天啦 💖
+    <div class="noble-badge">
+        相恋典藏 · 携手共度 <span id="allDays">0</span> 朝夕
     </div>
 
-    <!-- 精确时分秒计时 -->
-    <div class="card">
-        相伴时长：<span id="timeInfo">0时0分0秒</span>
+    <div class="lux-card">
+        相恋总时日：<span id="dayCount">0</span> 天
+    </div>
+    <div class="lux-card">
+        相伴精准时长：<span id="timeCount">0时0分0秒</span>
+    </div>
+    <div class="lux-card">
+        距离专属纪念日：<span id="memorialCount">0天</span>
     </div>
 
-    <!-- 纪念日倒计时 -->
-    <div class="card">
-        距离专属纪念日：<span id="countDown">0天</span>
-    </div>
+    <p class="end-word">初心不改，偏爱永恒</p>
 
-    <p class="end-say">永远偏爱你，我的女孩</p>
-
-    <!-- 暖心留言区 -->
-    <div class="msg-box">
-        <textarea id="leaveMsg" rows="3" placeholder="写下想对她说的悄悄话..."></textarea>
+    <!-- 轻奢留言区 -->
+    <div class="note-box">
+        <textarea id="loveNote" rows="3" placeholder="写下藏在心底的温柔心语..."></textarea>
         <br>
-        <button onclick="saveMsg()">珍藏心意</button>
-        <p style="margin-top:10px;color:#ff6b8b;font-size:14px;" id="msgTip"></p>
+        <button class="save-btn" onclick="storeNote()">封存心意</button>
+        <p class="tip-text" id="noteTip"></p>
     </div>
 
-    <div class="footer-tip">始于心动 · 终于白首</div>
+    <div class="footer-sign">始于一见倾心 · 终于余生相守</div>
 
-    <audio id="bgMusic" loop preload="auto">
+    <!-- 轻柔背景音乐 -->
+    <audio id="bgAudio" loop preload="metadata">
         <source src="https://music.163.com/song/media/outer/url?id=1901371911.mp3" type="audio/mpeg">
-        浏览器暂不支持背景音乐
     
 
-    <script>
-        // 相恋起始日期
-        const startDate = new Date("2025-09-14");
-        // 自定义纪念日
-        const memorialDay = new Date("2026-09-14");
+<script>
+// 自定义相恋起始日期
+const loveStart = new Date("2025-09-14");
+// 自定义纪念日
+const targetMemorial = new Date("2026-09-14");
 
-        // 1. 恋爱精准计时
-        function updateLoveTime() {
-            const now = new Date();
-            const diffMs = now - startDate;
-            const day = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-            const hour = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minute = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-            const second = Math.floor((diffMs % (1000 * 60)) / 1000);
+// 1. 高级计时系统
+function updateLoveTime(){
+    let now = new Date();
+    let diff = now - loveStart;
+    let d = Math.floor(diff / (1000*60*60*24));
+    let h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+    let m = Math.floor((diff % (1000*60*60)) / (1000*60));
+    let s = Math.floor((diff % (1000*60)) / 1000);
 
-            document.getElementById("loveDays").innerText = day;
-            document.getElementById("timeInfo").innerText = `${hour}时${minute}分${second}秒`;
+    document.getElementById("allDays").innerText = d;
+    document.getElementById("dayCount").innerText = d;
+    document.getElementById("timeCount").innerText = `${h}时${m}分${s}秒`;
 
-            // 纪念日倒计时
-            const countMs = memorialDay - now;
-            if(countMs > 0){
-                const countDay = Math.floor(countMs / (1000*60*60*24));
-                document.getElementById("countDown").innerText = countDay + "天";
-            }else{
-                document.getElementById("countDown").innerText = "纪念日已至，岁岁欢喜";
-            }
-        }
-        setInterval(updateLoveTime,1000);
-        updateLoveTime();
+    // 纪念日倒计时
+    let memDiff = targetMemorial - now;
+    if(memDiff > 0){
+        let md = Math.floor(memDiff / (1000*60*60*24));
+        document.getElementById("memorialCount").innerText = md + "天";
+    }else{
+        document.getElementById("memorialCount").innerText = "良辰已至，喜乐常伴";
+    }
+}
+setInterval(updateLoveTime,1000);
+updateLoveTime();
 
-        // 2. 飘落爱心
-        function createHeart() {
-            const heart = document.createElement("div");
-            heart.classList.add("fall-heart");
-            heart.innerHTML = "❤";
-            heart.style.left = Math.random() * 100 + "vw";
-            heart.style.fontSize = Math.random() * 22 + 8 + "px";
-            heart.style.animationDuration = Math.random() * 4 + 2.5 + "s";
-            document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 6000);
-        }
-        setInterval(createHeart, 260);
+// 2. 轻柔飘落爱心
+function createFloatHeart(){
+    let h = document.createElement("div");
+    h.className = "float-heart";
+    h.innerHTML = "❤";
+    h.style.left = Math.random()*100 + "vw";
+    h.style.fontSize = Math.random()*18 + 7 + "px";
+    h.style.animationDuration = Math.random()*5 + 3 + "s";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),7000);
+}
+setInterval(createFloatHeart,320);
 
-        // 3. 留言本地存储
-        function saveMsg(){
-            let text = document.getElementById("leaveMsg").value.trim();
-            if(!text){
-                document.getElementById("msgTip").innerText = "请写下心里话哦~";
-                return;
-            }
-            localStorage.setItem("loveMsg",text);
-            document.getElementById("msgTip").innerText = "心意已悄悄珍藏 ✨";
-            setTimeout(()=>document.getElementById("msgTip").innerText="",2000);
-        }
-        window.onload = function(){
-            let oldMsg = localStorage.getItem("loveMsg");
-            if(oldMsg) document.getElementById("leaveMsg").value = oldMsg;
-        }
+// 3. 本地封存留言
+function storeNote(){
+    let val = document.getElementById("loveNote").value.trim();
+    if(!val){
+        document.getElementById("noteTip").innerText = "请留下专属温柔话语~";
+        return;
+    }
+    localStorage.setItem("privateLoveNote",val);
+    document.getElementById("noteTip").innerText = "心意永久封存 ✨";
+    setTimeout(()=>document.getElementById("noteTip").innerText="",2200);
+}
+window.onload = ()=>{
+    let old = localStorage.getItem("privateLoveNote");
+    if(old) document.getElementById("loveNote").value = old;
+};
 
-        // 4. 背景音乐
-        const audio = document.getElementById("bgMusic");
-        audio.volume = 0.28;
-        document.addEventListener("click", ()=>{
-            audio.play().catch(e=>{});
-        },{once:true});
+// 4. 背景音乐优雅控制
+const audio = document.getElementById("bgAudio");
+audio.volume = 0.25;
+document.addEventListener("click",()=>audio.play().catch(e=>{}),{once:true});
 
-        // 5. 点击爱心弹出随机情话
-        const loveWords = [
-            "山野万里，你是我藏在微风里的欢喜",
-            "满心向你，只此一眼，万事皆甜",
-            "往后余生，风雪是你，平淡是你",
-            "世界万般美好，都不及你眉眼带笑",
-            "爱意随风起，风止意难平，余生皆是你",
-            "有幸遇见，恰好合拍，岁岁年年",
-            "攒了好久的温柔与浪漫，全部都给你"
-        ];
-        const popBox = document.getElementById("popBox");
-        const popText = document.getElementById("popText");
-        document.getElementById("clickHeart").addEventListener("click",function(){
-            let ranText = loveWords[Math.floor(Math.random()*loveWords.length)];
-            popText.innerText = ranText;
-            popBox.classList.add("show");
-        });
-        function closePop(){
-            popBox.classList.remove("show");
-        }
+// 5. 高级唯美情话库
+const sweetWords = [
+    "风月入怀，万般美好皆不及你",
+    "岁月温良，此生有幸与你相逢",
+    "心之所向，目光所及皆是你",
+    "揽尽星河万顷，只予一人偏爱",
+    "流年漫漫，愿与你朝夕相守",
+    "深情不负，岁岁年年皆如初",
+    "人间烟火寻常，有你便是晴朗"
+];
+const popBox = document.getElementById("popModal");
+const popText = document.getElementById("popSentence");
+document.getElementById("clickLove").addEventListener("click",()=>{
+    let ran = sweetWords[Math.floor(Math.random()*sweetWords.length)];
+    popText.innerText = ran;
+    popBox.classList.add("show");
+});
+function closePop(){
+    popBox.classList.remove("show");
+}
 
-        // 6. 流动星空背景
-        const canvas = document.getElementById('starCanvas');
-        const ctx = canvas.getContext('2d');
-        let stars = [];
-        function resizeCanvas(){
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            initStar();
-        }
-        function initStar(){
-            stars = [];
-            for(let i=0;i<120;i++){
-                stars.push({
-                    x:Math.random()*canvas.width,
-                    y:Math.random()*canvas.height,
-                    r:Math.random()*1.5+0.5,
-                    speedX:Math.random()*0.3-0.15,
-                    speedY:Math.random()*0.3-0.15
-                })
-            }
-        }
-        function drawStar(){
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            ctx.fillStyle="#fff";
-            stars.forEach(s=>{
-                ctx.beginPath();
-                ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-                ctx.fill();
-                s.x += s.speedX;
-                s.y += s.speedY;
-                if(s.x<0)s.x=canvas.width;
-                if(s.x>canvas.width)s.x=0;
-                if(s.y<0)s.y=canvas.height;
-                if(s.y>canvas.height)s.y=0;
-            })
-            requestAnimationFrame(drawStar);
-        }
-        window.addEventListener('resize',resizeCanvas);
-        resizeCanvas();
-        drawStar();
-    </script>
+// 6. 轻奢流动粒子花海背景
+const canvas = document.getElementById("partCanvas");
+const ctx = canvas.getContext("2d");
+let particles = [];
+function setSize(){
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+    initPart();
+}
+function initPart(){
+    particles = [];
+    for(let i=0;i<150;i++){
+        particles.push({
+            x:Math.random()*canvas.width,
+            y:Math.random()*canvas.height,
+            r:Math.random()*2+0.4,
+            sx:Math.random()*0.2-0.1,
+            sy:Math.random()*0.2-0.1,
+            color:Math.random()>0.5?"#ffb8cc":"#f8c8d8"
+        })
+    }
+}
+function drawPart(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+        p.x += p.sx;
+        p.y += p.sy;
+        if(p.x<0)p.x=canvas.width;
+        if(p.x>canvas.width)p.x=0;
+        if(p.y<0)p.y=canvas.height;
+        if(p.y>canvas.height)p.y=0;
+    })
+    requestAnimationFrame(drawPart);
+}
+addEventListener("resize",setSize);
+setSize();
+drawPart();
+</script>
 </body>
 </html>
