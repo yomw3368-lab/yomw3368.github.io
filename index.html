@@ -3,134 +3,365 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>致我的女孩</title>
+    <title>致我的女孩 · 专属告白</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box;}
         body {
-            background: linear-gradient(to bottom, #ffebff, #ffeeff);
+            background: linear-gradient(160deg, #fff0f8, #ffe6f2, #ffecf7);
+            min-height: 100vh;
             text-align: center;
-            padding: 30px 20px;
-            font-family: "微软雅黑", sans-serif;
+            padding: 40px 20px;
+            font-family: "PingFang SC", "思源黑体", sans-serif;
             color: #333;
             overflow-x: hidden;
+            position: relative;
         }
-        h1 {
-            color: #ff4d79;
-            font-size: 2.5em;
-            margin-bottom: 20px;
+        /* 星空画布层级 */
+        #starCanvas{
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            pointer-events: none;
         }
-        .love {
-            font-size: 18px;
-            color: #555;
-            margin: 30px auto;
-            line-height: 1.8;
-            max-width: 600px;
+        /* 主跳动爱心 */
+        .main-heart {
+            color: #ff3e6c;
+            font-size: 90px;
+            animation: softBeat 1.2s infinite ease-in-out;
+            margin-bottom: 15px;
+            text-shadow: 0 0 15px #ff6b8b;
+            cursor: pointer;
+            user-select: none;
         }
-        .heart {
-            color: #ff3366;
-            font-size: 80px;
-            animation: beat 1s infinite ease-in-out;
-            margin: 20px 0;
-        }
-        @keyframes beat {
+        @keyframes softBeat {
             0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
+            50% { transform: scale(1.15); }
             100% { transform: scale(1); }
         }
-        .day-box{
-            background:rgba(255,100,150,0.15);
-            padding:15px 25px;
-            border-radius:30px;
+        h1 {
+            color: #e83e6c;
+            font-size: 2.6em;
+            margin-bottom: 25px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-shadow: 0 2px 6px rgba(255,62,108,0.2);
+        }
+        .love-text {
+            font-size: 19px;
+            color: #664455;
+            margin: 35px auto;
+            line-height: 2;
+            max-width: 620px;
+            letter-spacing: 1px;
+        }
+        /* 通用磨砂卡片样式 */
+        .card{
+            background:rgba(255, 120, 160, 0.18);
+            backdrop-filter: blur(6px);
+            padding: 18px 35px;
+            border-radius: 50px;
             display: inline-block;
-            margin:15px 0;
-            color:#ff4d79;
-            font-size:17px;
+            margin: 12px 0;
+            color: #e83e6c;
+            font-size: 18px;
+            box-shadow: 0 6px 18px rgba(255, 80, 120, 0.15);
+            border: 1px solid rgba(255,150,180,0.3);
+            transition: all 0.3s ease;
         }
-        p {
-            font-size: 1.2em;
-            color: #447799;
-            margin-top: 25px;
+        .card:hover{
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(255,80,120,0.22);
         }
-        /* 飘落爱心 */
+        .end-say {
+            font-size: 1.3em;
+            color: #556688;
+            margin-top: 35px;
+            letter-spacing: 2px;
+            font-weight: 500;
+        }
+        /* 留言区域 */
+        .msg-box{
+            max-width: 500px;
+            margin: 40px auto 0;
+        }
+        .msg-box textarea{
+            width: 100%;
+            border: 1px solid #ffc8d8;
+            border-radius: 20px;
+            padding: 15px;
+            background: rgba(255,255,255,0.6);
+            outline: none;
+            font-size: 16px;
+            color: #664455;
+            resize: none;
+        }
+        .msg-box button{
+            margin-top: 12px;
+            padding: 10px 30px;
+            border: none;
+            border-radius: 30px;
+            background: #ff6b8b;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .msg-box button:hover{
+            background: #e83e6c;
+        }
+        /* 飘落爱心优化 */
         .fall-heart{
             position:fixed;
-            color:#ff6688;
+            color:#ff7799;
             top:-10%;
             z-index:-1;
-            animation: fall linear infinite;
+            animation: fallSlow linear infinite;
+            opacity: 0.85;
         }
-        @keyframes fall{
-            0%{transform:translateY(0) rotate(0deg);opacity:1;}
+        @keyframes fallSlow{
+            0%{transform:translateY(0) rotate(0deg);opacity:0.9;}
             100%{transform:translateY(110vh) rotate(360deg);opacity:0;}
         }
-        /* 手机适配 */
+        /* 情话弹窗 */
+        .love-popup{
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%) scale(0);
+            padding: 25px 40px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(255,62,108,0.3);
+            color: #e83e6c;
+            font-size: 18px;
+            z-index: 999;
+            transition: all 0.4s ease;
+        }
+        .love-popup.show{
+            transform: translate(-50%,-50%) scale(1);
+        }
+        .close-pop{
+            margin-top: 15px;
+            padding: 6px 20px;
+            border: none;
+            border-radius: 20px;
+            background: #ff6b8b;
+            color: #fff;
+            cursor: pointer;
+        }
+        /* 底部温柔小字 */
+        .footer-tip{
+            margin-top: 60px;
+            font-size: 14px;
+            color: #bb8899;
+        }
+        /* 手机完美适配 */
         @media (max-width: 768px) {
             h1 {
                 font-size: 2em;
+                letter-spacing: 2px;
             }
-            .love {
+            .love-text {
+                font-size: 17px;
+            }
+            .main-heart {
+                font-size: 70px;
+            }
+            .card{
+                padding: 15px 28px;
                 font-size: 16px;
             }
-            .heart {
-                font-size: 60px;
+            .end-say {
+                font-size: 1.1em;
             }
-            p {
-                font-size: 1em;
+            .love-popup{
+                padding: 20px 25px;
+                font-size: 16px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="heart">❤</div>
-    <h1>写给最爱的你</h1>
-    <div class="love">
-        遇见你爱意汹涌<br>
-        看世间万物都浪漫心动<br>
-        岁岁年年 满心是你
+    <!-- 星空背景画布 -->
+    <canvas id="starCanvas"></canvas>
+
+    <!-- 情话弹窗 -->
+    <div class="love-popup" id="popBox">
+        <p id="popText"></p>
+        <button class="close-pop" onclick="closePop()">收下心意</button>
     </div>
 
-    <div class="day-box">
+    <div class="main-heart" id="clickHeart">❤</div>
+    <h1>写给最爱的你</h1>
+    <div class="love-text">
+        遇见你爱意汹涌<br>
+        看世间万物都浪漫心动<br>
+        岁岁年年 满心是你<br>
+        朝朝暮暮 唯念一人
+    </div>
+
+    <!-- 在一起总天数 -->
+    <div class="card">
         我们在一起 <span id="loveDays">0</span> 天啦 💖
     </div>
 
-    <p>永远偏爱你，我的女孩</p>
+    <!-- 精确时分秒计时 -->
+    <div class="card">
+        相伴时长：<span id="timeInfo">0时0分0秒</span>
+    </div>
 
-    <!-- 已替换为温柔告白纯音乐 -->
-    <audio id="bgMusic" loop>
+    <!-- 纪念日倒计时 -->
+    <div class="card">
+        距离专属纪念日：<span id="countDown">0天</span>
+    </div>
+
+    <p class="end-say">永远偏爱你，我的女孩</p>
+
+    <!-- 暖心留言区 -->
+    <div class="msg-box">
+        <textarea id="leaveMsg" rows="3" placeholder="写下想对她说的悄悄话..."></textarea>
+        <br>
+        <button onclick="saveMsg()">珍藏心意</button>
+        <p style="margin-top:10px;color:#ff6b8b;font-size:14px;" id="msgTip"></p>
+    </div>
+
+    <div class="footer-tip">始于心动 · 终于白首</div>
+
+    <audio id="bgMusic" loop preload="auto">
         <source src="https://music.163.com/song/media/outer/url?id=1901371911.mp3" type="audio/mpeg">
-        你的浏览器不支持音频播放
+        浏览器暂不支持背景音乐
     
 
     <script>
-        // 1. 恋爱天数计算（已改成2025-09-14）
+        // 相恋起始日期
         const startDate = new Date("2025-09-14");
-        function updateDays() {
-            const today = new Date();
-            const diff = today - startDate;
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            document.getElementById("loveDays").textContent = days;
-        }
-        updateDays();
+        // 自定义纪念日
+        const memorialDay = new Date("2026-09-14");
 
-        // 2. 飘落爱心效果
+        // 1. 恋爱精准计时
+        function updateLoveTime() {
+            const now = new Date();
+            const diffMs = now - startDate;
+            const day = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            const hour = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minute = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+            const second = Math.floor((diffMs % (1000 * 60)) / 1000);
+
+            document.getElementById("loveDays").innerText = day;
+            document.getElementById("timeInfo").innerText = `${hour}时${minute}分${second}秒`;
+
+            // 纪念日倒计时
+            const countMs = memorialDay - now;
+            if(countMs > 0){
+                const countDay = Math.floor(countMs / (1000*60*60*24));
+                document.getElementById("countDown").innerText = countDay + "天";
+            }else{
+                document.getElementById("countDown").innerText = "纪念日已至，岁岁欢喜";
+            }
+        }
+        setInterval(updateLoveTime,1000);
+        updateLoveTime();
+
+        // 2. 飘落爱心
         function createHeart() {
             const heart = document.createElement("div");
             heart.classList.add("fall-heart");
             heart.innerHTML = "❤";
             heart.style.left = Math.random() * 100 + "vw";
-            heart.style.fontSize = Math.random() * 20 + 10 + "px";
-            heart.style.animationDuration = Math.random() * 3 + 2 + "s";
+            heart.style.fontSize = Math.random() * 22 + 8 + "px";
+            heart.style.animationDuration = Math.random() * 4 + 2.5 + "s";
             document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 5000);
+            setTimeout(() => heart.remove(), 6000);
         }
-        setInterval(createHeart, 300);
+        setInterval(createHeart, 260);
 
-        // 3. 背景音乐自动播放优化（点击页面后播放，避免浏览器拦截）
-        document.addEventListener("click", function() {
-            const audio = document.getElementById("bgMusic");
-            audio.volume = 0.3; // 音量调为30%，不吵人
-            audio.play().catch(() => {});
+        // 3. 留言本地存储
+        function saveMsg(){
+            let text = document.getElementById("leaveMsg").value.trim();
+            if(!text){
+                document.getElementById("msgTip").innerText = "请写下心里话哦~";
+                return;
+            }
+            localStorage.setItem("loveMsg",text);
+            document.getElementById("msgTip").innerText = "心意已悄悄珍藏 ✨";
+            setTimeout(()=>document.getElementById("msgTip").innerText="",2000);
+        }
+        window.onload = function(){
+            let oldMsg = localStorage.getItem("loveMsg");
+            if(oldMsg) document.getElementById("leaveMsg").value = oldMsg;
+        }
+
+        // 4. 背景音乐
+        const audio = document.getElementById("bgMusic");
+        audio.volume = 0.28;
+        document.addEventListener("click", ()=>{
+            audio.play().catch(e=>{});
+        },{once:true});
+
+        // 5. 点击爱心弹出随机情话
+        const loveWords = [
+            "山野万里，你是我藏在微风里的欢喜",
+            "满心向你，只此一眼，万事皆甜",
+            "往后余生，风雪是你，平淡是你",
+            "世界万般美好，都不及你眉眼带笑",
+            "爱意随风起，风止意难平，余生皆是你",
+            "有幸遇见，恰好合拍，岁岁年年",
+            "攒了好久的温柔与浪漫，全部都给你"
+        ];
+        const popBox = document.getElementById("popBox");
+        const popText = document.getElementById("popText");
+        document.getElementById("clickHeart").addEventListener("click",function(){
+            let ranText = loveWords[Math.floor(Math.random()*loveWords.length)];
+            popText.innerText = ranText;
+            popBox.classList.add("show");
         });
+        function closePop(){
+            popBox.classList.remove("show");
+        }
+
+        // 6. 流动星空背景
+        const canvas = document.getElementById('starCanvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+        function resizeCanvas(){
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initStar();
+        }
+        function initStar(){
+            stars = [];
+            for(let i=0;i<120;i++){
+                stars.push({
+                    x:Math.random()*canvas.width,
+                    y:Math.random()*canvas.height,
+                    r:Math.random()*1.5+0.5,
+                    speedX:Math.random()*0.3-0.15,
+                    speedY:Math.random()*0.3-0.15
+                })
+            }
+        }
+        function drawStar(){
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle="#fff";
+            stars.forEach(s=>{
+                ctx.beginPath();
+                ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+                ctx.fill();
+                s.x += s.speedX;
+                s.y += s.speedY;
+                if(s.x<0)s.x=canvas.width;
+                if(s.x>canvas.width)s.x=0;
+                if(s.y<0)s.y=canvas.height;
+                if(s.y>canvas.height)s.y=0;
+            })
+            requestAnimationFrame(drawStar);
+        }
+        window.addEventListener('resize',resizeCanvas);
+        resizeCanvas();
+        drawStar();
     </script>
 </body>
 </html>
