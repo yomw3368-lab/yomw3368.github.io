@@ -3,107 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>私密心事 | 相恋主页</title>
+    <title>私密心事 | 心底情话</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "PingFang SC", "Microsoft YaHei", serif;
+        *{margin:0;padding:0;box-sizing:border-box;}
+        :root{
+            --main:#8e44ad;
+            --light:#d7bde2;
+            --text:#2c2c44;
+            --glass:rgba(255,255,255,0.2);
+            --bg-color:linear-gradient(145deg,#342748,#40305a,#4c3b6b);
         }
-        body {
-            background: #2b221a;
-            color: #d4af37;
-            min-height: 100vh;
-            padding: 20px 15px;
-            background-image: linear-gradient(to bottom, rgba(43, 34, 26, 0.95), rgba(43, 34, 26, 0.85));
+        body{
+            min-height:100vh;
+            font-family:"STSong",SimSun,serif;
+            color:var(--light);
+            overflow-x:hidden;
+            transition:all 0.6s ease;
+            cursor:pointer;
+            padding-bottom:50px;
         }
-        .nav {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
+        .nav{display:flex;justify-content:center;gap:12px;padding:25px 10px;flex-wrap:wrap;}
+        .nav a{
+            min-width:90px;text-align:center;padding:8px 16px;border-radius:30px;
+            text-decoration:none;color:var(--light);background:var(--glass);
+            backdrop-filter:blur(8px);transition:0.3s;font-size:15px;
         }
-        .nav a {
-            text-decoration: none;
-            color: #d4af37;
-            padding: 10px 22px;
-            border-radius: 30px;
-            background: rgba(212,175,55,0.15);
-            border: 1px solid rgba(212,175,55,0.3);
-            transition: all 0.3s;
-            font-size: 1rem;
-        }
-        .nav a.active {
-            background: #d4af37;
-            color: #2b221a;
-            box-shadow: 0 0 15px rgba(212,175,55,0.5);
-        }
-        .nav a:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 10px rgba(212,175,55,0.3);
-        }
-        .box{
-            max-width:600px;
-            margin:0 auto;
-        }
-        h2{
-            text-align:center;
-            font-size:2rem;
-            margin-bottom:30px;
+        .nav a.active{background:var(--main);color:#fff;}
+        h1{text-align:center;color:var(--main);letter-spacing:5px;margin:20px 0;}
+        .divider{width:80%;max-width:400px;height:1px;background:linear-gradient(90deg,transparent,var(--main),transparent);margin:15px auto 20px;}
+        .tip-text{text-align:center;color:#b8a8d8;margin-bottom:25px;}
+        .write-box{
+            max-width:600px;margin:0 auto 30px;padding:20px;
+            background:rgba(142,68,173,0.15);border-radius:20px;border:1px solid rgba(142,68,173,0.3);
         }
         textarea{
-            width:100%;
-            height:200px;
-            background:rgba(0,0,0,0.2);
-            border:1px solid #d4af37;
-            border-radius:15px;
-            padding:15px;
-            color:#d4af37;
-            font-size:1rem;
-            outline:none;
-            resize:none;
+            width:100%;height:130px;background:rgba(0,0,0,0.25);border:none;
+            outline:none;border-radius:15px;padding:15px;color:var(--light);
+            font-size:15px;resize:none;
         }
-        .btn{
-            margin-top:15px;
-            padding:10px 30px;
-            background:#d4af37;
-            color:#2b221a;
-            border:none;
-            border-radius:25px;
-            cursor:pointer;
-            font-size:1rem;
+        .send-btn{
+            margin-top:15px;padding:9px 28px;background:var(--main);
+            color:#fff;border:none;border-radius:30px;cursor:pointer;
+        }
+        .list{max-width:600px;margin:0 auto;padding:0 15px;}
+        .item{
+            padding:18px;margin:15px 0;background:rgba(142,68,173,0.1);
+            border-radius:16px;border-left:3px solid var(--main);
+        }
+        .time{font-size:12px;color:#a088b8;margin-top:10px;}
+        .empty{text-align:center;padding:40px;color:#8877a0;}
+        .random-pattern {
+            position: fixed;z-index:-1;pointer-events:none;opacity:0.6;
         }
     </style>
 </head>
-<body>
-    <div class="nav">
-        <a href="index.html">相恋首页</a>
-        <a href="time.html">时光回忆</a>
-        <a href="words.html">百件小事</a>
-        <a href="note.html" class="active">私密心事</a>
-        <a href="message.html">公开留言</a>
-        <a href="privatemsg.html">隐秘留言</a>
-        <a href="diary.html">恋爱日记</a>
-    </div>
+<body onclick="changeThemeAndPattern()">
+<div class="nav">
+    <a href="index.html">相恋首页</a>
+    <a href="time.html">时光回忆</a>
+    <a href="words.html">百件小事</a>
+    <a href="note.html" class="active">私密心事</a>
+    <a href="message.html">公开留言</a>
+    <a href="javascript:goPrivate()">隐秘留言</a>
+</div>
 
-    <div class="box">
-        <h2>写下专属心事</h2>
-        <textarea id="noteArea" placeholder="把心里话悄悄记录在这里..."></textarea>
-        <button class="btn" onclick="saveNote()">保存心事</button>
-    </div>
+<h1>藏在心底的温柔心事</h1>
+<div class="divider"></div>
+<div class="tip-text">写下心里话，留存专属温柔</div>
+
+<div class="write-box">
+    <textarea id="noteInput" placeholder="写下此刻想说的心里话..."></textarea>
+    <button class="send-btn" onclick="addNote()">保存心事</button>
+</div>
+
+<div class="list" id="noteList"></div>
 
 <script>
-const noteKey = "private_note";
-window.onload = function(){
-    let old = localStorage.getItem(noteKey) || "";
-    document.getElementById("noteArea").value = old;
+function getNote(){
+    return JSON.parse(localStorage.getItem("loveNote"))||[];
 }
-function saveNote(){
-    let content = document.getElementById("noteArea").value;
-    localStorage.setItem(noteKey,content);
-    alert("心事保存成功~");
+function saveNote(arr){
+    localStorage.setItem("loveNote",JSON.stringify(arr));
+}
+function addNote(){
+    let val=document.getElementById("noteInput").value.trim();
+    if(!val){alert("内容不能为空");return;}
+    let now=new Date();
+    let t=`${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()} ${now.getHours()}:${now.getMinutes()}`;
+    let arr=getNote();
+    arr.unshift({txt:val,time:t});
+    saveNote(arr);
+    document.getElementById("noteInput").value="";
+    renderNote();
+}
+function renderNote(){
+    let arr=getNote();
+    let html="";
+    if(arr.length<=0){
+        html='<div class="empty">还没有写下心事，快来记录心情</div>';
+    }else{
+        arr.forEach(v=>{
+            html+=`<div class="item"><div>${v.txt}</div><div class="time">${v.time}</div></div>`;
+        })
+    }
+    document.getElementById("noteList").innerHTML=html;
+}
+renderNote();
+
+// 点击换主题+图案
+function changeThemeAndPattern(){
+    document.querySelectorAll('.random-pattern').forEach(e=>e.remove());
+    let hue=Math.floor(Math.random()*360);
+    let root=document.documentElement;
+    root.style.setProperty('--main',`hsl(${hue},65%,55%)`);
+    root.style.setProperty('--light',`hsl(${hue},50%,80%)`);
+    root.style.setProperty('--text',`hsl(${hue},25%,30%)`);
+    root.style.setProperty('--bg-color',`linear-gradient(145deg,hsl(${hue},35%,18%),hsl(${hue},35%,24%),hsl(${hue},35%,30%))`);
+    let icon=['❤','★','●','■','✧'];
+    let num=Math.floor(Math.random()*8)+4;
+    for(let i=0;i<num;i++){
+        let d=document.createElement('div');
+        d.className='random-pattern';
+        d.innerText=icon[Math.floor(Math.random()*icon.length)];
+        d.style.left=Math.random()*100+'%';
+        d.style.top=Math.random()*100+'%';
+        d.style.fontSize=(Math.random()*22+8)+'px';
+        document.body.appendChild(d);
+    }
+}
+const sty=document.createElement('style');
+sty.innerHTML=`@keyframes float{0%{transform:translateY(0)rotate(0deg)}50%{transform:translateY(-20px)rotate(180deg)}100%{transform:translateY(0)rotate(360deg)}} .random-pattern{animation:float 3s linear infinite}`;
+document.head.appendChild(sty);
+
+// 权限跳转
+function goPrivate(){
+    let s=localStorage.getItem("privateOpen");
+    if(s==="1")location.href="privatemsg.html";
+    else{alert("请先去首页输入专属暗号解锁！");location.href="index.html";}
 }
 </script>
 </body>
