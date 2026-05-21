@@ -6,14 +6,23 @@
     <title>时光回忆 | 温柔岁月</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box;}
-        :root{--main:#e05275;--light:#ffd6e0;--text:#4a3b42;--glass:rgba(255,255,255,0.25);}
-        body.morning{background:linear-gradient(145deg,#f8eef2,#ffe6ee,#fff0f5);}
-        body.noon{background:linear-gradient(145deg,#fff3f7,#ffe8ef,#ffedf4);}
-        body.night{background:linear-gradient(145deg,#f3e8f8,#fcf0f6,#ffeef4);}
-        body.deepnight{background:linear-gradient(145deg,#e8dce2,#f0e3eb,#f5e8f0);}
+        :root{
+            --main:#e05275;
+            --light:#ffd6e0;
+            --text:#4a3b42;
+            --glass:rgba(255,255,255,0.25);
+            --bg-color: linear-gradient(145deg,#f3e8f8,#fcf0f6,#ffeef4);
+        }
+        body.morning{background:var(--bg-color);}
+        body.noon{background:var(--bg-color);}
+        body.night{background:var(--bg-color);}
+        body.deepnight{background:var(--bg-color);}
         body{
-            min-height:100vh;font-family:"思源宋体",serif;color:var(--text);
+            min-height:100vh;
+            font-family:"STSong", "SimSun", "serif"; /* 瘦金体 */
+            color:var(--text);
             overflow-x:hidden;opacity:0;animation:nobleFade 1.5s cubic-bezier(0.22,1,0.36,1) forwards;transition:all 0.6s ease;
+            cursor: pointer;
         }
         @keyframes nobleFade{0%{opacity:0;transform:translateY(30px) scale(0.98);}100%{opacity:1;transform:translateY(0) scale(1);}}
         #partCanvas{position:fixed;inset:0;z-index:-2;pointer-events:none;}
@@ -24,16 +33,44 @@
         h1{text-align:center;color:var(--main);letter-spacing:5px;margin:20px 0;}
         .divider{width:80%;max-width:400px;height:1px;background:linear-gradient(90deg,transparent,var(--main),transparent);margin:15px auto 25px;}
         .time-greet{text-align:center;color:var(--main);font-size:16px;margin:8px 0;}
-        .timeline{max-width:600px;margin:50px auto;padding:0 20px;}
-        .time-item{margin:30px 0;padding:20px;background:var(--glass);backdrop-filter:blur(10px);
-        border-radius:20px;border:1px solid rgba(255,255,255,0.4);transition:0.3s;position:relative;padding-left:50px;}
+        .timeline{max-width:800px;margin:50px auto;padding:0 20px;}
+        .time-item{
+            margin:30px 0;
+            padding:20px;
+            background:var(--glass);
+            backdrop-filter:blur(10px);
+            border-radius:20px;
+            border:1px solid rgba(255,255,255,0.4);
+            transition:0.3s;
+            position:relative;
+            padding-left:50px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+        .time-item img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+        .time-item-content {
+            flex-grow: 1;
+        }
         .time-item:hover{transform:translateY(-4px);}
         .time-item h3{color:var(--main);margin-bottom:10px;}
         .cat-icon{position:absolute;left:12px;top:18px;font-size:26px;}
         .foot{text-align:center;margin:80px 0 30px;font-size:14px;color:#b495a2;}
+        .random-pattern {
+            position: fixed;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.7;
+        }
     </style>
 </head>
-<body id="timeBody">
+<body id="timeBody" onclick="changeThemeAndPattern()">
 <canvas id="partCanvas"></canvas>
 <div class="nav">
     <a href="index.html">相恋首页</a>
@@ -46,11 +83,46 @@
 <div class="divider"></div>
 <div class="time-greet" id="timeSay"></div>
 <div class="timeline">
-    <div class="time-item"><span class="cat-icon">🐱</span><h3>初见之日</h3><p>人海相逢，一眼心生欢喜。</p></div>
-    <div class="time-item"><span class="cat-icon">😺</span><h3>心意相通</h3><p>褪去浮躁，只想安稳相伴。</p></div>
-    <div class="time-item"><span class="cat-icon">😸</span><h3>朝夕相守</h3><p>寻常烟火，日日皆是温情。</p></div>
-    <div class="time-item"><span class="cat-icon">😻</span><h3>满心期许</h3><p>往后路途，风雨并肩同行。</p></div>
-    <div class="time-item"><span class="cat-icon">🐈</span><h3>岁岁年年</h3><p>四季轮转不改初心，相守白头。</p></div>
+    <div class="time-item">
+        <span class="cat-icon">🐱</span>
+        <img src="https://picsum.photos/id/1005/200/200" alt="初见">
+        <div class="time-item-content">
+            <h3>初见之日</h3>
+            <p>人海相逢，一眼心生欢喜。</p>
+        </div>
+    </div>
+    <div class="time-item">
+        <span class="cat-icon">😺</span>
+        <img src="https://picsum.photos/id/1015/200/200" alt="心意相通">
+        <div class="time-item-content">
+            <h3>心意相通</h3>
+            <p>褪去浮躁，只想安稳相伴。</p>
+        </div>
+    </div>
+    <div class="time-item">
+        <span class="cat-icon">😸</span>
+        <img src="https://picsum.photos/id/1025/200/200" alt="朝夕相守">
+        <div class="time-item-content">
+            <h3>朝夕相守</h3>
+            <p>寻常烟火，日日皆是温情。</p>
+        </div>
+    </div>
+    <div class="time-item">
+        <span class="cat-icon">😻</span>
+        <img src="https://picsum.photos/id/1035/200/200" alt="满心期许">
+        <div class="time-item-content">
+            <h3>满心期许</h3>
+            <p>往后路途，风雨并肩同行。</p>
+        </div>
+    </div>
+    <div class="time-item">
+        <span class="cat-icon">🐈</span>
+        <img src="https://picsum.photos/id/1045/200/200" alt="岁岁年年">
+        <div class="time-item-content">
+            <h3>岁岁年年</h3>
+            <p>四季轮转不改初心，相守白头。</p>
+        </div>
+    </div>
 </div>
 <div class="foot">珍藏每一段一同走过的温柔时光</div>
 <audio id="bgAudio" loop><source src="https://music.163.com/song/media/outer/url?id=1901371911.mp3">
@@ -76,6 +148,72 @@ function drawPart(){ctx.clearRect(0,0,canvas.width,canvas.height);
 particles.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.color;ctx.fill();p.x+=p.sx;p.y+=p.sy;if(p.x<0)p.x=canvas.width;if(p.x>canvas.width)p.x=0;if(p.y<0)p.y=canvas.height;if(p.y>canvas.height)p.y=0;});
 requestAnimationFrame(drawPart);}
 addEventListener("resize",setSize);setSize();drawPart();
+
+// 随机配色和图案生成函数
+function changeThemeAndPattern() {
+    // 清除旧图案
+    document.querySelectorAll('.random-pattern').forEach(el => el.remove());
+    
+    // 生成随机颜色
+    const randomHue = Math.floor(Math.random() * 360);
+    const mainColor = `hsl(${randomHue}, 70%, 50%)`;
+    const lightColor = `hsl(${randomHue}, 80%, 80%)`;
+    const textColor = `hsl(${randomHue}, 20%, 30%)`;
+    const bgColor1 = `hsl(${randomHue}, 30%, 90%)`;
+    const bgColor2 = `hsl(${randomHue}, 30%, 95%)`;
+    const bgColor3 = `hsl(${randomHue}, 30%, 85%)`;
+
+    // 更新CSS变量
+    const root = document.documentElement;
+    root.style.setProperty('--main', mainColor);
+    root.style.setProperty('--light', lightColor);
+    root.style.setProperty('--text', textColor);
+    root.style.setProperty('--bg-color', `linear-gradient(145deg, ${bgColor1}, ${bgColor2}, ${bgColor3})`);
+
+    // 生成随机图案
+    const patterns = ['star', 'heart', 'circle', 'square'];
+    const patternCount = Math.floor(Math.random() * 10) + 5; // 5-15个图案
+
+    for (let i = 0; i < patternCount; i++) {
+        const pattern = document.createElement('div');
+        pattern.classList.add('random-pattern');
+        
+        const patternType = patterns[Math.floor(Math.random() * patterns.length)];
+        switch(patternType) {
+            case 'star':
+                pattern.innerHTML = '★';
+                break;
+            case 'heart':
+                pattern.innerHTML = '❤';
+                break;
+            case 'circle':
+                pattern.innerHTML = '●';
+                break;
+            case 'square':
+                pattern.innerHTML = '■';
+                break;
+        }
+
+        pattern.style.left = Math.random() * 100 + '%';
+        pattern.style.top = Math.random() * 100 + '%';
+        pattern.style.fontSize = Math.random() * 30 + 10 + 'px';
+        pattern.style.color = lightColor;
+        pattern.style.animation = `float ${Math.random() * 3 + 2}s linear infinite`;
+
+        document.body.appendChild(pattern);
+    }
+}
+
+// 添加浮动动画
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes float {
+        0% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(180deg); }
+        100% { transform: translateY(0) rotate(360deg); }
+    }
+`;
+document.head.appendChild(style);
 </script>
 </body>
 </html>
