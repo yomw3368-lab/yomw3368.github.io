@@ -19,7 +19,7 @@
         body.deepnight{background:var(--bg-color);}
         body{
             min-height:100vh;
-            font-family:"STSong", "SimSun", "serif"; /* 瘦金体 */
+            font-family:"STSong", "SimSun", "serif";
             color:var(--text);
             overflow-x:hidden;opacity:0;animation:nobleFade 1.5s cubic-bezier(0.22,1,0.36,1) forwards;transition:all 0.6s ease;
             cursor: pointer;
@@ -33,10 +33,23 @@
         h1{text-align:center;color:var(--main);letter-spacing:5px;margin:20px 0;}
         .divider{width:80%;max-width:400px;height:1px;background:linear-gradient(90deg,transparent,var(--main),transparent);margin:15px auto 25px;}
         .page-say{text-align:center;color:var(--main);margin:10px 0;font-size:16px;}
-        .box{max-width:650px;margin:40px auto;padding:0 20px;column-count:2;column-gap:20px;}
-        .item{padding:14px;margin:12px 0;background:var(--glass);backdrop-filter:blur(10px);
-        border-radius:20px;border:1px solid rgba(255,255,255,0.4);font-size:15px;line-height:1.7;transition:0.3s;break-inside:avoid;}
+        .box{max-width:750px;margin:40px auto;padding:0 20px;}
+        .item{
+            display:flex;
+            align-items:center;
+            gap:15px;
+            padding:14px;margin:12px 0;
+            background:var(--glass);backdrop-filter:blur(10px);
+            border-radius:20px;border:1px solid rgba(255,255,255,0.4);
+            font-size:15px;line-height:1.7;transition:0.3s;
+        }
         .item:hover{transform:translateY(-3px);}
+        .item img{
+            width:70px;height:70px;
+            border-radius:12px;
+            object-fit:cover;
+            flex-shrink:0;
+        }
         .foot{text-align:center;margin:70px 0 40px;font-size:14px;color:#b495a2;}
         .random-pattern {
             position: fixed;
@@ -44,7 +57,7 @@
             pointer-events: none;
             opacity: 0.7;
         }
-        @media(max-width:700px){.box{column-count:1;}}
+        @media(max-width:700px){.item img{width:55px;height:55px;}}
     </style>
 </head>
 <body id="thingBody" onclick="changeThemeAndPattern()">
@@ -55,202 +68,104 @@
     <a href="words.html" class="active">百件小事</a>
     <a href="note.html">私密心事</a>
     <a href="message.html">公开留言</a>
+    <a href="javascript:goPrivate()">隐秘留言</a>
 </div>
 <h1>想和你慢慢完成的一百件事</h1>
 <div class="divider"></div>
 <div class="page-say" id="thingGreet"></div>
 <div class="box">
-<div class="item">1.一起看一场凌晨日出</div>
-<div class="item">2.牵手漫步城市晚风街道</div>
-<div class="item">3.共用一副耳机听同一首歌</div>
-<div class="item">4.窝在沙发看一整部老电影</div>
-<div class="item">5.一起逛清晨热闹菜市场</div>
-<div class="item">6.为对方亲手做一顿晚餐</div>
-<div class="item">7.雨天共撑一把伞慢慢散步</div>
-<div class="item">8.去山顶俯瞰整座城市夜景</div>
-<div class="item">9.互相给对方拍氛围感照片</div>
-<div class="item">10.一起养一只温顺小宠物</div>
-<div class="item">11.穿同款简约情侣穿搭</div>
-<div class="item">12.一起去海边听海浪声音</div>
-<div class="item">13.写下彼此心愿收藏起来</div>
-<div class="item">14.深夜谈心诉说心底故事</div>
-<div class="item">15.一起打卡小众文艺小店</div>
-<div class="item">16.在雪地里并肩慢慢行走</div>
-<div class="item">17.一起泡温暖舒缓温泉</div>
-<div class="item">18.早起一起吃热腾腾早餐</div>
-<div class="item">19.短途自驾奔赴山野林间</div>
-<div class="item">20.互相温柔梳理发丝</div>
-<div class="item">21.一起静坐看漫天晚霞</div>
-<div class="item">22.品尝各地特色风味小吃</div>
-<div class="item">23.一起学习一项新技能</div>
-<div class="item">24.安静陪伴彼此发呆放空</div>
-<div class="item">25.跨年一起倒数迎接新年</div>
-<div class="item">26.一起去寺庙诚心祈福</div>
-<div class="item">27.整理属于二人专属相册</div>
-<div class="item">28.睡前互道温柔晚安情话</div>
-<div class="item">29.春日一同奔赴花海踏青</div>
-<div class="item">30.夏日夜晚一起乘凉赏月</div>
-<div class="item">31.秋日漫步林间捡拾落叶</div>
-<div class="item">32.冬日围炉煮茶闲话日常</div>
-<div class="item">33.一起坐最慢慢悠悠公交</div>
-<div class="item">34.并肩阅读同一本书籍</div>
-<div class="item">35.一起体验手作DIY好物</div>
-<div class="item">36.生病时细心贴身照顾彼此</div>
-<div class="item">37.一起奔赴远方小众旅行</div>
-<div class="item">38.记住彼此所有喜好偏爱</div>
-<div class="item">39.一起看星空辨认星辰</div>
-<div class="item">40.偶尔幼稚打闹嬉笑玩耍</div>
-<div class="item">41.一起参加轻松市集活动</div>
-<div class="item">42.为对方准备低调小惊喜</div>
-<div class="item">43.一起慢跑健身锻炼身体</div>
-<div class="item">44.安静听对方诉说烦恼</div>
-<div class="item">45.一起住进简约温馨民宿</div>
-<div class="item">46.亲手写下书信赠予彼此</div>
-<div class="item">47.一起参观文艺艺术展馆</div>
-<div class="item">48.在江边静坐吹晚风谈心</div>
-<div class="item">49.一起戒掉坏习惯慢慢变好</div>
-<div class="item">50.认真规划二人未来生活</div>
-<div class="item">51.一起品尝微醺低度小酒</div>
-<div class="item">52.结伴打卡城市地标建筑</div>
-<div class="item">53.一起收纳整理温馨小家</div>
-<div class="item">54.互相包容彼此小脾气</div>
-<div class="item">55.一起奔赴古镇慢生活</div>
-<div class="item">56.雨天宅家煮热气腾腾奶茶</div>
-<div class="item">57.一起记录四季日常碎片</div>
-<div class="item">58.在无人街道尽情放声大笑</div>
-<div class="item">59.一起学习简单浪漫花艺</div>
-<div class="item">60.记住彼此所有重要日子</div>
-<div class="item">61.一起看一场浪漫舞台剧</div>
-<div class="item">62.携手走过长长的天桥</div>
-<div class="item">63.一起挑选居家温柔摆件</div>
-<div class="item">64.失意时紧紧拥抱安慰对方</div>
-<div class="item">65.一起奔赴草原感受自由</div>
-<div class="item">66.清晨一起慢跑迎接朝阳</div>
-<div class="item">67.一起收藏好看浪漫壁纸</div>
-<div class="item">68.偶尔放下琐事专心陪伴</div>
-<div class="item">69.一起体验安静露营生活</div>
-<div class="item">70.互相夸奖赞美彼此优点</div>
-<div class="item">71.一起打卡治愈系咖啡馆</div>
-<div class="item">72.深夜一起吃暖心夜宵</div>
-<div class="item">73.一起制定存钱小小计划</div>
-<div class="item">74.牵手走过四季岁岁年年</div>
-<div class="item">75.一起感受人间烟火日常</div>
-<div class="item">76.在生日准备走心小礼物</div>
-<div class="item">77.一起坐船游览江上风光</div>
-<div class="item">78.耐心倾听彼此内心想法</div>
-<div class="item">79.一起种植绿植细心养护</div>
-<div class="item">80.奔赴远方看一场大雪</div>
-<div class="item">81.一起重温初识美好时光</div>
-<div class="item">82.互相改掉自身小缺点</div>
-<div class="item">83.一起体验慵懒慢节奏生活</div>
-<div class="item">84.并肩奔赴每一场人间美好</div>
-<div class="item">85.一起看治愈暖心纪录片</div>
-<div class="item">86.在街头随性随性走走停停</div>
-<div class="item">87.一起守护彼此纯粹真心</div>
-<div class="item">88.携手奔赴所有温柔远方</div>
-<div class="item">89.一起慢慢变成更好的人</div>
-<div class="item">90.平淡日子依旧满怀热爱</div>
-<div class="item">91.一起奔赴山野看云海</div>
-<div class="item">92.余生三餐四季朝夕相伴</div>
-<div class="item">93.守住初心始终偏爱对方</div>
-<div class="item">94.一起奔赴人间所有温柔</div>
-<div class="item">95.风雨来临永远并肩同行</div>
-<div class="item">96.岁岁年年深情从未消减</div>
-<div class="item">97.把普通日子过成浪漫</div>
-<div class="item">98.此生有幸相逢不负相遇</div>
-<div class="item">99.往后余生目光皆是彼此</div>
-<div class="item">100.相守白头共度漫漫余生</div>
-</div>
-<div class="foot">慢慢相遇，慢慢相爱，慢慢走完这一生</div>
-<audio id="bgAudio" loop><source src="https://music.163.com/song/media/outer/url?id=1901371911.mp3">
-<script>
-const happyWords = "件件小事，皆是满心欢喜";
-function setThingTime(){
-    let h=new Date().getHours();
-    let b=document.getElementById("thingBody");
-    let t=document.getElementById("thingGreet");
-    if(h>=5&&h<9){b.className="morning";t.innerText="清晨元气满满，奔赴美好小事";}
-    else if(h>=9&&h<17){b.className="noon";t.innerText=happyWords;}
-    else if(h>=17&&h<23){b.className="night";t.innerText="夜色温柔，憧憬往后美好";}
-    else{b.className="deepnight";t.innerText="夜深啦，慢慢憧憬来日温柔";}
-}
-setThingTime();
-const audio=document.getElementById("bgAudio");audio.volume=0.25;
-document.addEventListener("click",()=>audio.play().catch(e=>{}),{once:true});
-const canvas=document.getElementById("partCanvas"),ctx=canvas.getContext("2d");
-let particles=[];
-function setSize(){canvas.width=innerWidth;canvas.height=innerHeight;initPart();}
-function initPart(){particles=[];for(let i=0;i<150;i++)particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2+0.4,sx:Math.random()*0.2-0.1,sy:Math.random()*0.2-0.1,color:Math.random()>0.5?"#ffb8cc":"#f8c8d8"});}
-function drawPart(){ctx.clearRect(0,0,canvas.width,canvas.height);
-particles.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.color;ctx.fill();p.x+=p.sx;p.y+=p.sy;if(p.x<0)p.x=canvas.width;if(p.x>canvas.width)p.x=0;if(p.y<0)p.y=canvas.height;if(p.y>canvas.height)p.y=0;});
-requestAnimationFrame(drawPart);}
-addEventListener("resize",setSize);setSize();drawPart();
-
-// 随机配色和图案生成函数
-function changeThemeAndPattern() {
-    // 清除旧图案
-    document.querySelectorAll('.random-pattern').forEach(el => el.remove());
-    
-    // 生成随机颜色
-    const randomHue = Math.floor(Math.random() * 360);
-    const mainColor = `hsl(${randomHue}, 70%, 50%)`;
-    const lightColor = `hsl(${randomHue}, 80%, 80%)`;
-    const textColor = `hsl(${randomHue}, 20%, 30%)`;
-    const bgColor1 = `hsl(${randomHue}, 30%, 90%)`;
-    const bgColor2 = `hsl(${randomHue}, 30%, 95%)`;
-    const bgColor3 = `hsl(${randomHue}, 30%, 85%)`;
-
-    // 更新CSS变量
-    const root = document.documentElement;
-    root.style.setProperty('--main', mainColor);
-    root.style.setProperty('--light', lightColor);
-    root.style.setProperty('--text', textColor);
-    root.style.setProperty('--bg-color', `linear-gradient(145deg, ${bgColor1}, ${bgColor2}, ${bgColor3})`);
-
-    // 生成随机图案
-    const patterns = ['star', 'heart', 'circle', 'square'];
-    const patternCount = Math.floor(Math.random() * 10) + 5; // 5-15个图案
-
-    for (let i = 0; i < patternCount; i++) {
-        const pattern = document.createElement('div');
-        pattern.classList.add('random-pattern');
-        
-        const patternType = patterns[Math.floor(Math.random() * patterns.length)];
-        switch(patternType) {
-            case 'star':
-                pattern.innerHTML = '★';
-                break;
-            case 'heart':
-                pattern.innerHTML = '❤';
-                break;
-            case 'circle':
-                pattern.innerHTML = '●';
-                break;
-            case 'square':
-                pattern.innerHTML = '■';
-                break;
-        }
-
-        pattern.style.left = Math.random() * 100 + '%';
-        pattern.style.top = Math.random() * 100 + '%';
-        pattern.style.fontSize = Math.random() * 30 + 10 + 'px';
-        pattern.style.color = lightColor;
-        pattern.style.animation = `float ${Math.random() * 3 + 2}s linear infinite`;
-
-        document.body.appendChild(pattern);
-    }
-}
-
-// 添加浮动动画
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes float {
-        0% { transform: translateY(0) rotate(0deg); }
-        50% { transform: translateY(-20px) rotate(180deg); }
-        100% { transform: translateY(0) rotate(360deg); }
-    }
-`;
-document.head.appendChild(style);
-</script>
-</body>
-</html>
+<div class="item"><img src="https://picsum.photos/id/1036/100/100">1.一起看一场凌晨日出</div>
+<div class="item"><img src="https://picsum.photos/id/1039/100/100">2.牵手漫步城市晚风街道</div>
+<div class="item"><img src="https://picsum.photos/id/1041/100/100">3.共用一副耳机听同一首歌</div>
+<div class="item"><img src="https://picsum.photos/id/1043/100/100">4.窝在沙发看一整部老电影</div>
+<div class="item"><img src="https://picsum.photos/id/1047/100/100">5.一起逛清晨热闹菜市场</div>
+<div class="item"><img src="https://picsum.photos/id/1048/100/100">6.为对方亲手做一顿晚餐</div>
+<div class="item"><img src="https://picsum.photos/id/1050/100/100">7.雨天共撑一把伞慢慢散步</div>
+<div class="item"><img src="https://picsum.photos/id/1052/100/100">8.去山顶俯瞰整座城市夜景</div>
+<div class="item"><img src="https://picsum.photos/id/1054/100/100">9.互相给对方拍氛围感照片</div>
+<div class="item"><img src="https://picsum.photos/id/1056/100/100">10.一起养一只温顺小宠物</div>
+<div class="item"><img src="https://picsum.photos/id/1058/100/100">11.穿同款简约情侣穿搭</div>
+<div class="item"><img src="https://picsum.photos/id/1060/100/100">12.一起去海边听海浪声音</div>
+<div class="item"><img src="https://picsum.photos/id/1062/100/100">13.写下彼此心愿收藏起来</div>
+<div class="item"><img src="https://picsum.photos/id/1064/100/100">14.深夜谈心诉说心底故事</div>
+<div class="item"><img src="https://picsum.photos/id/1066/100/100">15.一起打卡小众文艺小店</div>
+<div class="item"><img src="https://picsum.photos/id/1068/100/100">16.在雪地里并肩慢慢行走</div>
+<div class="item"><img src="https://picsum.photos/id/1070/100/100">17.一起泡温暖舒缓温泉</div>
+<div class="item"><img src="https://picsum.photos/id/1072/100/100">18.早起一起吃热腾腾早餐</div>
+<div class="item"><img src="https://picsum.photos/id/1074/100/100">19.短途自驾奔赴山野林间</div>
+<div class="item"><img src="https://picsum.photos/id/1076/100/100">20.互相温柔梳理发丝</div>
+<div class="item"><img src="https://picsum.photos/id/1078/100/100">21.一起静坐看漫天晚霞</div>
+<div class="item"><img src="https://picsum.photos/id/1080/100/100">22.品尝各地特色风味小吃</div>
+<div class="item"><img src="https://picsum.photos/id/1082/100/100">23.一起学习一项新技能</div>
+<div class="item"><img src="https://picsum.photos/id/1084/100/100">24.安静陪伴彼此发呆放空</div>
+<div class="item"><img src="https://picsum.photos/id/1086/100/100">25.跨年一起倒数迎接新年</div>
+<div class="item"><img src="https://picsum.photos/id/1088/100/100">26.一起去寺庙诚心祈福</div>
+<div class="item"><img src="https://picsum.photos/id/1090/100/100">27.整理属于二人专属相册</div>
+<div class="item"><img src="https://picsum.photos/id/1092/100/100">28.睡前互道温柔晚安情话</div>
+<div class="item"><img src="https://picsum.photos/id/1094/100/100">29.春日一同奔赴花海踏青</div>
+<div class="item"><img src="https://picsum.photos/id/1096/100/100">30.夏日夜晚一起乘凉赏月</div>
+<div class="item"><img src="https://picsum.photos/id/1098/100/100">31.秋日漫步林间捡拾落叶</div>
+<div class="item"><img src="https://picsum.photos/id/1100/100/100">32.冬日围炉煮茶闲话日常</div>
+<div class="item"><img src="https://picsum.photos/id/1102/100/100">33.一起坐最慢慢悠悠公交</div>
+<div class="item"><img src="https://picsum.photos/id/1104/100/100">34.并肩阅读同一本书籍</div>
+<div class="item"><img src="https://picsum.photos/id/1106/100/100">35.一起体验手作DIY好物</div>
+<div class="item"><img src="https://picsum.photos/id/1108/100/100">36.生病时细心贴身照顾彼此</div>
+<div class="item"><img src="https://picsum.photos/id/1110/100/100">37.一起奔赴远方小众旅行</div>
+<div class="item"><img src="https://picsum.photos/id/1112/100/100">38.记住彼此所有喜好偏爱</div>
+<div class="item"><img src="https://picsum.photos/id/1114/100/100">39.一起看星空辨认星辰</div>
+<div class="item"><img src="https://picsum.photos/id/1116/100/100">40.偶尔幼稚打闹嬉笑玩耍</div>
+<div class="item"><img src="https://picsum.photos/id/1118/100/100">41.一起参加轻松市集活动</div>
+<div class="item"><img src="https://picsum.photos/id/1120/100/100">42.为对方准备低调小惊喜</div>
+<div class="item"><img src="https://picsum.photos/id/1122/100/100">43.一起慢跑健身锻炼身体</div>
+<div class="item"><img src="https://picsum.photos/id/1124/100/100">44.安静听对方诉说烦恼</div>
+<div class="item"><img src="https://picsum.photos/id/1126/100/100">45.一起住进简约温馨民宿</div>
+<div class="item"><img src="https://picsum.photos/id/1128/100/100">46.亲手写下书信赠予彼此</div>
+<div class="item"><img src="https://picsum.photos/id/1130/100/100">47.一起参观文艺艺术展馆</div>
+<div class="item"><img src="https://picsum.photos/id/1132/100/100">48.在江边静坐吹晚风谈心</div>
+<div class="item"><img src="https://picsum.photos/id/1134/100/100">49.一起戒掉坏习惯慢慢变好</div>
+<div class="item"><img src="https://picsum.photos/id/1136/100/100">50.认真规划二人未来生活</div>
+<div class="item"><img src="https://picsum.photos/id/1138/100/100">51.一起品尝微醺低度小酒</div>
+<div class="item"><img src="https://picsum.photos/id/1140/100/100">52.结伴打卡城市地标建筑</div>
+<div class="item"><img src="https://picsum.photos/id/1142/100/100">53.一起收纳整理温馨小家</div>
+<div class="item"><img src="https://picsum.photos/id/1144/100/100">54.互相包容彼此小脾气</div>
+<div class="item"><img src="https://picsum.photos/id/1146/100/100">55.一起奔赴古镇慢生活</div>
+<div class="item"><img src="https://picsum.photos/id/1148/100/100">56.雨天宅家煮热气腾腾奶茶</div>
+<div class="item"><img src="https://picsum.photos/id/1150/100/100">57.一起记录四季日常碎片</div>
+<div class="item"><img src="https://picsum.photos/id/1152/100/100">58.在无人街道尽情放声大笑</div>
+<div class="item"><img src="https://picsum.photos/id/1154/100/100">59.一起学习简单浪漫花艺</div>
+<div class="item"><img src="https://picsum.photos/id/1156/100/100">60.记住彼此所有重要日子</div>
+<div class="item"><img src="https://picsum.photos/id/1158/100/100">61.一起看一场浪漫舞台剧</div>
+<div class="item"><img src="https://picsum.photos/id/1160/100/100">62.携手走过长长的天桥</div>
+<div class="item"><img src="https://picsum.photos/id/1162/100/100">63.一起挑选居家温柔摆件</div>
+<div class="item"><img src="https://picsum.photos/id/1164/100/100">64.失意时紧紧拥抱安慰对方</div>
+<div class="item"><img src="https://picsum.photos/id/1166/100/100">65.一起奔赴草原感受自由</div>
+<div class="item"><img src="https://picsum.photos/id/1168/100/100">66.清晨一起慢跑迎接朝阳</div>
+<div class="item"><img src="https://picsum.photos/id/1170/100/100">67.一起收藏好看浪漫壁纸</div>
+<div class="item"><img src="https://picsum.photos/id/1172/100/100">68.偶尔放下琐事专心陪伴</div>
+<div class="item"><img src="https://picsum.photos/id/1174/100/100">69.一起体验安静露营生活</div>
+<div class="item"><img src="https://picsum.photos/id/1176/100/100">70.互相夸奖赞美彼此优点</div>
+<div class="item"><img src="https://picsum.photos/id/1178/100/100">71.一起打卡治愈系咖啡馆</div>
+<div class="item"><img src="https://picsum.photos/id/1180/100/100">72.深夜一起吃暖心夜宵</div>
+<div class="item"><img src="https://picsum.photos/id/1182/100/100">73.一起制定存钱小小计划</div>
+<div class="item"><img src="https://picsum.photos/id/1184/100/100">74.牵手走过四季岁岁年年</div>
+<div class="item"><img src="https://picsum.photos/id/1186/100/100">75.一起感受人间烟火日常</div>
+<div class="item"><img src="https://picsum.photos/id/1188/100/100">76.在生日准备走心小礼物</div>
+<div class="item"><img src="https://picsum.photos/id/1190/100/100">77.一起坐船游览江上风光</div>
+<div class="item"><img src="https://picsum.photos/id/1192/100/100">78.耐心倾听彼此内心想法</div>
+<div class="item"><img src="https://picsum.photos/id/1194/100/100">79.一起种植绿植细心养护</div>
+<div class="item"><img src="https://picsum.photos/id/1196/100/100">80.奔赴远方看一场大雪</div>
+<div class="item"><img src="https://picsum.photos/id/1198/100/100">81.一起重温初识美好时光</div>
+<div class="item"><img src="https://picsum.photos/id/1200/100/100">82.互相改掉自身小缺点</div>
+<div class="item"><img src="https://picsum.photos/id/1202/100/100">83.一起体验慵懒慢节奏生活</div>
+<div class="item"><img src="https://picsum.photos/id/1204/100/100">84.并肩奔赴每一场人间美好</div>
+<div class="item"><img src="https://picsum.photos/id/1206/100/100">85.一起看治愈暖心纪录片</div>
+<div class="item"><img src="https://picsum.photos/id/1208/100/100">86.在街头随性随性走走停停</div>
+<div class="item"><img src="https://picsum.photos/id/1210/100/100">87.一起守护彼此纯粹真心</div>
+<div class="item"><img src="https://picsum.photos/id/1212/100/100">88.携手奔赴所有温柔远方</div>
+<div class="item"><img src="https://picsum.photos/id/1214/100/100">89.一起慢慢变成更好的人</div>
+<div class="item"><img src="https://picsum.photos/id/1216/100/100">90.平淡日子依旧满怀热爱</div>
+<div class="item"><img src="https://picsum.photos/id/1218/100/100">91.一起奔赴山野看云海</div>
+<div class="item"><img src="https://picsum.photos/id/1220/100/100">92.余生三餐四季朝夕相伴</div>
+<div class="item"><img src="https://picsum.photos/id/1222/100/100">93.守住初心始终偏爱对方</div>
+<div class="item"><img src="https://picsum.photos/id/1224/100/100">94.一起奔赴人间所有温柔</div>
+<div class="item"><img src="https://picsum.photos/id/1226/100
