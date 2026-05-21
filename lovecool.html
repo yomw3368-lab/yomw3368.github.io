@@ -54,6 +54,7 @@
         .player{
             width:40px;height:60px;background:#fff;position:absolute;
             bottom:30px;left:50%;transform:translateX(-50%);
+            transition:bottom 0.2s ease;
         }
         .block{
             width:40px;height:60px;background:#666;position:absolute;bottom:30px;
@@ -123,6 +124,7 @@ let finalScore=document.getElementById("finalScore");
 let blockArr=[];
 let roadPos=[60,140,220];
 let nowRoad=1;
+let isJump=false;
 
 // 读取排行榜
 function getRank(){
@@ -151,14 +153,26 @@ function renderRank(){
     document.getElementById("rankList").innerHTML=html;
 }
 
+// 跳跃动作
+function jump(){
+    if(isJump||!isPlay)return;
+    isJump=true;
+    player.style.bottom="120px";
+    setTimeout(()=>{
+        player.style.bottom="30px";
+        setTimeout(()=>isJump=false,200);
+    },300);
+}
+
 function startGame(){
-    score=0;speed=6;nowRoad=1;isPlay=true;
+    score=0;speed=6;nowRoad=1;isPlay=true;isJump=false;
     scoreDom.innerText=0;
     gameOver.style.display="none";
     blockArr.forEach(b=>b.remove());
     blockArr=[];
     clearInterval(gameRun);
     player.style.left=roadPos[nowRoad]+"px";
+    player.style.bottom="30px";
     gameRun=setInterval(gameUpdate,25);
 }
 
@@ -180,9 +194,10 @@ function gameUpdate(){
     blockArr.forEach((b,idx)=>{
         let t=parseInt(b.style.top)||-60;
         b.style.top=(t+speed)+"px";
-        // 碰撞检测
+        // 碰撞检测（跳跃时不碰撞）
+        let pBottom = parseInt(player.style.bottom);
         let pTop=500-90;
-        if(t+60>pTop&&t<500-30){
+        if(t+60>pTop&&t<500-30 && pBottom <=40){
             if(b.style.left===player.style.left){
                 gameEnd();
             }
@@ -204,19 +219,31 @@ document.addEventListener("keydown",e=>{
     if(!isPlay)return;
     if(e.key==="ArrowLeft"&&nowRoad>0)nowRoad--;
     if(e.key==="ArrowRight"&&nowRoad<2)nowRoad++;
+    if(e.key==="ArrowUp")jump();
     player.style.left=roadPos[nowRoad]+"px";
 })
 
 // 触屏滑动
-let startX=0;
-gameBox.addEventListener("touchstart",e=>startX=e.touches[0].clientX);
+let startX=0,startY=0;
+gameBox.addEventListener("touchstart",e=>{
+    startX=e.touches[0].clientX;
+    startY=e.touches[0].clientY;
+});
 gameBox.addEventListener("touchend",e=>{
     if(!isPlay)return;
     let endX=e.changedTouches[0].clientX;
-    let d=endX-startX;
-    if(d<-30&&nowRoad>0)nowRoad--;
-    if(d>30&&nowRoad<2)nowRoad++;
-    player.style.left=roadPos[nowRoad]+"px";
+    let endY=e.changedTouches[0].clientY;
+    let dx=endX-startX;
+    let dy=endY-startY;
+    // 左右滑换道
+    if(Math.abs(dx)>Math.abs(dy)){
+        if(dx<-30&&nowRoad>0)nowRoad--;
+        if(dx>30&&nowRoad<2)nowRoad++;
+        player.style.left=roadPos[nowRoad]+"px";
+    }else{
+        // 上滑跳跃
+        if(dy<-30)jump();
+    }
 })
 
 window.onload=function(){
