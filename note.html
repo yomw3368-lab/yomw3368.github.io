@@ -11,16 +11,18 @@
             --deep: #1c1710;
             --soft-gold: #e6d2a8;
             --trans: rgba(212,175,55,0.15);
+            --bg-color: linear-gradient(160deg,#1c1710,#2b2216,#352a1c);
         }
-        body.morning{background:linear-gradient(160deg,#282014,#33291b,#3e3222);}
-        body.noon{background:linear-gradient(160deg,#2f2518,#3c3020,#493b28);}
-        body.night{background:linear-gradient(160deg,#1c1710,#2b2216,#352a1c);}
-        body.deepnight{background:linear-gradient(160deg,#140f08,#1e170e,#281f13);}
+        body.morning{background:var(--bg-color);}
+        body.noon{background:var(--bg-color);}
+        body.night{background:var(--bg-color);}
+        body.deepnight{background:var(--bg-color);}
         body{
             min-height: 100vh;
-            font-family: "宋体",serif;
+            font-family:"STSong", "SimSun", "serif"; /* 瘦金体 */
             color: var(--soft-gold);
             overflow-x: hidden;
+            cursor: pointer;
         }
         .bg-dot{
             position: fixed;
@@ -213,9 +215,15 @@
             color:#948265;
             padding:30px 0;
         }
+        .random-pattern {
+            position: fixed;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.7;
+        }
     </style>
 </head>
-<body id="noteBody">
+<body id="noteBody" onclick="changeThemeAndPattern()">
 <div class="bg-dot"></div>
 
 <div class="main-nav">
@@ -321,6 +329,71 @@ function renderAllNote(){
     });
     document.getElementById("noteListBox").innerHTML = html;
 }
+
+// 随机配色和图案生成函数
+function changeThemeAndPattern() {
+    // 清除旧图案
+    document.querySelectorAll('.random-pattern').forEach(el => el.remove());
+    
+    // 生成随机颜色
+    const randomHue = Math.floor(Math.random() * 360);
+    const mainColor = `hsl(${randomHue}, 70%, 50%)`;
+    const lightColor = `hsl(${randomHue}, 80%, 80%)`;
+    const textColor = `hsl(${randomHue}, 20%, 85%)`;
+    const bgColor1 = `hsl(${randomHue}, 30%, 15%)`;
+    const bgColor2 = `hsl(${randomHue}, 30%, 20%)`;
+    const bgColor3 = `hsl(${randomHue}, 30%, 25%)`;
+
+    // 更新CSS变量
+    const root = document.documentElement;
+    root.style.setProperty('--gold', mainColor);
+    root.style.setProperty('--soft-gold', lightColor);
+    root.style.setProperty('--bg-color', `linear-gradient(160deg, ${bgColor1}, ${bgColor2}, ${bgColor3})`);
+
+    // 生成随机图案
+    const patterns = ['star', 'heart', 'circle', 'square'];
+    const patternCount = Math.floor(Math.random() * 10) + 5; // 5-15个图案
+
+    for (let i = 0; i < patternCount; i++) {
+        const pattern = document.createElement('div');
+        pattern.classList.add('random-pattern');
+        
+        const patternType = patterns[Math.floor(Math.random() * patterns.length)];
+        switch(patternType) {
+            case 'star':
+                pattern.innerHTML = '★';
+                break;
+            case 'heart':
+                pattern.innerHTML = '❤';
+                break;
+            case 'circle':
+                pattern.innerHTML = '●';
+                break;
+            case 'square':
+                pattern.innerHTML = '■';
+                break;
+        }
+
+        pattern.style.left = Math.random() * 100 + '%';
+        pattern.style.top = Math.random() * 100 + '%';
+        pattern.style.fontSize = Math.random() * 30 + 10 + 'px';
+        pattern.style.color = lightColor;
+        pattern.style.animation = `float ${Math.random() * 3 + 2}s linear infinite`;
+
+        document.body.appendChild(pattern);
+    }
+}
+
+// 添加浮动动画
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes float {
+        0% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(180deg); }
+        100% { transform: translateY(0) rotate(360deg); }
+    }
+`;
+document.head.appendChild(style);
 </script>
 </body>
 </html>
