@@ -285,11 +285,11 @@
 
         <div class="nav">
             <a href="index.html" class="active">相恋首页</a>
-            <a href="time.html">时光回忆</a>
+            <a href="time.html" id="timeLink" class="disabled-link">时光回忆</a>
             <a href="words.html">百件小事</a>
             <a href="note.html">私密心事</a>
             <a href="message.html">公开留言</a>
-            <a href="diary.html" id="diaryLink" class="disabled-link">恋爱日记</a>
+            <a href="diary.html">恋爱日记</a>
         </div>
 
         <div class="title-section">
@@ -329,7 +329,7 @@ const MASTER_KEY = "owner";
 const ADMIN_VALID_TIME = 15 * 60 * 1000;
 let adminUnlockTime = 0;
 
-const diaryLink = document.getElementById('diaryLink');
+const timeLink = document.getElementById('timeLink');
 
 function generateVerifyQuestion(){
     let a = Math.floor(Math.random()*10)+1;
@@ -360,18 +360,19 @@ function unlockAdmin(){
     if(input === MASTER_KEY){
         adminUnlockTime = nowTime;
         adminBtn.style.display = "block";
-        diaryLink.classList.remove('disabled-link');
+        // 暗号正确，解锁时光回忆
+        timeLink.classList.remove('disabled-link');
     }
     else if(adminUnlockTime > 0){
         if(nowTime - adminUnlockTime > ADMIN_VALID_TIME){
             adminBtn.style.display = "none";
-            diaryLink.classList.add('disabled-link');
+            timeLink.classList.add('disabled-link');
             adminUnlockTime = 0;
         }
     }
     else{
         adminBtn.style.display = "none";
-        diaryLink.classList.add('disabled-link');
+        timeLink.classList.add('disabled-link');
     }
 }
 
@@ -380,7 +381,7 @@ setInterval(function(){
         const now = Date.now();
         if(now - adminUnlockTime > ADMIN_VALID_TIME){
             document.getElementById("adminBtn").style.display = "none";
-            diaryLink.classList.add('disabled-link');
+            timeLink.classList.add('disabled-link');
             adminUnlockTime = 0;
         }
     }
