@@ -3,52 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>暖心情话 | 满心温柔</title>
+    <title>百件小事 · 与你共度</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box;}
         :root{--main:#e05275;--light:#ffd6e0;--text:#4a3b42;--glass:rgba(255,255,255,0.25);}
+        body.morning{background:linear-gradient(145deg,#fff8f0,#fff1e0,#ffe9d0);}
+        body.noon{background:linear-gradient(145deg,#fff3ee,#ffebe0,#ffe3d2);}
+        body.night{background:linear-gradient(145deg,#ffeef2,#ffe4ec,#ffdce6);}
+        body.deepnight{background:linear-gradient(145deg,#f8e8ec,#f0dce4,#e8d0d8);}
         body{
-            background:linear-gradient(145deg,#fff3ee,#fff5f0,#fff0e8);
             min-height:100vh;font-family:"思源宋体",serif;color:var(--text);
-            overflow-x:hidden;position:relative;
-            opacity:0;animation:nobleFade 1.5s cubic-bezier(0.22,1,0.36,1) forwards;
-            transition:all 0.6s ease;
+            overflow-x:hidden;opacity:0;animation:nobleFade 1.5s cubic-bezier(0.22,1,0.36,1) forwards;transition:all 0.6s ease;
         }
         @keyframes nobleFade{0%{opacity:0;transform:translateY(30px) scale(0.98);}100%{opacity:1;transform:translateY(0) scale(1);}}
         #partCanvas{position:fixed;inset:0;z-index:-2;pointer-events:none;}
-        .nav{text-align:center;padding:25px 0;}
-        .nav a{margin:0 12px;padding:8px 18px;border-radius:30px;text-decoration:none;color:var(--text);
-        background:var(--glass);backdrop-filter:blur(8px);transition:0.3s;}
+        .nav{display:flex;justify-content:center;gap:12px;padding:25px 10px;flex-wrap:wrap;}
+        .nav a{flex:0 1 auto;min-width:90px;text-align:center;padding:8px 16px;border-radius:30px;
+        text-decoration:none;color:var(--text);background:var(--glass);backdrop-filter:blur(8px);transition:0.3s;font-size:15px;}
         .nav a.active{background:var(--main);color:#fff;}
         h1{text-align:center;color:var(--main);letter-spacing:5px;margin:20px 0;}
-        .words-box{max-width:600px;margin:40px auto;padding:0 20px;}
-        .word-item{padding:22px;margin:18px 0;background:var(--glass);
-        backdrop-filter:blur(10px);border-radius:25px;border:1px solid rgba(255,255,255,0.4);
-        text-align:center;font-size:17px;color:var(--text);line-height:1.9;transition:0.3s;}
-        .word-item:hover{transform:translateY(-4px);}
-        .foot{text-align:center;margin:70px 0 30px;font-size:14px;color:#b495a2;}
+        .divider{width:80%;max-width:400px;height:1px;background:linear-gradient(90deg,transparent,var(--main),transparent);margin:15px auto 25px;}
+        .page-say{text-align:center;color:var(--main);margin:10px 0;font-size:16px;}
+        .box{max-width:650px;margin:40px auto;padding:0 20px;column-count:2;column-gap:20px;}
+        .item{padding:14px;margin:12px 0;background:var(--glass);backdrop-filter:blur(10px);
+        border-radius:20px;border:1px solid rgba(255,255,255,0.4);font-size:15px;line-height:1.7;transition:0.3s;break-inside:avoid;}
+        .item:hover{transform:translateY(-3px);}
+        .foot{text-align:center;margin:70px 0 40px;font-size:14px;color:#b495a2;}
+        @media(max-width:700px){.box{column-count:1;}}
     </style>
 </head>
-<body>
+<body id="thingBody">
 <canvas id="partCanvas"></canvas>
 <div class="nav">
     <a href="index.html">相恋首页</a>
     <a href="time.html">时光回忆</a>
-    <a href="words.html" class="active">暖心情话</a>
+    <a href="words.html" class="active">百件小事</a>
     <a href="note.html">私密心事</a>
+    <a href="message.html">公开留言</a>
 </div>
-<h1>万般情话 · 皆说与你</h1>
-<div class="words-box">
-    <div class="word-item">山野万里，你是我藏在晚风里的温柔欢喜</div>
-    <div class="word-item">世间所有温柔浪漫，我只想全部赠予你一人</div>
-    <div class="word-item">爱意岁岁年年，初心始终如一，偏爱只给你</div>
-    <div class="word-item">有幸此生相逢，不负遇见，不负朝夕相伴</div>
-    <div class="word-item">目光所至皆是你，心之所向唯有你</div>
-    <div class="word-item">不求万丈星光，只求余生朝夕有你相伴</div>
+<h1>想和你慢慢完成的一百件事</h1>
+<div class="divider"></div>
+<div class="page-say" id="thingGreet"></div>
+<div class="box">
+<div class="item">1.一起看一场凌晨日出</div>
+<div class="item">2.牵手漫步城市晚风街道</div>
+<div class="item">3.共用一副耳机听同一首歌</div>
+<div class="item">4.窝在沙发看一整部老电影</div>
+<div class="item">5.一起逛清晨热闹菜市场</div>
+<div class="item">6.为对方亲手做一顿晚餐</div>
+<div class="item">7.雨天共撑一把伞慢慢散步</div>
+<div class="item">8.去山顶俯瞰整座城市夜景</div>
+<div class="item">9.互相给对方拍氛围感照片</div>
+<div class="item">10.一起养一只温顺小宠物</div>
+<div class="item">11.穿同款简约情侣穿搭</div>
+<div class="item">12.一起去海边听海浪声音</div>
+<div class="item">13.写下彼此心愿收藏起来</div>
+<div class="item">14.深夜谈心诉说心底故事</div>
+<div class="item">15.一起打卡小众文艺小店</div>
+<div class="item">16.在雪地里并肩慢慢行走</div>
+<div class="item">17.一起泡温暖舒缓温泉</div>
+<div class="item">18.早起一起吃热腾腾早餐</div>
+<div class="item">19.短途自驾奔赴山野林间</div>
+<div class="item">20.互相温柔梳理发丝</div>
+<div class="item">21.一起静坐看漫天晚霞</div>
+<div class="item">22.品尝各地特色风味小吃</div>
+<div class="item">23.一起学习一项新技能</div>
+<div class="item">24.安静陪伴彼此发呆放空</div>
+<div class="item">25.跨年一起倒数迎接新年</div>
+<div class="item">26.一起去寺庙诚心祈福</div>
+<div class="item">27.整理属于二人专属相册</div>
+<div class="item">28.睡前互道温柔晚安情话</div>
+<div class="item">29.春日一同奔赴花海踏青</div>
+<div class="item">30.夏日夜晚一起乘凉赏月</div>
+<div class="item">31.秋日漫步林间捡拾落叶</div>
+<div class="item">32.冬日围炉煮茶闲话日常</div>
+<div class="item">33.一起坐最慢慢悠悠公交</div>
+<div class="item">34.并肩阅读同一本书籍</div>
+<div class="item">35.一起体验手作DIY好物</div>
+<div class="item">36.生病时细心贴身照顾彼此</div>
+<div class="item">37.一起奔赴远方小众旅行</div>
+<div class="item">38.记住彼此所有喜好偏爱</div>
+<div class="item">39.一起看星空辨认星辰</div>
+<div class="item">40.偶尔幼稚打闹嬉笑玩耍</div>
+<div class="item">41.一起参加轻松市集活动</div>
+<div class="item">42.为对方准备低调小惊喜</div>
+<div class="item">43.一起慢跑健身锻炼身体</div>
+<div class="item">44.安静听对方诉说烦恼</div>
+<div class="item">45.一起住进简约温馨民宿</div>
+<div class="item">46.亲手写下书信赠予彼此</div>
+<div class="item">47.一起参观文艺艺术展馆</div>
+<div class="item">48.在江边静坐吹晚风谈心</div>
+<div class="item">49.一起戒掉坏习惯慢慢变好</div>
+<div class="item">50.认真规划二人未来生活</div>
+<div class="item">51.一起品尝微醺低度小酒</div>
+<div class="item">52.结伴打卡城市地标建筑</div>
+<div class="item">53.一起收纳整理温馨小家</div>
+<div class="item">54.互相包容彼此小脾气</div>
+<div class="item">55.一起奔赴古镇慢生活</div>
+<div class="item">56.雨天宅家煮热气腾腾奶茶</div>
+<div class="item">57.一起记录四季日常碎片</div>
+<div class="item">58.在无人街道尽情放声大笑</div>
+<div class="item">59.一起学习简单浪漫花艺</div>
+<div class="item">60.记住彼此所有重要日子</div>
+<div class="item">61.一起看一场浪漫舞台剧</div>
+<div class="item">62.携手走过长长的天桥</div>
+<div class="item">63.一起挑选居家温柔摆件</div>
+<div class="item">64.失意时紧紧拥抱安慰对方</div>
+<div class="item">65.一起奔赴草原感受自由</div>
+<div class="item">66.清晨一起慢跑迎接朝阳</div>
+<div class="item">67.一起收藏好看浪漫壁纸</div>
+<div class="item">68.偶尔放下琐事专心陪伴</div>
+<div class="item">69.一起体验安静露营生活</div>
+<div class="item">70.互相夸奖赞美彼此优点</div>
+<div class="item">71.一起打卡治愈系咖啡馆</div>
+<div class="item">72.深夜一起吃暖心夜宵</div>
+<div class="item">73.一起制定存钱小小计划</div>
+<div class="item">74.牵手走过四季岁岁年年</div>
+<div class="item">75.一起感受人间烟火日常</div>
+<div class="item">76.在生日准备走心小礼物</div>
+<div class="item">77.一起坐船游览江上风光</div>
+<div class="item">78.耐心倾听彼此内心想法</div>
+<div class="item">79.一起种植绿植细心养护</div>
+<div class="item">80.奔赴远方看一场大雪</div>
+<div class="item">81.一起重温初识美好时光</div>
+<div class="item">82.互相改掉自身小缺点</div>
+<div class="item">83.一起体验慵懒慢节奏生活</div>
+<div class="item">84.并肩奔赴每一场人间美好</div>
+<div class="item">85.一起看治愈暖心纪录片</div>
+<div class="item">86.在街头随性随性走走停停</div>
+<div class="item">87.一起守护彼此纯粹真心</div>
+<div class="item">88.携手奔赴所有温柔远方</div>
+<div class="item">89.一起慢慢变成更好的人</div>
+<div class="item">90.平淡日子依旧满怀热爱</div>
+<div class="item">91.一起奔赴山野看云海</div>
+<div class="item">92.余生三餐四季朝夕相伴</div>
+<div class="item">93.守住初心始终偏爱对方</div>
+<div class="item">94.一起奔赴人间所有温柔</div>
+<div class="item">95.风雨来临永远并肩同行</div>
+<div class="item">96.岁岁年年深情从未消减</div>
+<div class="item">97.把普通日子过成浪漫</div>
+<div class="item">98.此生有幸相逢不负相遇</div>
+<div class="item">99.往后余生目光皆是彼此</div>
+<div class="item">100.相守白头共度漫漫余生</div>
 </div>
-<div class="foot">字字真心，句句深情</div>
+<div class="foot">慢慢相遇，慢慢相爱，慢慢走完这一生</div>
 <audio id="bgAudio" loop><source src="https://music.163.com/song/media/outer/url?id=1901371911.mp3">
 <script>
+const happyWords = "件件小事，皆是满心欢喜";
+function setThingTime(){
+    let h=new Date().getHours();
+    let b=document.getElementById("thingBody");
+    let t=document.getElementById("thingGreet");
+    if(h>=5&&h<9){b.className="morning";t.innerText="清晨元气满满，奔赴美好小事";}
+    else if(h>=9&&h<17){b.className="noon";t.innerText=happyWords;}
+    else if(h>=17&&h<23){b.className="night";t.innerText="夜色温柔，憧憬往后美好";}
+    else{b.className="deepnight";t.innerText="夜深啦，慢慢憧憬来日温柔";}
+}
+setThingTime();
 const audio=document.getElementById("bgAudio");audio.volume=0.25;
 document.addEventListener("click",()=>audio.play().catch(e=>{}),{once:true});
 const canvas=document.getElementById("partCanvas"),ctx=canvas.getContext("2d");
