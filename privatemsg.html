@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>隐秘留言 | 专属悄悄话</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        :root{
+            --main:#9b59b6;
+            --light:#d2b4de;
+            --text:#2c2c54;
+            --glass:rgba(255,255,255,0.2);
+            --bg-color:linear-gradient(145deg,#2f2440,#3d2e54,#4a3866);
+        }
+        body{
+            min-height:100vh;
+            font-family:"STSong",SimSun,serif;
+            color:var(--light);
+            overflow-x:hidden;
+            transition:all 0.6s ease;
+            cursor:pointer;
+            padding-bottom:50px;
+        }
+        .nav{display:flex;justify-content:center;gap:12px;padding:25px 10px;flex-wrap:wrap;}
+        .nav a{
+            min-width:90px;text-align:center;padding:8px 16px;border-radius:30px;
+            text-decoration:none;color:var(--light);background:var(--glass);
+            backdrop-filter:blur(8px);transition:0.3s;font-size:15px;
+        }
+        .nav a.active{background:var(--main);color:#fff;}
+        h1{text-align:center;color:var(--main);letter-spacing:5px;margin:20px 0;}
+        .divider{width:80%;max-width:400px;height:1px;background:linear-gradient(90deg,transparent,var(--main),transparent);margin:15px auto 20px;}
+        .tip-text{text-align:center;color:#b8a8d8;margin-bottom:25px;}
+        .write-box{
+            max-width:600px;margin:0 auto 30px;padding:20px;
+            background:rgba(155,89,182,0.15);border-radius:20px;border:1px solid rgba(155,89,182,0.3);
+        }
+        textarea{
+            width:100%;height:130px;background:rgba(0,0,0,0.25);border:none;
+            outline:none;border-radius:15px;padding:15px;color:var(--light);
+            font-size:15px;resize:none;
+        }
+        .send-btn{
+            margin-top:15px;padding:9px 28px;background:var(--main);
+            color:#fff;border:none;border-radius:30px;cursor:pointer;
+        }
+        .msg-list{max-width:600px;margin:0 auto;padding:0 15px;}
+        .msg-item{
+            padding:18px;margin:15px 0;background:rgba(155,89,182,0.1);
+            border-radius:16px;border-left:3px solid var(--main);
+        }
+        .msg-time{font-size:12px;color:#a088b8;margin-top:10px;}
+        .empty-tip{text-align:center;padding:40px;color:#8877a0;}
+        .random-pattern {
+            position: fixed;z-index:-1;pointer-events:none;opacity:0.6;
+        }
+    </style>
+</head>
+<body onclick="changeThemeAndPattern()">
+<div class="nav">
+    <a href="index.html">相恋首页</a>
+    <a href="time.html">时光回忆</a>
+    <a href="words.html">百件小事</a>
+    <a href="note.html">私密心事</a>
+    <a href="message.html">公开留言</a>
+    <a href="privatemsg.html" class="active">隐秘留言</a>
+</div>
+
+<h1>专属隐秘留言</h1>
+<div class="divider"></div>
+<div class="tip-text">只属于二人的悄悄话，悄悄诉说心意</div>
+
+<div class="write-box">
+    <textarea id="priMsgInput" placeholder="写下私密悄悄话，仅彼此可见..."></textarea>
+    <button class="send-btn" onclick="addPrivateMsg()">提交私密留言</button>
+</div>
+
+<div class="msg-list" id="privateMsgBox"></div>
+
+<audio id="bgAudio" loop>
+    <source src="https://music.163.com/song/media/outer/url?id=1901371911.mp3">
+
+
+<script>
+// 背景音乐
+const audio=document.getElementById("bgAudio");
+audio.volume=0.2;
+document.addEventListener("click",()=>audio.play().catch(e=>{}),{once:true});
+
+// 本地存储留言
+function getPriMsg(){
+    return JSON.parse(localStorage.getItem("privateLoveMsg"))||[];
+}
+function savePriMsg(arr){
+    localStorage.setItem("privateLoveMsg",JSON.stringify(arr));
+}
+
+// 添加留言
+function addPrivateMsg(){
+    let val=document.getElementById("priMsgInput").value.trim();
+    if(!val){alert("请输入悄悄话内容");return;}
+    let now=new Date();
+    let time=`${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()} ${now.getHours()}:${now.getMinutes()}`;
+    let list=getPriMsg();
+    list.unshift({content:val,time:time});
+    savePriMsg(list);
+    document.getElementById("priMsgInput").value="";
+    renderPriMsg();
+}
+
+// 渲染留言
+function renderPriMsg(){
+    let list=getPriMsg();
+    let html="";
+    if(list.length<=0){
+        html='<div class="empty-tip">暂无私密留言，快来写下第一句心意</div>';
+    }else{
+        list.forEach(item=>{
+            html+=`
+            <div class="msg-item">
+                <div>${item.content}</div>
+                <div class="msg-time">${item.time}</div>
+            </div>
+            `;
+        })
+    }
+    document.getElementById("privateMsgBox").innerHTML=html;
+}
+renderPriMsg();
+
+// 点击随机配色+随机图案
+function changeThemeAndPattern(){
+    document.querySelectorAll('.random-pattern').forEach(e=>e.remove());
+    let hue=Math.floor(Math.random()*360);
+    let root=document.documentElement;
+    root.style.setProperty('--main',`hsl(${hue},65%,55%)`);
+    root.style.setProperty('--light',`hsl(${hue},50%,80%)`);
+    root.style.setProperty('--text',`hsl(${hue},25%,30%)`);
+    root.style.setProperty('--bg-color',`linear-gradient(145deg,hsl(${hue},35%,18%),hsl(${hue},35%,24%),hsl(${hue},35%,30%))`);
+
+    let icon=['❤','★','●','■','✧'];
+    let num=Math.floor(Math.random()*8)+4;
+    for(let i=0;i<num;i++){
+        let d=document.createElement('div');
+        d.className='random-pattern';
+        d.innerText=icon[Math.floor(Math.random()*icon.length)];
+        d.style.left=Math.random()*100+'%';
+        d.style.top=Math.random()*100+'%';
+        d.style.fontSize=(Math.random()*22+8)+'px';
+        document.body.appendChild(d);
+    }
+}
+</script>
+</body>
+</html>
