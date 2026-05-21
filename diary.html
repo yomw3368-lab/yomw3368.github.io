@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>恋爱日记 · 专属心事</title>
+    <title>恋爱日记 | 相恋主页</title>
     <style>
         * {
             margin: 0;
@@ -16,141 +16,61 @@
             color: #d4af37;
             min-height: 100vh;
             padding: 20px 15px;
-            overflow-x: hidden;
             background-image: linear-gradient(to bottom, rgba(43, 34, 26, 0.95), rgba(43, 34, 26, 0.85));
         }
         .nav {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 12px;
             margin-bottom: 40px;
             flex-wrap: wrap;
         }
         .nav a {
             text-decoration: none;
             color: #d4af37;
-            padding: 12px 30px;
+            padding: 10px 22px;
             border-radius: 30px;
-            background: rgba(212, 175, 55, 0.15);
-            border: 1px solid rgba(212, 175, 55, 0.3);
+            background: rgba(212,175,55,0.15);
+            border: 1px solid rgba(212,175,55,0.3);
             transition: all 0.3s;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
         .nav a.active {
             background: #d4af37;
             color: #2b221a;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            box-shadow: 0 0 15px rgba(212,175,55,0.5);
         }
         .nav a:hover {
             transform: translateY(-2px);
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 10px rgba(212,175,55,0.3);
         }
-        .page-title {
-            text-align: center;
-            font-size: 2.2rem;
-            letter-spacing: 3px;
-            margin-bottom: 25px;
+        .box{
+            max-width:600px;
+            margin:0 auto;
         }
-        .line-div {
-            width: 80%;
-            height: 1px;
-            background: linear-gradient(to right, transparent, #d4af37, transparent);
-            margin: 0 auto 30px;
+        h2{
+            text-align:center;
+            font-size:2rem;
+            margin-bottom:30px;
         }
-        .lock-tips {
-            text-align: center;
-            padding: 80px 20px;
-            font-size: 1.2rem;
-            color: #f0d88c;
+        textarea{
+            width:100%;
+            height:220px;
+            background:rgba(0,0,0,0.2);
+            border:1px solid #d4af37;
+            border-radius:15px;
+            padding:15px;
+            color:#d4af37;
+            outline:none;
         }
-        .key-input-box {
-            text-align: center;
-            margin: 30px 0;
-        }
-        .secret-input {
-            padding: 10px 15px;
-            width: 260px;
-            border-radius: 25px;
-            border: 1px solid #d4af37;
-            background: rgba(0,0,0,0.2);
-            color: #d4af37;
-            outline: none;
-            font-size: 1rem;
-            text-align: center;
-        }
-        .unlock-btn {
-            margin-left: 10px;
-            padding: 10px 20px;
-            background: #d4af37;
-            color: #2b221a;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-        }
-        .main-content {
-            display: none;
-        }
-        .write-area {
-            max-width: 700px;
-            margin: 0 auto 40px;
-        }
-        .diary-textarea {
-            width: 100%;
-            height: 140px;
-            padding: 15px;
-            border-radius: 15px;
-            background: rgba(0,0,0,0.25);
-            border: 1px solid #d4af37;
-            color: #f0d88c;
-            font-size: 1rem;
-            outline: none;
-            resize: none;
-        }
-        .save-btn {
-            margin-top: 12px;
-            padding: 9px 25px;
-            background: #d4af37;
-            color: #2b221a;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-        }
-        .diary-list {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        .diary-item {
-            background: rgba(212, 175, 55, 0.12);
-            border: 1px solid rgba(212, 175, 55, 0.25);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .diary-time {
-            color: #f0d88c;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-        }
-        .diary-content {
-            line-height: 1.8;
-            font-size: 1rem;
-        }
-        .del-btn {
-            margin-top: 10px;
-            font-size: 0.85rem;
-            color: #ff9999;
-            cursor: pointer;
-        }
-        .no-del-tip {
-            margin-top: 10px;
-            font-size: 0.85rem;
-            color: #888;
-        }
-        .empty-tip {
-            text-align: center;
-            font-size: 1.1rem;
-            color: #f0d88c;
-            padding: 40px 0;
+        .save-btn{
+            margin:15px 0;
+            padding:10px 28px;
+            background:#d4af37;
+            color:#2b221a;
+            border:none;
+            border-radius:25px;
+            cursor:pointer;
         }
     </style>
 </head>
@@ -165,107 +85,22 @@
         <a href="diary.html" class="active">恋爱日记</a>
     </div>
 
-    <h2 class="page-title">恋爱日记 · 记录温柔日常</h2>
-    <div class="line-div"></div>
-
-    <!-- 未解锁页面 -->
-    <div class="lock-box" id="lockBox">
-        <div class="lock-tips">此页面为专属私密日记，需要主人暗号才可进入</div>
-        <div class="key-input-box">
-            <input type="text" class="secret-input" id="diaryPwd" placeholder="输入专属暗号">
-            <button class="unlock-btn" onclick="unlockDiary()">解锁进入</button>
-        </div>
-    </div>
-
-    <!-- 解锁后内容 -->
-    <div class="main-content" id="mainContent">
-        <div class="write-area">
-            <textarea class="diary-textarea" id="diaryInput" placeholder="写下今日恋爱心情与碎碎念..."></textarea>
-            <button class="save-btn" onclick="addDiary()">保存日记</button>
-        </div>
-
-        <div class="diary-list" id="diaryBox"></div>
+    <div class="box">
+        <h2>记录恋爱日常</h2>
+        <textarea id="diaryContent" placeholder="写下每一天的心动与美好"></textarea>
+        <button class="save-btn" onclick="saveDiary()">保存日记</button>
     </div>
 
 <script>
-// 专属暗号
-const OWNER_KEY = "owner";
-// 可删除时限：3小时 单位毫秒
-const DELETE_LIMIT_TIME = 3 * 60 * 60 * 1000;
-let diaryArr = JSON.parse(localStorage.getItem("lovePrivateDiary") || "[]");
-
-// 解锁页面
-function unlockDiary(){
-    let pwd = document.getElementById("diaryPwd").value.trim();
-    if(pwd === OWNER_KEY){
-        document.getElementById("lockBox").style.display = "none";
-        document.getElementById("mainContent").style.display = "block";
-        renderDiary();
-    }else{
-        alert("暗号错误，无法进入私密日记");
-    }
+const diaryKey = "love_diary_data";
+window.onload = function(){
+    let old = localStorage.getItem(diaryKey) || "";
+    document.getElementById("diaryContent").value = old;
 }
-
-// 新增日记
-function addDiary(){
-    let text = document.getElementById("diaryInput").value.trim();
-    if(!text){
-        alert("日记内容不能为空");
-        return;
-    }
-    let now = new Date();
-    let timeStr = now.toLocaleString();
-    let timeStamp = now.getTime();
-    diaryArr.unshift({
-        content: text,
-        timeText: timeStr,
-        timestamp: timeStamp
-    });
-    localStorage.setItem("lovePrivateDiary",JSON.stringify(diaryArr));
-    document.getElementById("diaryInput").value = "";
-    renderDiary();
-    alert("日记保存成功");
-}
-
-// 渲染日记 + 判断是否可删除
-function renderDiary(){
-    let html = "";
-    let nowTime = Date.now();
-    if(diaryArr.length === 0){
-        html = '<div class="empty-tip">暂无专属日记，快来记录美好瞬间</div>';
-    }else{
-        diaryArr.forEach((item,index)=>{
-            let diff = nowTime - item.timestamp;
-            // 超过3小时不能删
-            if(diff > DELETE_LIMIT_TIME){
-                html += `
-                <div class="diary-item">
-                    <div class="diary-time">${item.timeText}</div>
-                    <div class="diary-content">${item.content}</div>
-                    <div class="no-del-tip">已超3小时，禁止删除</div>
-                </div>
-                `;
-            }else{
-                html += `
-                <div class="diary-item">
-                    <div class="diary-time">${item.timeText}</div>
-                    <div class="diary-content">${item.content}</div>
-                    <div class="del-btn" onclick="delDiary(${index})">删除本条日记</div>
-                </div>
-                `;
-            }
-        })
-    }
-    document.getElementById("diaryBox").innerHTML = html;
-}
-
-// 删除日记
-function delDiary(idx){
-    if(confirm("确定删除这条日记吗？")){
-        diaryArr.splice(idx,1);
-        localStorage.setItem("lovePrivateDiary",JSON.stringify(diaryArr));
-        renderDiary();
-    }
+function saveDiary(){
+    let text = document.getElementById("diaryContent").value;
+    localStorage.setItem(diaryKey,text);
+    alert("日记保存成功啦");
 }
 </script>
 </body>
