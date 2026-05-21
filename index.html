@@ -117,19 +117,19 @@
             color: #d4af37;
             padding: 10px 22px;
             border-radius: 30px;
-            background: rgba(212, 175, 55, 0.15);
-            border: 1px solid rgba(212, 175, 55, 0.3);
+            background: rgba(212,175,55,0.15);
+            border: 1px solid rgba(212,175,55,0.3);
             transition: all 0.3s;
             font-size: 1rem;
         }
         .nav a.active {
             background: #d4af37;
             color: #2b221a;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            box-shadow: 0 0 15px rgba(212,175,55,0.5);
         }
         .nav a:hover {
             transform: translateY(-2px);
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 10px rgba(212,175,55,0.3);
         }
         .title-section {
             text-align: center;
@@ -158,7 +158,7 @@
         .love-quote {
             font-size: 1.3rem;
             line-height: 2;
-            color: #e0c880;
+            color: #e0c88c;
             animation: fadeInUp 1.4s ease;
         }
         @keyframes fadeInUp {
@@ -183,12 +183,12 @@
             font-size: 1.3rem;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 20px rgba(212,175,55,0.4);
             animation: breathe 3s ease-in-out infinite;
         }
         .count-btn:hover {
             transform: scale(1.03);
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.6);
+            box-shadow: 0 0 25px rgba(212,175,55,0.6);
         }
         @keyframes breathe {
             0%,100%{transform:scale(1);}
@@ -198,14 +198,14 @@
             font-size: 1.4rem;
             color: #d4af37;
             margin-bottom: 20px;
-            background: rgba(212, 175, 55, 0.15);
+            background: rgba(212,175,55,0.15);
             padding: 15px;
             border-radius: 20px;
             display: inline-block;
         }
         .progress-tip {
             font-size: 1.1rem;
-            color: #e0c880;
+            color: #e0c88c;
             margin-top: 10px;
         }
         .safe-bottom {height: 80px;}
@@ -239,8 +239,6 @@
             outline:none;
             width:120px;
         }
-
-        /* 彩蛋弹出层 */
         .easter-egg-popup {
             position: fixed;
             top: 50%;
@@ -278,7 +276,6 @@
     <div class="hidden-content" id="pageContent">
         <div class="decoration" id="decoration"></div>
 
-        <!-- 导航已删掉恋爱酷跑 -->
         <div class="nav">
             <a href="index.html" class="active">相恋首页</a>
             <a href="time.html">时光回忆</a>
@@ -306,7 +303,6 @@
             <p class="progress-tip" id="progressTip">已完成 <span id="completedCount">0</span>/100 件小事</p>
         </div>
 
-        <!-- 暗号框：已去掉主人，只剩“输入暗号” -->
         <div class="pwd-input-box">
             <input class="owner-input" id="ownerPwd" placeholder="输入暗号" onkeyup="unlockAdmin(); checkEasterEggPwd(this.value);">
         </div>
@@ -315,7 +311,6 @@
         <div class="safe-bottom"></div>
     </div>
 
-    <!-- 彩蛋弹窗 -->
     <div class="easter-egg-popup" id="eggPopup">
         <h3>🎉 你发现了隐秘彩蛋！</h3>
         <p id="eggText"></p>
@@ -339,7 +334,6 @@ function checkVerify(){
         document.getElementById("verifyOverlay").style.display = "none";
         document.getElementById("pageContent").style.display = "block";
         initPage();
-        saveVisitor();
     }else{
         alert("答案错误，请重新输入");
         document.getElementById("verifyInput").value = "";
@@ -350,20 +344,6 @@ function checkVerify(){
 function unlockAdmin(){
     let input = document.getElementById("ownerPwd").value.trim();
     document.getElementById("adminBtn").style.display = input === MASTER_KEY ? "block" : "none";
-}
-
-async function saveVisitor(){
-    let ip = "";
-    try{
-        let res = await fetch("https://api64.ipify.org?format=json");
-        let d = await res.json();
-        ip = d.ip;
-    }catch(e){ip="未知IP"}
-    const stayTime = Math.floor((Date.now()-enterTime)/1000);
-    const info = {time:new Date().toLocaleString(),ip:ip,device:navigator.userAgent,page:location.pathname,staySecond:stayTime};
-    let all = JSON.parse(localStorage.getItem("cloudVisitorData")||"[]");
-    all.push(info);
-    localStorage.setItem("cloudVisitorData",JSON.stringify(all));
 }
 
 const LOVE_START_DATE = new Date("2025-09-14");
@@ -421,61 +401,39 @@ function initPage(){
 
 window.onload = function(){
     generateVerifyQuestion();
-    initEasterEggs(); // 初始化彩蛋
+    initEasterEggs();
 };
 
-// -------------------------- 彩蛋部分 --------------------------
+// 彩蛋
 let konamiCode = [];
 const konami = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","KeyB","KeyA"];
 
 function initEasterEggs(){
-    // 1. Konami代码彩蛋
     document.addEventListener("keydown", e => {
         konamiCode.push(e.code);
         konamiCode = konamiCode.slice(-10);
         if(konamiCode.join(",") === konami.join(",")){
-            showEasterEgg("🎮 经典Konami秘钥触发！<br>你是懂彩蛋的人～");
+            showEasterEgg("🎮 经典秘钥触发！");
             document.body.style.filter = "hue-rotate(180deg)";
             setTimeout(()=>document.body.style.filter="none",2000);
         }
     });
 
-    // 2. 双击标题彩蛋
     const title = document.querySelector(".main-title");
     title.addEventListener("dblclick", () => {
-        showEasterEgg("💖 双击触发隐秘告白：<br>岁岁年年，唯你一人。");
-        document.getElementById("loveQuote").innerHTML = "❤ 隐秘彩蛋已激活 ❤<br>你找到了藏在岁月里的温柔";
+        showEasterEgg("💖 岁岁年年，唯你一人。");
     });
-
-    // 3. 控制台彩蛋（开发者工具）
-    console.log("%c✨ 隐秘彩蛋已就位 ✨","color:#d4af37;font-size:18px;font-weight:bold;");
-    console.log("%c输入专属暗号可解锁隐藏内容","color:#f0d88c;font-size:12px;");
-
-    // 4. 随机飘爱心彩蛋（每30秒）
-    setInterval(()=>{
-        for(let i=0;i<5;i++){
-            let h = document.createElement("div");
-            h.className = "heart";
-            h.style.left = Math.random()*100+"%";
-            h.style.top = Math.random()*50+"%";
-            h.style.opacity = "0.8";
-            document.getElementById("decoration").appendChild(h);
-            setTimeout(()=>h.remove(),3000);
-        }
-    },30000);
 }
 
-// 5. 暗号彩蛋（输入特定文字触发）
 function checkEasterEggPwd(val){
     if(val === "secret"){
-        showEasterEgg("🔐 隐秘暗号正确！<br>你解锁了专属秘密空间～");
+        showEasterEgg("🔐 隐秘暗号正确！");
     }
     if(val === "love"){
-        showEasterEgg("❤️ 爱意暗号触发成功！<br>爱意藏于细节，温柔留给你。");
+        showEasterEgg("❤️ 爱意满满，只属于你。");
     }
 }
 
-// 彩蛋弹出
 function showEasterEgg(text){
     const popup = document.getElementById("eggPopup");
     document.getElementById("eggText").innerHTML = text;
