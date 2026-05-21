@@ -51,23 +51,81 @@
         h2{
             text-align:center;
             font-size:2rem;
-            margin-bottom:30px;
+            margin-bottom:15px;
+        }
+        .progress-box{
+            text-align:center;
+            margin-bottom:25px;
+            padding:12px;
+            border-radius:15px;
+            background:rgba(212,175,55,0.1);
+        }
+        .progress-text{
+            font-size:1.1rem;
+            color:#f0d88c;
+        }
+        .progress-bar{
+            width:90%;
+            height:12px;
+            background:rgba(255,255,255,0.1);
+            border-radius:6px;
+            margin:10px auto;
+            overflow:hidden;
+        }
+        .progress-fill{
+            height:100%;
+            background:#d4af37;
+            border-radius:6px;
+            transition:width 0.4s ease;
+        }
+        .progress-desc{
+            margin-top:8px;
+            font-size:0.9rem;
+            color:#e0c880
+        }
+        .category-title{
+            font-size:1.2rem;
+            margin:20px 0 10px;
+            padding-left:8px;
+            border-left:3px solid #d4af37;
         }
         .list-box{
             border:1px solid #d4af37;
             border-radius:20px;
             padding:20px;
             background:rgba(212,175,55,0.1);
+            margin-bottom:15px;
         }
         .item{
             display:flex;
+            align-items:center;
             justify-content:space-between;
-            padding:10px 0;
+            padding:9px 0;
             border-bottom:1px solid rgba(212,175,55,0.2);
-            font-size:1rem;
+            font-size:0.95rem;
+            cursor:pointer;
         }
-        .finish{
+        .item:last-child{
+            border-bottom:none;
+        }
+        .item-text.done{
+            text-decoration:line-through;
             color:#88cc88;
+            opacity:0.8;
+        }
+        .check-icon{
+            width:22px;
+            height:22px;
+            border:1px solid #d4af37;
+            border-radius:4px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            flex-shrink:0;
+        }
+        .check-icon.checked{
+            background:#d4af37;
+            color:#2b221a;
         }
     </style>
 </head>
@@ -83,33 +141,166 @@
     </div>
 
     <div class="wrap">
-        <h2>一起完成的小事</h2>
-        <div class="list-box" id="todoList">
+        <h2>情侣百件小事清单</h2>
+        <!-- 进度统计模块 -->
+        <div class="progress-box">
+            <div class="progress-text">整体完成进度：<span id="percent">0</span>%</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar" style="width:0%"></div>
+            </div>
+            <div class="progress-desc">
+                已完成 <span id="finishNum">0</span> / 总计 <span id="totalNum">0</span> 件
+            </div>
         </div>
+
+        <!-- 日常陪伴 -->
+        <h3 class="category-title">日常陪伴</h3>
+        <div class="list-box" id="dailyList"></div>
+
+        <!-- 出行游玩 -->
+        <h3 class="category-title">出行游玩</h3>
+        <div class="list-box" id="travelList"></div>
+
+        <!-- 浪漫心动 -->
+        <h3 class="category-title">浪漫心动</h3>
+        <div class="list-box" id="romanticList"></div>
+
+        <!-- 美食烟火 -->
+        <h3 class="category-title">美食烟火</h3>
+        <div class="list-box" id="foodList"></div>
+
+        <!-- 趣味互动 -->
+        <h3 class="category-title">趣味互动</h3>
+        <div class="list-box" id="funList"></div>
     </div>
 
 <script>
-const todoArr = [
-    "一起看一次日出","牵手漫步街头","共享一顿晚餐","并肩看一场电影",
-    "互相写下告白话语","短途结伴出行","合照留存美好瞬间"
-];
+// 总计100条情侣小事，5大分类
+const taskData = {
+    daily: [
+        "一起早起吃一顿早餐","睡前互相温柔道晚安","牵手漫步夜晚街道",
+        "一起收拾整理房间","闲暇时互相按摩放松","日常分享喜怒哀乐",
+        "下雨天共撑一把伞同行","依偎在一起放空发呆","记住彼此生活小习惯",
+        "生病时贴心照顾对方","一起熬夜畅谈心事","早起互道早安问候",
+        "日常出门主动牵住双手","疲惫时给对方暖心鼓励","安静陪伴互不打扰时光",
+        "一起规划往后小日子","记住彼此偏爱与忌口","在家相拥慵懒追剧",
+        "天冷贴心提醒添衣物","闲暇并肩晒太阳吹风"
+    ],
+    travel: [
+        "一同奔赴海边看日出","携手观赏唯美日落景色",
+        "短途自驾周边小城旅行","漫步海边沙滩踏浪玩耍",
+        "打卡城市网红特色景点","结伴攀爬山峰俯瞰全景",
+        "夜晚并肩仰望满天星空","乘坐游船欣赏两岸风光",
+        "逛古风街巷感受古韵气息","徒步林间小路呼吸新鲜空气",
+        "坐摩天轮俯瞰城市夜景","体验一次缆车高空观光",
+        "去往陌生城市探索游玩","乡间小路悠闲散步散心",
+        "雨天出行共赏雨中街景","逛动物园一起投喂小动物",
+        "参观博物馆了解人文历史","花海之中牵手拍照留念",
+        "夜市街头边走边逛玩乐","露营感受野外自然晚风"
+    ],
+    romantic: [
+        "亲手书写情书赠予对方","纪念日准备惊喜小礼物",
+        "拍摄多张双人甜蜜合照","挑选饰品当作定情信物",
+        "烛光之下共进浪漫晚餐","为对方哼唱专属小情歌",
+        "深情拥抱诉说心底爱意","悄悄制造意外浪漫瞬间",
+        "对着星空许下相守诺言","一起挑选情侣同款配饰",
+        "手写心愿卡片留存心意","节日精心布置温馨小场景",
+        "偷偷准备对方心仪好物","晚风之中深情告白心意",
+        "相拥拍摄氛围感短视频","定制专属二人情侣头像",
+        "封存美好回忆纪念物件","跨年时刻一起倒数钟声",
+        "生日用心筹备暖心祝福","记录相处点滴美好瞬间"
+    ],
+    food: [
+        "携手逛菜市场挑选食材","在家合作烹饪一顿饭菜",
+        "品尝街边特色风味小吃","打卡网红热门特色餐厅",
+        "一起制作香甜手工甜品","共享一杯口味相合饮品",
+        "火锅围坐一起涮煮美食","烧烤摊并肩撸串闲谈",
+        "早餐搭配营养美味餐食","下午茶共享点心与茶水",
+        "异国风味餐厅体验美食","家乡特色小吃一起品尝",
+        "分工合作包饺子馄饨","冰镇饮品夏日一起解暑",
+        "深夜夜宵相伴解馋小食","水果拼盘一起分享品尝",
+        "自制奶茶饮品互相品鉴","节日聚餐享用丰盛饭菜",
+        "喝粥闲谈舒缓惬意时光","零食堆满一起追剧享用"
+    ],
+    fun: [
+        "闲暇组队玩趣味小游戏","互相给对方画可爱肖像",
+        "一起学习简单手工制作","合唱喜爱的经典流行歌曲",
+        "模仿搞笑动作逗乐彼此","互换穿搭趣味拍照玩耍",
+        "制定二人专属存钱计划","一起健身运动锻炼身体",
+        "拼图协作完成完整图案","猜谜语脑筋急转弯互动",
+        "翻看老照片回忆旧时光","学习同款简单生活技能",
+        "下棋打牌休闲娱乐消遣","给彼此起专属可爱昵称",
+        "模拟日常趣事角色扮演","一起养花照料绿植盆栽",
+        "阅读书籍互相交流感悟","学习简单舞蹈共同练习",
+        "收集车票门票纪念票据","写下愿望清单逐一去实现"
+    ]
+};
+
 const key = "love_things_completed";
 let doneList = JSON.parse(localStorage.getItem(key) || []);
 
-function renderList(){
+// 计算每个分类起始下标
+let startIndexDaily = 0;
+let startIndexTravel = taskData.daily.length;
+let startIndexRomantic = startIndexTravel + taskData.travel.length;
+let startIndexFood = startIndexRomantic + taskData.romantic.length;
+let startIndexFun = startIndexFood + taskData.food.length;
+
+// 渲染全部列表
+function renderAllList(){
+    renderSingleList("dailyList", taskData.daily, startIndexDaily);
+    renderSingleList("travelList", taskData.travel, startIndexTravel);
+    renderSingleList("romanticList", taskData.romantic, startIndexRomantic);
+    renderSingleList("foodList", taskData.food, startIndexFood);
+    renderSingleList("funList", taskData.fun, startIndexFun);
+    updateProgress();
+}
+
+// 渲染单个分类
+function renderSingleList(boxId, taskArr, startIdx){
+    const box = document.getElementById(boxId);
     let html = "";
-    todoArr.forEach((item,idx)=>{
-        let isDone = doneList.includes(idx);
+    taskArr.forEach((item, idx)=>{
+        const realIdx = startIdx + idx;
+        const isDone = doneList.includes(realIdx);
         html += `
-        <div class="item">
-            <span>${idx+1}.${item}</span>
-            <span class="${isDone?'finish':''}">${isDone?'已完成':'待完成'}</span>
+        <div class="item" onclick="toggleTask(${realIdx})">
+            <span class="item-text ${isDone?'done':''}">${realIdx+1}. ${item}</span>
+            <span class="check-icon ${isDone?'checked':''}">${isDone?'✓':''}</span>
         </div>
         `;
-    })
-    document.getElementById("todoList").innerHTML = html;
+    });
+    box.innerHTML = html;
 }
-window.onload = renderList;
+
+// 切换完成状态
+function toggleTask(index){
+    const pos = doneList.indexOf(index);
+    if(pos > -1){
+        doneList.splice(pos, 1);
+    }else{
+        doneList.push(index);
+    }
+    localStorage.setItem(key, JSON.stringify(doneList));
+    renderAllList();
+}
+
+// 更新进度数据
+function updateProgress(){
+    const total = taskData.daily.length + taskData.travel.length + taskData.romantic.length
+                + taskData.food.length + taskData.fun.length;
+    const finish = doneList.length;
+    let percent = 0;
+    if(total > 0){
+        percent = Math.round((finish / total) * 100);
+    }
+    document.getElementById("totalNum").innerText = total;
+    document.getElementById("finishNum").innerText = finish;
+    document.getElementById("percent").innerText = percent;
+    document.getElementById("progressBar").style.width = percent + "%";
+}
+
+window.onload = renderAllList;
 </script>
 </body>
 </html>
