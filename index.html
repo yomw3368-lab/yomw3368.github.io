@@ -204,31 +204,32 @@
     <div class="safe-bottom"></div>
 
 <script>
-// ========== 权限黑白名单配置 ==========
-const whiteListIP = ["你的常用IP","对象IP"];//填写允许进入的IP
-const blackListIP = [];//填写禁止访问IP
+// ========== 权限设置 白名单IP ==========
+const whiteListIP = ["60.24.248.62"];
+const blackListIP = [];
 let enterTime = Date.now();
 
-// 权限拦截
+// IP权限验证
 async function checkPower(){
     let ip = "";
     try{
-        let res = await fetch("https://api.ipify.org?format=json");
+        let res = await fetch("https://api64.ipify.org?format=json");
         let d = await res.json();
         ip = d.ip;
-    }catch(e){ip="未知"}
-    if(whiteListIP.length>0 && !whiteListIP.includes(ip)){
-        document.body.innerHTML="<div style='text-align:center;padding-top:100px;font-size:20px'>暂无访问权限</div>";
+    }catch(e){ip="未知IP"}
+
+    if(whiteListIP.length > 0 && !whiteListIP.includes(ip)){
+        document.body.innerHTML="<div style='text-align:center;padding-top:120px;font-size:22px;color:#d4af37;'>暂无访问权限</div>";
         return false;
     }
     if(blackListIP.includes(ip)){
-        document.body.innerHTML="<div style='text-align:center;padding-top:100px;font-size:20px'>已被禁止访问</div>";
+        document.body.innerHTML="<div style='text-align:center;padding-top:120px;font-size:22px;color:#d4af37;'>已禁止访问</div>";
         return false;
     }
     return ip;
 }
 
-// 云端存储访客数据
+// 保存访客数据+停留时长
 async function saveVisitor(ip){
     const stayTime = Math.floor((Date.now()-enterTime)/1000);
     const info = {
@@ -248,10 +249,11 @@ window.addEventListener("beforeunload",async()=>{
     if(ip) saveVisitor(ip);
 })
 
-// 恋爱天数核心
+// 相恋起始日期
 const LOVE_START_DATE = new Date("2025-09-14");
 const completedKey = "love_things_completed";
 
+// 漂浮星星爱心
 function createDecoration() {
     const container = document.getElementById("decoration");
     for (let i = 0; i < 30; i++) {
@@ -272,6 +274,7 @@ function createDecoration() {
     }
 }
 
+// 分时问候语
 function updateGreeting() {
     const hour = new Date().getHours();
     let greeting;
@@ -282,6 +285,7 @@ function updateGreeting() {
     document.getElementById("dynamicGreeting").textContent = greeting;
 }
 
+// 自动计算相恋天数
 function calculateLoveDays() {
     const today = new Date();
     const diffTime = Math.abs(today - LOVE_START_DATE);
@@ -290,12 +294,13 @@ function calculateLoveDays() {
     document.getElementById("daysText").textContent = diffDays;
 }
 
+// 同步百件小事完成进度
 function updateProgress() {
     const completedList = JSON.parse(localStorage.getItem(completedKey) || "[]");
     document.getElementById("completedCount").textContent = completedList.length;
 }
 
-// 初始化
+// 页面初始化
 (async function init(){
     await checkPower();
     createDecoration();
