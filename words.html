@@ -3,257 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>百件小事</title>
+    <title>百件小事 | 相恋主页</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            font-family: "PingFang SC", "Microsoft YaHei", serif;
         }
         body {
-            background: #f8f9fa;
-            color: #333;
+            background: #2b221a;
+            color: #d4af37;
             min-height: 100vh;
             padding: 20px 15px;
-            transition: background 0.3s, color 0.3s;
+            background-image: linear-gradient(to bottom, rgba(43, 34, 26, 0.95), rgba(43, 34, 26, 0.85));
         }
         .nav {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin-bottom: 30px;
+            gap: 12px;
+            margin-bottom: 40px;
             flex-wrap: wrap;
         }
         .nav a {
             text-decoration: none;
-            color: #666;
-            padding: 8px 16px;
-            border-radius: 20px;
+            color: #d4af37;
+            padding: 10px 22px;
+            border-radius: 30px;
+            background: rgba(212,175,55,0.15);
+            border: 1px solid rgba(212,175,55,0.3);
             transition: all 0.3s;
+            font-size: 1rem;
         }
         .nav a.active {
-            background: #7b68ee;
-            color: white;
+            background: #d4af37;
+            color: #2b221a;
+            box-shadow: 0 0 15px rgba(212,175,55,0.5);
         }
-        .theme-switch {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            border: 2px solid #7b68ee;
-            background: white;
-            cursor: pointer;
-            z-index: 99;
+        .nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 10px rgba(212,175,55,0.3);
         }
-        .title {
-            text-align: center;
-            margin-bottom: 20px;
+        .wrap{
+            max-width:600px;
+            margin:0 auto;
         }
-        .title h1 {
-            font-size: 2.2rem;
-            color: #7b68ee;
-            margin-bottom: 10px;
+        h2{
+            text-align:center;
+            font-size:2rem;
+            margin-bottom:30px;
         }
-        .title p {
-            color: #888;
-            font-size: 1.1rem;
+        .list-box{
+            border:1px solid #d4af37;
+            border-radius:20px;
+            padding:20px;
+            background:rgba(212,175,55,0.1);
         }
-        .progress-container {
-            max-width: 600px;
-            margin: 0 auto 30px;
-            padding: 0 10px;
+        .item{
+            display:flex;
+            justify-content:space-between;
+            padding:10px 0;
+            border-bottom:1px solid rgba(212,175,55,0.2);
+            font-size:1rem;
         }
-        .progress-bar {
-            width: 100%;
-            height: 10px;
-            background: #e0e0e0;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        .progress-fill {
-            height: 100%;
-            background: #7b68ee;
-            width: 0%;
-            transition: width 0.5s ease;
-        }
-        .progress-text {
-            text-align: center;
-            margin-top: 8px;
-            color: #7b68ee;
-            font-weight: 500;
-        }
-        .list-container {
-            max-width: 900px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 15px;
-            margin-bottom: 40px;
-        }
-        .item {
-            background: white;
-            padding: 18px 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(123, 104, 238, 0.2);
-        }
-        .item.completed {
-            background: #f0f8ff;
-            border-left: 4px solid #7b68ee;
-        }
-        .item .check-icon {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            border: 2px solid #ccc;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-        .item.completed .check-icon {
-            background: #7b68ee;
-            border-color: #7b68ee;
-            color: white;
-        }
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 999;
-            padding: 20px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        .modal-overlay.show {
-            display: flex;
-            opacity: 1;
-        }
-        .modal {
-            background: white;
-            border-radius: 16px;
-            max-width: 500px;
-            width: 100%;
-            max-height: 80vh;
-            overflow-y: auto;
-            padding: 30px;
-            position: relative;
-            transform: scale(0.9);
-            transition: transform 0.3s;
-        }
-        .modal-overlay.show .modal {
-            transform: scale(1);
-        }
-        .modal .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: #f0f0f0;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-title {
-            font-size: 1.3rem;
-            color: #7b68ee;
-            margin-bottom: 15px;
-            padding-right: 30px;
-        }
-        .modal-content {
-            line-height: 1.8;
-            color: #555;
-        }
-        .reset-btn {
-            display: block;
-            margin: 20px auto;
-            padding: 10px 25px;
-            border: 2px solid #7b68ee;
-            background: white;
-            color: #7b68ee;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .reset-btn:hover {
-            background: #7b68ee;
-            color: white;
-        }
-        .heart {
-            position: fixed;
-            pointer-events: none;
-            font-size: 20px;
-            color: #ff6b8b;
-            animation: float 6s linear infinite;
-            opacity: 0.7;
-        }
-        @keyframes float {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.7;
-            }
-            90% {
-                opacity: 0.7;
-            }
-            100% {
-                transform: translateY(-100vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
-        body.dark {
-            background: #1a1a2e;
-            color: #eee;
-        }
-        body.dark .nav a {
-            color: #aaa;
-        }
-        body.dark .title p {
-            color: #aaa;
-        }
-        body.dark .item {
-            background: #2a2a4e;
-            color: #eee;
-        }
-        body.dark .modal {
-            background: #2a2a4e;
-            color: #eee;
-        }
-        body.dark .modal-content {
-            color: #ccc;
-        }
-        body.dark .modal .close-btn {
-            background: #3a3a5e;
-            color: #eee;
+        .finish{
+            color:#88cc88;
         }
     </style>
 </head>
 <body>
-    <!-- 适配你文件命名的导航栏 -->
     <div class="nav">
         <a href="index.html">相恋首页</a>
         <a href="time.html">时光回忆</a>
@@ -261,572 +79,37 @@
         <a href="note.html">私密心事</a>
         <a href="message.html">公开留言</a>
         <a href="privatemsg.html">隐秘留言</a>
+        <a href="diary.html">恋爱日记</a>
     </div>
 
-    <div class="theme-switch" id="themeSwitch"></div>
-
-    <div class="title">
-        <h1>和你一起完成的一百件小事</h1>
-        <p>点击任意一件小事，查看专属浪漫文案</p>
-    </div>
-
-    <div class="progress-container">
-        <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
-        </div>
-        <div class="progress-text" id="progressText">已完成 0/100</div>
-    </div>
-
-    <div class="list-container" id="listContainer">
-        <div class="item" data-id="1" data-text="一起看一次日出">
-            <div class="check-icon">✓</div>
-            <span>1. 一起看一次日出</span>
-        </div>
-        <div class="item" data-id="2" data-text="牵手漫步傍晚街头">
-            <div class="check-icon">✓</div>
-            <span>2. 牵手漫步傍晚街头</span>
-        </div>
-        <div class="item" data-id="3" data-text="一起吃一碗热汤面">
-            <div class="check-icon">✓</div>
-            <span>3. 一起吃一碗热汤面</span>
-        </div>
-        <div class="item" data-id="4" data-text="并肩看漫天晚霞">
-            <div class="check-icon">✓</div>
-            <span>4. 并肩看漫天晚霞</span>
-        </div>
-        <div class="item" data-id="5" data-text="互相给对方拍照">
-            <div class="check-icon">✓</div>
-            <span>5. 互相给对方拍照</span>
-        </div>
-        <div class="item" data-id="6" data-text="深夜一起谈心聊天">
-            <div class="check-icon">✓</div>
-            <span>6. 深夜一起谈心聊天</span>
-        </div>
-        <div class="item" data-id="7" data-text="一起淋雨漫步街头">
-            <div class="check-icon">✓</div>
-            <span>7. 一起淋雨漫步街头</span>
-        </div>
-        <div class="item" data-id="8" data-text="窝在沙发同看电影">
-            <div class="check-icon">✓</div>
-            <span>8. 窝在沙发同看电影</span>
-        </div>
-        <div class="item" data-id="9" data-text="亲手为对方做顿饭">
-            <div class="check-icon">✓</div>
-            <span>9. 亲手为对方做顿饭</span>
-        </div>
-        <div class="item" data-id="10" data-text="一起逛热闹夜市">
-            <div class="check-icon">✓</div>
-            <span>10. 一起逛热闹夜市</span>
-        </div>
-        <div class="item" data-id="11" data-text="相拥吹晚风">
-            <div class="check-icon">✓</div>
-            <span>11. 相拥吹晚风</span>
-        </div>
-        <div class="item" data-id="12" data-text="一起去一次海边">
-            <div class="check-icon">✓</div>
-            <span>12. 一起去一次海边</span>
-        </div>
-        <div class="item" data-id="13" data-text="爬山登顶眺望远方">
-            <div class="check-icon">✓</div>
-            <span>13. 爬山登顶眺望远方</span>
-        </div>
-        <div class="item" data-id="14" data-text="交换彼此童年趣事">
-            <div class="check-icon">✓</div>
-            <span>14. 交换彼此童年趣事</span>
-        </div>
-        <div class="item" data-id="15" data-text="给对方写一封手写信">
-            <div class="check-icon">✓</div>
-            <span>15. 给对方写一封手写信</span>
-        </div>
-        <div class="item" data-id="16" data-text="一起去游乐园疯玩">
-            <div class="check-icon">✓</div>
-            <span>16. 一起去游乐园疯玩</span>
-        </div>
-        <div class="item" data-id="17" data-text="共用一副耳机听歌">
-            <div class="check-icon">✓</div>
-            <span>17. 共用一副耳机听歌</span>
-        </div>
-        <div class="item" data-id="18" data-text="一起去菜市场买菜">
-            <div class="check-icon">✓</div>
-            <span>18. 一起去菜市场买菜</span>
-        </div>
-        <div class="item" data-id="19" data-text="睡前互道晚安">
-            <div class="check-icon">✓</div>
-            <span>19. 睡前互道晚安</span>
-        </div>
-        <div class="item" data-id="20" data-text="早起一起吃早餐">
-            <div class="check-icon">✓</div>
-            <span>20. 早起一起吃早餐</span>
-        </div>
-        <div class="item" data-id="21" data-text="一起拼大型拼图">
-            <div class="check-icon">✓</div>
-            <span>21. 一起拼大型拼图</span>
-        </div>
-        <div class="item" data-id="22" data-text="互相吹头发整理发型">
-            <div class="check-icon">✓</div>
-            <span>22. 互相吹头发整理发型</span>
-        </div>
-        <div class="item" data-id="23" data-text="短途自驾去往远方">
-            <div class="check-icon">✓</div>
-            <span>23. 短途自驾去往远方</span>
-        </div>
-        <div class="item" data-id="24" data-text="一起养一盆小绿植">
-            <div class="check-icon">✓</div>
-            <span>24. 一起养一盆小绿植</span>
-        </div>
-        <div class="item" data-id="25" data-text="拍摄一组情侣大头贴">
-            <div class="check-icon">✓</div>
-            <span>25. 拍摄一组情侣大头贴</span>
-        </div>
-        <div class="item" data-id="26" data-text="一起看漫天繁星">
-            <div class="check-icon">✓</div>
-            <span>26. 一起看漫天繁星</span>
-        </div>
-        <div class="item" data-id="27" data-text="陪对方度过低谷情绪">
-            <div class="check-icon">✓</div>
-            <span>27. 陪对方度过低谷情绪</span>
-        </div>
-        <div class="item" data-id="28" data-text="一起打卡网红小店">
-            <div class="check-icon">✓</div>
-            <span>28. 一起打卡网红小店</span>
-        </div>
-        <div class="item" data-id="29" data-text="一起戒掉坏习惯">
-            <div class="check-icon">✓</div>
-            <span>29. 一起戒掉坏习惯</span>
-        </div>
-        <div class="item" data-id="30" data-text="在街头相拥合影">
-            <div class="check-icon">✓</div>
-            <span>30. 在街头相拥合影</span>
-        </div>
-        <div class="item" data-id="31" data-text="一起喝同一杯饮品">
-            <div class="check-icon">✓</div>
-            <span>31. 一起喝同一杯饮品</span>
-        </div>
-        <div class="item" data-id="32" data-text="一起规划未来小家">
-            <div class="check-icon">✓</div>
-            <span>32. 一起规划未来小家</span>
-        </div>
-        <div class="item" data-id="33" data-text="一起参加一场聚会">
-            <div class="check-icon">✓</div>
-            <span>33. 一起参加一场聚会</span>
-        </div>
-        <div class="item" data-id="34" data-text="安静陪伴彼此发呆">
-            <div class="check-icon">✓</div>
-            <span>34. 安静陪伴彼此发呆</span>
-        </div>
-        <div class="item" data-id="35" data-text="一起整理房间杂物">
-            <div class="check-icon">✓</div>
-            <span>35. 一起整理房间杂物</span>
-        </div>
-        <div class="item" data-id="36" data-text="记住对方所有喜好">
-            <div class="check-icon">✓</div>
-            <span>36. 记住对方所有喜好</span>
-        </div>
-        <div class="item" data-id="37" data-text="雨天同撑一把雨伞">
-            <div class="check-icon">✓</div>
-            <span>37. 雨天同撑一把雨伞</span>
-        </div>
-        <div class="item" data-id="38" data-text="一起读同一本书籍">
-            <div class="check-icon">✓</div>
-            <span>38. 一起读同一本书籍</span>
-        </div>
-        <div class="item" data-id="39" data-text="互相为对方挑选穿搭">
-            <div class="check-icon">✓</div>
-            <span>39. 互相为对方挑选穿搭</span>
-        </div>
-        <div class="item" data-id="40" data-text="一起许下美好心愿">
-            <div class="check-icon">✓</div>
-            <span>40. 一起许下美好心愿</span>
-        </div>
-        <div class="item" data-id="41" data-text="一起去逛动物园">
-            <div class="check-icon">✓</div>
-            <span>41. 一起去逛动物园</span>
-        </div>
-        <div class="item" data-id="42" data-text="熬夜一起闲聊趣事">
-            <div class="check-icon">✓</div>
-            <span>42. 熬夜一起闲聊趣事</span>
-        </div>
-        <div class="item" data-id="43" data-text="一起品尝各地小吃">
-            <div class="check-icon">✓</div>
-            <span>43. 一起品尝各地小吃</span>
-        </div>
-        <div class="item" data-id="44" data-text="包容对方所有小脾气">
-            <div class="check-icon">✓</div>
-            <span>44. 包容对方所有小脾气</span>
-        </div>
-        <div class="item" data-id="45" data-text="一起坐一次摩天轮">
-            <div class="check-icon">✓</div>
-            <span>45. 一起坐一次摩天轮</span>
-        </div>
-        <div class="item" data-id="46" data-text="记录彼此日常碎片">
-            <div class="check-icon">✓</div>
-            <span>46. 记录彼此日常碎片</span>
-        </div>
-        <div class="item" data-id="47" data-text="一起去看一场花海">
-            <div class="check-icon">✓</div>
-            <span>47. 一起去看一场花海</span>
-        </div>
-        <div class="item" data-id="48" data-text="生病细心照顾彼此">
-            <div class="check-icon">✓</div>
-            <span>48. 生病细心照顾彼此</span>
-        </div>
-        <div class="item" data-id="49" data-text="一起打卡城市地标">
-            <div class="check-icon">✓</div>
-            <span>49. 一起打卡城市地标</span>
-        </div>
-        <div class="item" data-id="50" data-text="坦诚诉说内心心事">
-            <div class="check-icon">✓</div>
-            <span>50. 坦诚诉说内心心事</span>
-        </div>
-        <div class="item" data-id="51" data-text="一起度过跨年夜晚">
-            <div class="check-icon">✓</div>
-            <span>51. 一起度过跨年夜晚</span>
-        </div>
-        <div class="item" data-id="52" data-text="互相学习对方特长">
-            <div class="check-icon">✓</div>
-            <span>52. 互相学习对方特长</span>
-        </div>
-        <div class="item" data-id="53" data-text="走一遍长长的天桥">
-            <div class="check-icon">✓</div>
-            <span>53. 走一遍长长的天桥</span>
-        </div>
-        <div class="item" data-id="54" data-text="一起喝深夜奶茶">
-            <div class="check-icon">✓</div>
-            <span>54. 一起喝深夜奶茶</span>
-        </div>
-        <div class="item" data-id="55" data-text="珍藏彼此送的礼物">
-            <div class="check-icon">✓</div>
-            <span>55. 珍藏彼此送的礼物</span>
-        </div>
-        <div class="item" data-id="56" data-text="一起晨跑锻炼身体">
-            <div class="check-icon">✓</div>
-            <span>56. 一起晨跑锻炼身体</span>
-        </div>
-        <div class="item" data-id="57" data-text="在雪地牵手漫步">
-            <div class="check-icon">✓</div>
-            <span>57. 在雪地牵手漫步</span>
-        </div>
-        <div class="item" data-id="58" data-text="一起玩幼稚小游戏">
-            <div class="check-icon">✓</div>
-            <span>58. 一起玩幼稚小游戏</span>
-        </div>
-        <div class="item" data-id="59" data-text="鼓励对方追逐梦想">
-            <div class="check-icon">✓</div>
-            <span>59. 鼓励对方追逐梦想</span>
-        </div>
-        <div class="item" data-id="60" data-text="一起坐公交车闲逛">
-            <div class="check-icon">✓</div>
-            <span>60. 一起坐公交车闲逛</span>
-        </div>
-        <div class="item" data-id="61" data-text="制作专属情侣相册">
-            <div class="check-icon">✓</div>
-            <span>61. 制作专属情侣相册</span>
-        </div>
-        <div class="item" data-id="62" data-text="一起品尝特色火锅">
-            <div class="check-icon">✓</div>
-            <span>62. 一起品尝特色火锅</span>
-        </div>
-        <div class="item" data-id="63" data-text="包容彼此所有缺点">
-            <div class="check-icon">✓</div>
-            <span>63. 包容彼此所有缺点</span>
-        </div>
-        <div class="item" data-id="64" data-text="一起去看文艺展览">
-            <div class="check-icon">✓</div>
-            <span>64. 一起去看文艺展览</span>
-        </div>
-        <div class="item" data-id="65" data-text="紧紧拥抱安抚情绪">
-            <div class="check-icon">✓</div>
-            <span>65. 紧紧拥抱安抚情绪</span>
-        </div>
-        <div class="item" data-id="66" data-text="一起规划旅行路线">
-            <div class="check-icon">✓</div>
-            <span>66. 一起规划旅行路线</span>
-        </div>
-        <div class="item" data-id="67" data-text="节日精心准备惊喜">
-            <div class="check-icon">✓</div>
-            <span>67. 节日精心准备惊喜</span>
-        </div>
-        <div class="item" data-id="68" data-text="一起静坐湖边吹风">
-            <div class="check-icon">✓</div>
-            <span>68. 一起静坐湖边吹风</span>
-        </div>
-        <div class="item" data-id="69" data-text="记住每一个纪念日">
-            <div class="check-icon">✓</div>
-            <span>69. 记住每一个纪念日</span>
-        </div>
-        <div class="item" data-id="70" data-text="一起尝试新鲜事物">
-            <div class="check-icon">✓</div>
-            <span>70. 一起尝试新鲜事物</span>
-        </div>
-        <div class="item" data-id="71" data-text="深夜结伴压马路">
-            <div class="check-icon">✓</div>
-            <span>71. 深夜结伴压马路</span>
-        </div>
-        <div class="item" data-id="72" data-text="互相夸赞彼此优点">
-            <div class="check-icon">✓</div>
-            <span>72. 互相夸赞彼此优点</span>
-        </div>
-        <div class="item" data-id="73" data-text="一起去古镇慢游玩">
-            <div class="check-icon">✓</div>
-            <span>73. 一起去古镇慢游玩</span>
-        </div>
-        <div class="item" data-id="74" data-text="一起戒掉熬夜陋习">
-            <div class="check-icon">✓</div>
-            <span>74. 一起戒掉熬夜陋习</span>
-        </div>
-        <div class="item" data-id="75" data-text="录制专属甜蜜视频">
-            <div class="check-icon">✓</div>
-            <span>75. 录制专属甜蜜视频</span>
-        </div>
-        <div class="item" data-id="76" data-text="一起等待街边花灯">
-            <div class="check-icon">✓</div>
-            <span>76. 一起等待街边花灯</span>
-        </div>
-        <div class="item" data-id="77" data-text="坦然面对彼此过往">
-            <div class="check-icon">✓</div>
-            <span>77. 坦然面对彼此过往</span>
-        </div>
-        <div class="item" data-id="78" data-text="一起吃热气烧烤">
-            <div class="check-icon">✓</div>
-            <span>78. 一起吃热气烧烤</span>
-        </div>
-        <div class="item" data-id="79" data-text="携手面对所有困难">
-            <div class="check-icon">✓</div>
-            <span>79. 携手面对所有困难</span>
-        </div>
-        <div class="item" data-id="80" data-text="一起体验田园生活">
-            <div class="check-icon">✓</div>
-            <span>80. 一起体验田园生活</span>
-        </div>
-        <div class="item" data-id="81" data-text="在人群里紧紧牵手">
-            <div class="check-icon">✓</div>
-            <span>81. 在人群里紧紧牵手</span>
-        </div>
-        <div class="item" data-id="82" data-text="一起研究美食菜谱">
-            <div class="check-icon">✓</div>
-            <span>82. 一起研究美食菜谱</span>
-        </div>
-        <div class="item" data-id="83" data-text="安静倾听对方诉说">
-            <div class="check-icon">✓</div>
-            <span>83. 安静倾听对方诉说</span>
-        </div>
-        <div class="item" data-id="84" data-text="一起奔赴一场花海">
-            <div class="check-icon">✓</div>
-            <span>84. 一起奔赴一场花海</span>
-        </div>
-        <div class="item" data-id="85" data-text="互相打理日常琐事">
-            <div class="check-icon">✓</div>
-            <span>85. 互相打理日常琐事</span>
-        </div>
-        <div class="item" data-id="86" data-text="一起看治愈纪录片">
-            <div class="check-icon">✓</div>
-            <span>86. 一起看治愈纪录片</span>
-        </div>
-        <div class="item" data-id="87" data-text="约定往后岁岁相伴">
-            <div class="check-icon">✓</div>
-            <span>87. 约定往后岁岁相伴</span>
-        </div>
-        <div class="item" data-id="88" data-text="一起品尝清甜甜品">
-            <div class="check-icon">✓</div>
-            <span>88. 一起品尝清甜甜品</span>
-        </div>
-        <div class="item" data-id="89" data-text="异地也坚持每日联系">
-            <div class="check-icon">✓</div>
-            <span>89. 异地也坚持每日联系</span>
-        </div>
-        <div class="item" data-id="90" data-text="一起去看春日樱花">
-            <div class="check-icon">✓</div>
-            <span>90. 一起去看春日樱花</span>
-        </div>
-        <div class="item" data-id="91" data-text="主动低头化解矛盾">
-            <div class="check-icon">✓</div>
-            <span>91. 主动低头化解矛盾</span>
-        </div>
-        <div class="item" data-id="92" data-text="一起骑行沿途赏景">
-            <div class="check-icon">✓</div>
-            <span>92. 一起骑行沿途赏景</span>
-        </div>
-        <div class="item" data-id="93" data-text="把爱意藏进日常里">
-            <div class="check-icon">✓</div>
-            <span>93. 把爱意藏进日常里</span>
-        </div>
-        <div class="item" data-id="94" data-text="一起等待春暖花开">
-            <div class="check-icon">✓</div>
-            <span>94. 一起等待春暖花开</span>
-        </div>
-        <div class="item" data-id="95" data-text="余生事事彼此商量">
-            <div class="check-icon">✓</div>
-            <span>95. 余生事事彼此商量</span>
-        </div>
-        <div class="item" data-id="96" data-text="一起奔赴人间烟火">
-            <div class="check-icon">✓</div>
-            <span>96. 一起奔赴人间烟火</span>
-        </div>
-        <div class="item" data-id="97" data-text="岁岁年年不离不弃">
-            <div class="check-icon">✓</div>
-            <span>97. 岁岁年年不离不弃</span>
-        </div>
-        <div class="item" data-id="98" data-text="携手走过四季朝夕">
-            <div class="check-icon">✓</div>
-            <span>98. 携手走过四季朝夕</span>
-        </div>
-        <div class="item" data-id="99" data-text="满心欢喜只偏爱你">
-            <div class="check-icon">✓</div>
-            <span>99. 满心欢喜只偏爱你</span>
-        </div>
-        <div class="item" data-id="100" data-text="余生漫漫皆是你">
-            <div class="check-icon">✓</div>
-            <span>100. 余生漫漫皆是你</span>
+    <div class="wrap">
+        <h2>一起完成的小事</h2>
+        <div class="list-box" id="todoList">
         </div>
     </div>
 
-    <button class="reset-btn" id="resetBtn">重置所有进度</button>
+<script>
+const todoArr = [
+    "一起看一次日出","牵手漫步街头","共享一顿晚餐","并肩看一场电影",
+    "互相写下告白话语","短途结伴出行","合照留存美好瞬间"
+];
+const key = "love_things_completed";
+let doneList = JSON.parse(localStorage.getItem(key) || []);
 
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal">
-            <button class="close-btn" id="closeModal">×</button>
-            <h3 class="modal-title" id="modalTitle"></h3>
-            <div class="modal-content" id="modalContent"></div>
+function renderList(){
+    let html = "";
+    todoArr.forEach((item,idx)=>{
+        let isDone = doneList.includes(idx);
+        html += `
+        <div class="item">
+            <span>${idx+1}.${item}</span>
+            <span class="${isDone?'finish':''}">${isDone?'已完成':'待完成'}</span>
         </div>
-    </div>
-
-    <script>
-        const contentMap = {
-1:"天还没亮，我们就裹着同一件外套，坐在山顶等第一缕光。当太阳跳出地平线的那一刻，我转头看你，发现你眼里的光比日出还要亮。原来浪漫从不是看风景，而是身边始终有你。",
-2:"傍晚的晚风温柔拂面，我们十指紧扣慢慢前行，影子被路灯拉得很长很长，我多想这条路没有尽头，就这样和你走到白头。",
-3:"寒风凛冽的时候，一碗热气腾腾的汤面足以治愈所有疲惫，最幸福的是你坐在我对面，把暖心与温柔全都赠予我。",
-4:"橘红色晚霞铺满整片天空，世间万物都变得温柔，静静陪你坐着不言不语，也是我此生最安稳的幸福。",
-5:"镜头定格你的温柔眉眼，每一张照片都是独属于我们的回忆，往后岁岁年年，我都想不停记录你的美好模样。",
-6:"深夜褪去所有疲惫，静下心来和你畅谈心事，开心难过全都诉说，何其有幸，此生有人懂我悲欢。",
-7:"细雨绵绵落下，并肩走在街头任凭微风细雨拂面，哪怕衣衫微湿，只要身边是你，所有狼狈都变成极致浪漫。",
-8:"关掉灯光依偎在沙发里，一同沉浸在影视剧情之中，身边有挚爱之人相伴，平淡日子也满是温馨。",
-9:"亲手下厨烹制烟火美味，不求厨艺精湛，只为把满心爱意融进饭菜里，让你尝尽世间温柔滋味。",
-10:"穿梭在热闹喧嚣的夜市街头，尝遍街边各类小吃，人间烟火气，最抚凡人心，有你陪伴便是圆满。",
-11:"晚风轻轻吹拂，紧紧相拥感受彼此心跳，抛开所有烦恼忧愁，此刻世间万般美好都不及你在身旁。",
-12:"奔赴辽阔蔚蓝海边，听海浪声声，踩柔软细沙，面朝大海许下心愿，往后余生风雨同舟不离不弃。",
-13:"并肩攀登高山，历经辛苦登顶远眺山河万里，所有疲惫尽数消散，最庆幸一路前行始终有你陪伴。",
-14:"细数年少懵懂过往，分享儿时天真趣事，慢慢了解彼此的从前，往后余生参与彼此全部未来。",
-15:"提笔写下满心情话，一字一句皆是真心，纸质书信留存温柔，把藏在心底的爱意尽数诉说于你。",
-16:"重回无忧无虑孩童时光，在游乐园肆意欢笑玩耍，抛开世俗压力，只愿和你肆意奔赴快乐。",
-17:"一副耳机共享同一首温柔旋律，耳边是动听歌谣，身旁是心爱之人，简单陪伴便是顶级浪漫。",
-18:"穿梭在充满烟火气息的菜市场，挑选新鲜食材，感受市井日常，柴米油盐的平淡日子也格外甜蜜。",
-19:"结束一天忙碌生活，睡前一句温柔晚安，驱散所有疲惫，带着满心欢喜安然入睡，梦里皆是温柔。",
-20:"迎着清晨第一缕阳光，一同享用暖心早餐，开启元气满满的一天，三餐四季，朝夕相伴皆是幸福。",
-21:"静下心来一同拼接拼图，一点一滴拼凑完整图案，如同我们的感情，慢慢磨合愈发圆满。",
-22:"温柔为你梳理发丝，细心吹干湿漉漉的头发，细碎日常里的贴心举动，藏着最深沉的偏爱。",
-23:"自驾奔赴未知远方，沿途欣赏沿途风景，前路漫漫亦灿灿，只要同行何处皆是美景。",
-24:"一同栽种鲜活绿植，细心浇水悉心照料，看着嫩芽慢慢生长，如同我们的爱意日渐浓烈绵长。",
-25:"定格搞怪可爱瞬间，一张张大头贴留存青涩甜蜜，小小照片里，装满独属于我们的青春爱意。",
-26:"夜幕降临仰望浩瀚星空，点点星光璀璨夺目，对着漫天星辰许愿，愿我们爱意长久岁岁相守。",
-27:"人总有情绪低落之时，我愿静静陪伴安抚你的不安，陪你熬过所有灰暗时刻，迎来万丈光芒。",
-28:"走遍城市特色网红小店，打卡小众治愈角落，在平凡生活里，不断制造独属于我们的小美好。",
-29:"彼此监督互相勉励，一同改掉身上不良习惯，为了彼此成为更好的人，双向奔赴共同成长。",
-30:"行走在城市街头，紧紧相拥定格甜蜜瞬间，世间人来人往，我的目光永远只为你停留。",
-31:"共用一杯清甜饮品，分享同一份甜蜜滋味，世间美好事物，我都想第一时间与你共享。",
-32:"静下心来畅谈未来，勾勒属于我们温馨小家的模样，未来蓝图徐徐展开，满心皆是美好期许。",
-33:"带着彼此融入身边圈子，参与彼此的生活交际，走进你的世界，融入你的全部人生。",
-34:"抛开所有言语交谈，静静依偎彼此身旁发呆放空，无需刻意找话题，沉默相伴也格外安心。",
-35:"一同收拾整理居家杂物，规整凌乱房间，在动手劳作之中，感受平淡居家生活的温馨惬意。",
-36:"默默记牢你所有饮食喜好、日常偏爱，把你的喜好放在心上，事事顾及你的情绪与欢喜。",
-37:"阴雨天气共撑一把雨伞，紧紧依偎同行，风雨同舟携手前行，往后风雨苦难一同抵挡。",
-38:"挑选同一本治愈好书，闲暇之余一同品读，交流内心感悟，在文字之中拉近彼此心灵距离。",
-39:"用心为对方挑选合适穿搭，互相搭配彼此衣着，目光所及，皆是我精心挑选的满心欢喜。",
-40:"虔诚许下心底美好心愿，愿平安喜乐常伴身旁，愿爱意永不消散，岁岁年年相守不离。",
-41:"一同走进充满生机的动物园，观赏各类可爱小动物，童心未泯，和你永远保持天真烂漫。",
-42:"抛开作息约束，深夜畅谈日常趣事，无话不谈肆意闲聊，深夜时光因你格外温暖有趣。",
-43:"走遍大街小巷品尝各地特色美食，尝遍人间百味，美食再好，都不及身边有你相伴舒心。",
-44:"懂得包容彼此偶尔的小脾气，理解情绪之下的小任性，彼此迁就互相体谅，爱意方能长久绵长。",
-45:"缓缓升至摩天轮最高处，俯瞰全城繁华夜景，在高空之中相拥，许下相守一生的浪漫誓言。",
-46:"随手记录日常琐碎美好，三餐四季、朝夕相伴的点滴瞬间，积攒满满爱意留存岁岁回忆。",
-47:"奔赴一望无际浪漫花海，置身缤纷花丛之中，花香四溢美景醉人，身边挚爱更是世间绝色。",
-48:"身体不适生病难受之时，细心照料贴心陪伴，端水喂药悉心呵护，病痛难熬有你便心安。",
-49:"走遍城市知名地标建筑，打卡每一处特色风景，走遍整座城池，只为和你留下满满足迹。",
-50:"放下所有伪装与防备，坦诚诉说内心深处的心事与委屈，满心信任，余生满心托付于你。",
-51:"告别旧岁奔赴新年，一同度过热闹温馨跨年夜，倒数钟声响起之时，满心期许岁岁皆有你。",
-52:"放下彼此隔阂，耐心学习对方擅长的技能特长，取长补短互相进步，携手成为优秀的彼此。",
-53:"缓步走在漫长人行天桥之上，俯瞰脚下车水马龙，人间繁华万千，我只钟情于你一人。",
-54:"褪去白日喧嚣，深夜一同喝香甜奶茶，闲谈日常琐事，慵懒惬意的深夜时光满是甜蜜。",
-55:"精心收下彼此赠送的每一份礼物，细心珍藏妥善保管，小小物件之中，盛满浓浓深情爱意。",
-56:"迎着清晨微风一同晨跑运动，挥洒汗水强健体魄，健康相伴长久相守，共度漫长余生岁月。",
-57:"漫天白雪飘落，牵手漫步皑皑雪地，脚下留下并排脚印，冬日严寒，抵不过彼此相拥的温暖。",
-58:"放下成年人的成熟稳重，一同玩简单幼稚小游戏，肆意欢笑肆意打闹，在你面前永远做孩童。",
-59:"知晓你心中藏着的远大梦想，默默鼓励全力支持，做你最坚实的后盾，陪你奔赴心中远方。",
-60:"漫无目的乘坐城市公交，随心去往陌生街巷，不急不躁慢慢闲逛，随性日常满是温柔惬意。",
-61:"整理积攒已久的甜蜜合照，精心制作专属情侣相册，一页一页翻阅，皆是我们相爱过往。",
-62:"围坐一桌热气腾腾吃火锅，荤素搭配谈笑风生，热气氤氲之间，藏着平淡生活的幸福滋味。",
-63:"看清彼此身上所有缺点不足，依旧选择满心偏爱不离不弃，真爱从不是偏爱完美，而是接纳全部。",
-64:"一同走进文艺气息满满的展览馆，感受艺术熏陶，提升内心格调，精神共鸣亦是极致浪漫。",
-65:"心情低落满心委屈之时，一个紧紧拥抱胜过万千言语，怀抱温暖安稳，抚平所有不安心绪。",
-66:"提前一同规划出行旅行路线，敲定行程备好行囊，满心期待奔赴远方，旅途漫漫爱意相随。",
-67:"每逢专属节日，悄悄筹备精心惊喜，无需贵重礼物，用心准备的心意最是打动人心。",
-68:"静坐平静湖边，迎着徐徐微风放空思绪，湖水澄澈微风轻柔，安然岁月有幸与你共度。",
-69:"牢牢铭记相爱纪念日、相识纪念日等所有特殊日子，用心铭记用心奔赴，不负相遇不负深情。",
-70:"勇敢踏出舒适圈子，一同尝试从未体验过的新鲜事物，解锁全新美好，丰富彼此相爱日常。",
-71:"夜深人静避开城市喧嚣，结伴出门慢走压马路，夜色静谧晚风温柔，闲谈闲谈惬意十足。",
-72:"毫不吝啬夸赞对方身上的闪光点，互相肯定互相欣赏，在爱意之中变得愈发自信明媚。",
-73:"远离城市繁华喧嚣，走进古朴静谧古镇之中，慢节奏悠闲游玩，感受岁月静好恬淡日常。",
-74:"彼此互相监督约束，一同改掉熬夜伤身的不良习惯，早睡早起爱惜身体，长久陪伴彼此身旁。",
-75:"面对镜头录制甜蜜日常视频，留存当下温柔模样，多年以后翻看，依旧能够重温此刻心动。",
-76:"静静伫立街头，一同等待街边花灯次第亮起，灯火璀璨夜色温柔，良辰美景只想与你共赏。",
-77:"坦然诉说彼此曾经的过往经历，不隐瞒不猜忌，放下过往执念，全心全意奔赴往后余生。",
-78:"夜幕降临相约街边小摊，一同品尝热气腾腾的烧烤美食，烟火日常最是治愈人心。",
-79:"人生前路难免遭遇坎坷磨难，往后无论风雨苦难，我们都携手并肩共同面对，绝不轻言分离。",
-80:"暂时告别城市快节奏生活，体验悠然闲适的田园日常，种菜养花亲近自然，平淡生活自在安然。",
-81:"身处人潮拥挤的人群之中，依旧紧紧牵住彼此双手，人海茫茫，我唯独只想抓紧你的手。",
-82:"闲暇之余一同翻阅美食食谱，研究各式各样家常菜品，亲手制作美味，共享舌尖甜蜜幸福。",
-83:"当你满心忧愁满心烦闷之时，我愿放下所有事情，安静倾听你的所有委屈与心事。",
-84:"奔赴漫山遍野盛放的花海之中，沉醉在馥郁花香里，满目繁花皆美景，满眼欢喜皆是你。",
-85:"居家日常之中互相体谅，主动分担生活琐碎小事，彼此扶持互相照料，烟火日子温暖绵长。",
-86:"闲暇时光一同观看治愈暖心纪录片，感受世间百态人间温情，三观契合灵魂相伴格外舒心。",
-87:"郑重许下心底诺言，许下岁岁年年相伴相守的约定，一言一语皆是真心，此生必定坚守不渝。",
-88:"相约甜品小店，一同品尝清甜软糯的各类甜品，生活难免苦涩，我愿陪你尝尽世间甘甜。",
-89:"纵使相隔千里身处异地，也坚持每日谈心联系，距离隔不开深情爱意，思念跨越山海相拥。",
-90:"春日暖阳繁花盛放，一同奔赴花海观赏烂漫樱花，春风拂面繁花似锦，春日美好皆与你共享。",
-91:"相处难免发生争执矛盾，懂得主动低头退让和解，珍惜彼此缘分，不让争吵冲淡满心爱意。",
-92:"骑上单车并肩前行，沿途一路欣赏沿途自然风光，微风相伴一路欢笑，自在出行满心欢喜。",
-93:"不必刻意制造盛大浪漫，把满腔爱意藏进一日三餐、朝夕相处的细碎日常之中，细水长流皆是深情。",
-94:"耐心等候寒冬散去，一同迎接春暖花开万物复苏，熬过所有清冷孤寂，奔赴春日所有温柔美好。",
-95:"往后余生生活之中，大小事情彼此互相商量，尊重彼此想法意见，同心协力经营安稳生活。",
-96:"携手奔赴充满烟火气息的人间百态，感受市井热闹日常，三餐四季烟火相伴，便是此生圆满。",
-97:"时光匆匆岁月流转，任凭世事万般变迁，我依旧初心不改，岁岁年年坚守初心不离不弃。",
-98:"从春暖花开走到冬日飘雪，携手走过一年四季朝朝夕夕，四季轮回更迭，爱意始终从未更改。",
-99:"世间万人千般好，我唯独对你满心偏爱，目光所至皆是你，心底温柔也尽数赠予你一人。",
-100:"漫漫人生路悠长遥远，有幸此生与你相逢相知相爱，往后余生朝朝暮暮，目光所及满心所向全都是你。"
-        };
-
-        const completedKey = "love_things_completed";
-        let completedList = JSON.parse(localStorage.getItem(completedKey) || "[]");
-
-        function initCompleted() {
-            document.querySelectorAll(".item").forEach(item => {
-                const id = item.dataset.id;
-                if (completedList.includes(id)) {
-                    item.classList.add("completed");
-                }
-            });
-            updateProgress();
-        }
-
-        function updateProgress() {
-            const total = document.querySelectorAll(".item").length;
-            const completed = completedList.length;
-            const percent = (completed / total) * 100;
-            document.getElementById("progressFill").style.width = `${percent}%`;
-            document.getElementById("progressText").textContent = `已完成 ${completed}/${total}`;
-        }
-
-        document.querySelectorAll(".item").forEach(item => {
-            item.addEventListener("click", function(e) {
-                const id = this.dataset.id;
-                const text = this.dataset.text;
-                const content = contentMap[id];
-
-                document.getElementById("modalTitle").textContent = `${id}. ${text}`;
-                document.getElementById("modalContent").textContent = content;
-                document.getElementById("modalOverlay").classList.add("show");
-
-                if (!completedList.includes(id)) {
-                    completedList.push(id);
-                    this.classList.add("completed");
-                } else {
-                    completedList = co
+        `;
+    })
+    document.getElementById("todoList").innerHTML = html;
+}
+window.onload = renderList;
+</script>
+</body>
+</html>
