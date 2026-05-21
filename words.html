@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>百件小事 | 相恋主页</title>
+    <title>百件小事 | 岁岁相依</title>
     <style>
         * {
             margin: 0;
@@ -30,102 +30,90 @@
             color: #d4af37;
             padding: 10px 22px;
             border-radius: 30px;
-            background: rgba(212,175,55,0.15);
-            border: 1px solid rgba(212,175,55,0.3);
+            background: rgba(212, 175, 55, 0.15);
+            border: 1px solid rgba(212, 175, 55, 0.3);
             transition: all 0.3s;
             font-size: 1rem;
         }
         .nav a.active {
             background: #d4af37;
             color: #2b221a;
-            box-shadow: 0 0 15px rgba(212,175,55,0.5);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
         }
         .nav a:hover {
             transform: translateY(-2px);
-            box-shadow: 0 0 10px rgba(212,175,55,0.3);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
         }
-        .wrap{
-            max-width:600px;
-            margin:0 auto;
+        .title-box {
+            text-align: center;
+            margin-bottom: 30px;
         }
-        h2{
-            text-align:center;
-            font-size:2rem;
-            margin-bottom:15px;
+        .main-title {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
         }
-        .progress-box{
-            text-align:center;
-            margin-bottom:25px;
-            padding:12px;
-            border-radius:15px;
-            background:rgba(212,175,55,0.1);
+        .progress-info {
+            font-size: 1.1rem;
+            color: #f0d88c;
+            margin-bottom: 20px;
         }
-        .progress-text{
-            font-size:1.1rem;
-            color:#f0d88c;
+        .progress-bar {
+            width: 90%;
+            height: 12px;
+            background: rgba(212, 175, 55, 0.2);
+            border-radius: 10px;
+            margin: 0 auto 30px;
+            overflow: hidden;
         }
-        .progress-bar{
-            width:90%;
-            height:12px;
-            background:rgba(255,255,255,0.1);
-            border-radius:6px;
-            margin:10px auto;
-            overflow:hidden;
+        .progress-inner {
+            height: 100%;
+            background: #d4af37;
+            border-radius: 10px;
+            transition: width 0.4s ease;
         }
-        .progress-fill{
-            height:100%;
-            background:#d4af37;
-            border-radius:6px;
-            transition:width 0.4s ease;
+        .list-container {
+            max-width: 650px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
         }
-        .progress-desc{
-            margin-top:8px;
-            font-size:0.9rem;
-            color:#e0c880
+        .item-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            background: rgba(212, 175, 55, 0.08);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.88rem;
         }
-        .category-title{
-            font-size:1.2rem;
-            margin:20px 0 10px;
-            padding-left:8px;
-            border-left:3px solid #d4af37;
+        .item-card:hover {
+            background: rgba(212, 175, 55, 0.18);
         }
-        .list-box{
-            border:1px solid #d4af37;
-            border-radius:20px;
-            padding:20px;
-            background:rgba(212,175,55,0.1);
-            margin-bottom:15px;
+        .item-card.finished {
+            text-decoration: line-through;
+            color: #88cc88;
+            background: rgba(136, 204, 136, 0.1);
         }
-        .item{
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            padding:12px 0;
-            border-bottom:1px solid rgba(212,175,55,0.2);
-            font-size:0.95rem;
-            cursor:pointer;
+        .item-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            object-fit: cover;
+            flex-shrink: 0;
         }
-        .item:last-child{
-            border-bottom:none;
+        .item-text {
+            flex: 1;
+            line-height: 1.4;
         }
-        .item-text.done{
-            text-decoration:line-through;
-            color:#88cc88;
-            opacity:0.8;
-        }
-        .check-icon{
-            width:22px;
-            height:22px;
-            border:1px solid #d4af37;
-            border-radius:4px;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            flex-shrink:0;
-        }
-        .check-icon.checked{
-            background:#d4af37;
-            color:#2b221a;
+        @media (max-width:480px){
+            .list-container{
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -136,172 +124,181 @@
         <a href="words.html" class="active">百件小事</a>
         <a href="note.html">私密心事</a>
         <a href="message.html">公开留言</a>
-        <a href="privatemsg.html">隐秘留言</a>
         <a href="diary.html">恋爱日记</a>
     </div>
 
-    <div class="wrap">
-        <h2>情侣百件小事清单</h2>
-        <!-- 进度统计模块 -->
-        <div class="progress-box">
-            <div class="progress-text">整体完成进度：<span id="percent">0</span>%</div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressBar" style="width:0%"></div>
-            </div>
-            <div class="progress-desc">
-                已完成 <span id="finishNum">0</span> / 总计 <span id="totalNum">0</span> 件
-            </div>
+    <div class="title-box">
+        <h1 class="main-title">情侣必做的100件小事</h1>
+        <p class="progress-info">已完成：<span id="doneNum">0</span> / 100</p>
+        <div class="progress-bar">
+            <div class="progress-inner" id="progressBar" style="width:0%"></div>
         </div>
-
-        <!-- 日常陪伴 -->
-        <h3 class="category-title">日常陪伴</h3>
-        <div class="list-box" id="dailyList"></div>
-
-        <!-- 出行游玩 -->
-        <h3 class="category-title">出行游玩</h3>
-        <div class="list-box" id="travelList"></div>
-
-        <!-- 浪漫心动 -->
-        <h3 class="category-title">浪漫心动</h3>
-        <div class="list-box" id="romanticList"></div>
-
-        <!-- 美食烟火 -->
-        <h3 class="category-title">美食烟火</h3>
-        <div class="list-box" id="foodList"></div>
-
-        <!-- 趣味互动 -->
-        <h3 class="category-title">趣味互动</h3>
-        <div class="list-box" id="funList"></div>
     </div>
 
+    <div class="list-container" id="todoList"></div>
+
 <script>
-// 总计100条情侣小事，5大分类
-const taskData = {
-    daily: [
-        "一起早起吃一顿早餐","睡前互相温柔道晚安","牵手漫步夜晚街道",
-        "一起收拾整理房间","闲暇时互相按摩放松","日常分享喜怒哀乐",
-        "下雨天共撑一把伞同行","依偎在一起放空发呆","记住彼此生活小习惯",
-        "生病时贴心照顾对方","一起熬夜畅谈心事","早起互道早安问候",
-        "日常出门主动牵住双手","疲惫时给对方暖心鼓励","安静陪伴互不打扰时光",
-        "一起规划往后小日子","记住彼此偏爱与忌口","在家相拥慵懒追剧",
-        "天冷贴心提醒添衣物","闲暇并肩晒太阳吹风"
-    ],
-    travel: [
-        "一同奔赴海边看日出","携手观赏唯美日落景色",
-        "短途自驾周边小城旅行","漫步海边沙滩踏浪玩耍",
-        "打卡城市网红特色景点","结伴攀爬山峰俯瞰全景",
-        "夜晚并肩仰望满天星空","乘坐游船欣赏两岸风光",
-        "逛古风街巷感受古韵气息","徒步林间小路呼吸新鲜空气",
-        "坐摩天轮俯瞰城市夜景","体验一次缆车高空观光",
-        "去往陌生城市探索游玩","乡间小路悠闲散步散心",
-        "雨天出行共赏雨中街景","逛动物园一起投喂小动物",
-        "参观博物馆了解人文历史","花海之中牵手拍照留念",
-        "夜市街头边走边逛玩乐","露营感受野外自然晚风"
-    ],
-    romantic: [
-        "亲手书写情书赠予对方","纪念日准备惊喜小礼物",
-        "拍摄多张双人甜蜜合照","挑选饰品当作定情信物",
-        "烛光之下共进浪漫晚餐","为对方哼唱专属小情歌",
-        "深情拥抱诉说心底爱意","悄悄制造意外浪漫瞬间",
-        "对着星空许下相守诺言","一起挑选情侣同款配饰",
-        "手写心愿卡片留存心意","节日精心布置温馨小场景",
-        "偷偷准备对方心仪好物","晚风之中深情告白心意",
-        "相拥拍摄氛围感短视频","定制专属二人情侣头像",
-        "封存美好回忆纪念物件","跨年时刻一起倒数钟声",
-        "生日用心筹备暖心祝福","记录相处点滴美好瞬间"
-    ],
-    food: [
-        "携手逛菜市场挑选食材","在家合作烹饪一顿饭菜",
-        "品尝街边特色风味小吃","打卡网红热门特色餐厅",
-        "一起制作香甜手工甜品","共享一杯口味相合饮品",
-        "火锅围坐一起涮煮美食","烧烤摊并肩撸串闲谈",
-        "早餐搭配营养美味餐食","下午茶共享点心与茶水",
-        "异国风味餐厅体验美食","家乡特色小吃一起品尝",
-        "分工合作包饺子馄饨","冰镇饮品夏日一起解暑",
-        "深夜夜宵相伴解馋小食","水果拼盘一起分享品尝",
-        "自制奶茶饮品互相品鉴","节日聚餐享用丰盛饭菜",
-        "喝粥闲谈舒缓惬意时光","零食堆满一起追剧享用"
-    ],
-    fun: [
-        "闲暇组队玩趣味小游戏","互相给对方画可爱肖像",
-        "一起学习简单手工制作","合唱喜爱的经典流行歌曲",
-        "模仿搞笑动作逗乐彼此","互换穿搭趣味拍照玩耍",
-        "制定二人专属存钱计划","一起健身运动锻炼身体",
-        "拼图协作完成完整图案","猜谜语脑筋急转弯互动",
-        "翻看老照片回忆旧时光","学习同款简单生活技能",
-        "下棋打牌休闲娱乐消遣","给彼此起专属可爱昵称",
-        "模拟日常趣事角色扮演","一起养花照料绿植盆栽",
-        "阅读书籍互相交流感悟","学习简单舞蹈共同练习",
-        "收集车票门票纪念票据","写下愿望清单逐一去实现"
-    ]
-};
+const storageKey = "love_things_completed";
+// 小事 + 对应配图地址
+const thingList = [
+    {text:"一起看一次日出",img:"https://picsum.photos/id/1001/48/48"},
+    {text:"一起守候一场日落",img:"https://picsum.photos/id/1002/48/48"},
+    {text:"牵手漫步海边沙滩",img:"https://picsum.photos/id/1003/48/48"},
+    {text:"共赏漫天璀璨星空",img:"https://picsum.photos/id/1004/48/48"},
+    {text:"互相为对方拍写真",img:"https://picsum.photos/id/1005/48/48"},
+    {text:"一起拍搞怪合照",img:"https://picsum.photos/id/1006/48/48"},
+    {text:"穿着情侣装出门逛街",img:"https://picsum.photos/id/1007/48/48"},
+    {text:"共用一副耳机听歌",img:"https://picsum.photos/id/1008/48/48"},
+    {text:"窝在沙发一起追剧",img:"https://picsum.photos/id/1009/48/48"},
+    {text:"相拥看经典爱情电影",img:"https://picsum.photos/id/1010/48/48"},
+    {text:"一起在家煮一顿饭菜",img:"https://picsum.photos/id/1011/48/48"},
+    {text:"早起一起吃早餐",img:"https://picsum.photos/id/1012/48/48"},
+    {text:"深夜共享一顿夜宵",img:"https://picsum.photos/id/1013/48/48"},
+    {text:"喝同一杯饮品",img:"https://picsum.photos/id/1014/48/48"},
+    {text:"互相投喂爱吃的零食",img:"https://picsum.photos/id/1015/48/48"},
+    {text:"一起打卡网红小店",img:"https://picsum.photos/id/1016/48/48"},
+    {text:"逛热闹繁华夜市",img:"https://picsum.photos/id/1017/48/48"},
+    {text:"漫步安静城市街道",img:"https://picsum.photos/id/1018/48/48"},
+    {text:"一起坐摩天轮许愿",img:"https://picsum.photos/id/1019/48/48"},
+    {text:"体验一次过山车刺激",img:"https://picsum.photos/id/1020/48/48"},
+    {text:"牵手走长长的天桥",img:"https://picsum.photos/id/1021/48/48"},
+    {text:"雨天共撑一把雨伞",img:"https://picsum.photos/id/1022/48/48"},
+    {text:"雪天并肩踩雪玩耍",img:"https://picsum.photos/id/1023/48/48"},
+    {text:"一起堆可爱小雪人",img:"https://picsum.photos/id/1024/48/48"},
+    {text:"短途自驾周边旅行",img:"https://picsum.photos/id/1025/48/48"},
+    {text:"规划一场远方出游",img:"https://picsum.photos/id/1026/48/48"},
+    {text:"住进民宿感受慢生活",img:"https://picsum.photos/id/1027/48/48"},
+    {text:"打卡一座陌生城市",img:"https://picsum.photos/id/1028/48/48"},
+    {text:"一起爬山登顶望远",img:"https://picsum.photos/id/1029/48/48"},
+    {text:"林间小路悠闲散步",img:"https://picsum.photos/id/1030/48/48"},
+    {text:"水族馆看海洋生物",img:"https://picsum.photos/id/1031/48/48"},
+    {text:"动物园投喂小动物",img:"https://picsum.photos/id/1032/48/48"},
+    {text:"一起逛文艺书店",img:"https://picsum.photos/id/1033/48/48"},
+    {text:"挑选彼此喜欢的书籍",img:"https://picsum.photos/id/1034/48/48"},
+    {text:"去展览馆看艺术展览",img:"https://picsum.photos/id/1035/48/48"},
+    {text:"听一场现场音乐会",img:"https://picsum.photos/id/1036/48/48"},
+    {text:"一起去寺庙祈福许愿",img:"https://picsum.photos/id/1037/48/48"},
+    {text:"写下专属心愿便签",img:"https://picsum.photos/id/1038/48/48"},
+    {text:"交换亲手准备的礼物",img:"https://picsum.photos/id/1039/48/48"},
+    {text:"记住彼此所有喜好",img:"https://picsum.photos/id/1040/48/48"},
+    {text:"为对方准备惊喜生日",img:"https://picsum.photos/id/1041/48/48"},
+    {text:"认真庆祝恋爱纪念日",img:"https://picsum.photos/id/1042/48/48"},
+    {text:"坦诚诉说内心心事",img:"https://picsum.photos/id/1043/48/48"},
+    {text:"耐心倾听对方烦恼",img:"https://picsum.photos/id/1044/48/48"},
+    {text:"吵架过后主动和解",img:"https://picsum.photos/id/1045/48/48"},
+    {text:"包容彼此小缺点",img:"https://picsum.photos/id/1046/48/48"},
+    {text:"互相鼓励追逐梦想",img:"https://picsum.photos/id/1047/48/48"},
+    {text:"一起制定未来规划",img:"https://picsum.photos/id/1048/48/48"},
+    {text:"学习对方擅长的技能",img:"https://picsum.photos/id/1049/48/48"},
+    {text:"教对方学会自己爱好",img:"https://picsum.photos/id/1050/48/48"},
+    {text:"一起健身运动锻炼",img:"https://picsum.photos/id/1051/48/48"},
+    {text:"晨起相约慢跑锻炼",img:"https://picsum.photos/id/1052/48/48"},
+    {text:"组队玩趣味小游戏",img:"https://picsum.photos/id/1053/48/48"},
+    {text:"线下桌游欢乐对决",img:"https://picsum.photos/id/1054/48/48"},
+    {text:"一起动手手工制作",img:"https://picsum.photos/id/1055/48/48"},
+    {text:"DIY专属纪念小物件",img:"https://picsum.photos/id/1056/48/48"},
+    {text:"养一只共同喜爱的小宠物",img:"https://picsum.photos/id/1057/48/48"},
+    {text:"一起细心照顾小动物",img:"https://picsum.photos/id/1058/48/48"},
+    {text:"在家布置温馨小窝",img:"https://picsum.photos/id/1059/48/48"},
+    {text:"挑选情侣居家摆件",img:"https://picsum.photos/id/1060/48/48"},
+    {text:"一起乘坐轮渡看海景",img:"https://picsum.photos/id/1061/48/48"},
+    {text:"坐列车欣赏沿途风景",img:"https://picsum.photos/id/1062/48/48"},
+    {text:"品尝各地特色美食",img:"https://picsum.photos/id/1063/48/48"},
+    {text:"打卡当地地道小吃",img:"https://picsum.photos/id/1064/48/48"},
+    {text:"一起熬夜畅谈过往",img:"https://picsum.photos/id/1065/48/48"},
+    {text:"聊聊童年有趣趣事",img:"https://picsum.photos/id/1066/48/48"},
+    {text:"模仿对方搞笑模样",img:"https://picsum.photos/id/1067/48/48"},
+    {text:"互相撒娇宠溺陪伴",img:"https://picsum.photos/id/1068/48/48"},
+    {text:"拥抱度过疲惫时刻",img:"https://picsum.photos/id/1069/48/48"},
+    {text:"难过时候贴心安慰",img:"https://picsum.photos/id/1070/48/48"},
+    {text:"一起改掉坏习惯",img:"https://picsum.photos/id/1071/48/48"},
+    {text:"陪着彼此慢慢成长",img:"https://picsum.photos/id/1072/48/48"},
+    {text:"拍摄四季风景合照",img:"https://picsum.photos/id/1073/48/48"},
+    {text:"收藏相处美好票据",img:"https://picsum.photos/id/1074/48/48"},
+    {text:"制作恋爱回忆相册",img:"https://picsum.photos/id/1075/48/48"},
+    {text:"手写暖心告白信件",img:"https://picsum.photos/id/1076/48/48"},
+    {text:"一起放浪漫小烟花",img:"https://picsum.photos/id/1077/48/48"},
+    {text:"节日共同布置氛围",img:"https://picsum.photos/id/1078/48/48"},
+    {text:"参加热闹民俗活动",img:"https://picsum.photos/id/1079/48/48"},
+    {text:"体验不一样风土人情",img:"https://picsum.photos/id/1080/48/48"},
+    {text:"一起学习烹饪美食",img:"https://picsum.photos/id/1081/48/48"},
+    {text:"尝试新奇口味菜品",img:"https://picsum.photos/id/1082/48/48"},
+    {text:"海边赤脚肆意奔跑",img:"https://picsum.photos/id/1083/48/48"},
+    {text:"山间吸氧放松身心",img:"https://picsum.photos/id/1084/48/48"},
+    {text:"深夜路边谈心散步",img:"https://picsum.photos/id/1085/48/48"},
+    {text:"清晨唤醒身边爱人",img:"https://picsum.photos/id/1086/48/48"},
+    {text:"夸赞对方闪光点",img:"https://picsum.photos/id/1087/48/48"},
+    {text:"时常表达爱意心意",img:"https://picsum.photos/id/1088/48/48"},
+    {text:"分担生活琐碎家务",img:"https://picsum.photos/id/1089/48/48"},
+    {text:"体谅彼此日常辛苦",img:"https://picsum.photos/id/1090/48/48"},
+    {text:"一起度过团圆佳节",img:"https://picsum.photos/id/1091/48/48"},
+    {text:"陪伴家人温馨相聚",img:"https://picsum.photos/id/1092/48/48"},
+    {text:"许下相守一生诺言",img:"https://picsum.photos/id/1093/48/48"},
+    {text:"坚定选择彼此不离不弃",img:"https://picsum.photos/id/1094/48/48"},
+    {text:"慢慢陪伴岁岁年年",img:"https://picsum.photos/id/1095/48/48"},
+    {text:"携手面对风雨坎坷",img:"https://picsum.photos/id/1096/48/48"},
+    {text:"白发苍苍依旧相伴",img:"https://picsum.photos/id/1097/48/48"},
+    {text:"回忆一生甜蜜过往",img:"https://picsum.photos/id/1098/48/48"},
+    {text:"余生朝夕彼此守护",img:"https://picsum.photos/id/1099/48/48"},
+    {text:"圆满走完这一生爱恋",img:"https://picsum.photos/id/1100/48/48"}
+];
 
-const key = "love_things_completed";
-let doneList = JSON.parse(localStorage.getItem(key) || []);
-
-// 计算每个分类起始下标
-let startIndexDaily = 0;
-let startIndexTravel = taskData.daily.length;
-let startIndexRomantic = startIndexTravel + taskData.travel.length;
-let startIndexFood = startIndexRomantic + taskData.romantic.length;
-let startIndexFun = startIndexFood + taskData.food.length;
-
-// 渲染单个分类
-function renderSingleList(boxId, taskArr, startIdx){
-    const box = document.getElementById(boxId);
-    let html = "";
-    taskArr.forEach((item, idx)=>{
-        const realIdx = startIdx + idx;
-        const isDone = doneList.includes(realIdx);
-        html += `
-        <div class="item" onclick="toggleTask(${realIdx})">
-            <span class="item-text ${isDone?'done':''}">${realIdx+1}. ${item}</span>
-            <span class="check-icon ${isDone?'checked':''}">${isDone?'✓':''}</span>
-        </div>
-        `;
-    });
-    box.innerHTML = html;
+// 获取已完成列表
+function getDoneList(){
+    let data = localStorage.getItem(storageKey);
+    return data ? JSON.parse(data) : [];
 }
-
-// 切换完成状态
-function toggleTask(index){
-    const pos = doneList.indexOf(index);
-    if(pos > -1){
-        doneList.splice(pos, 1);
-    }else{
-        doneList.push(index);
-    }
-    localStorage.setItem(key, JSON.stringify(doneList));
-    renderAllList();
+// 保存完成状态
+function saveDoneList(list){
+    localStorage.setItem(storageKey, JSON.stringify(list));
 }
-
 // 更新进度数据
 function updateProgress(){
-    const total = taskData.daily.length + taskData.travel.length + taskData.romantic.length
-                + taskData.food.length + taskData.fun.length;
-    const finish = doneList.length;
-    let percent = 0;
-    if(total > 0){
-        percent = Math.round((finish / total) * 100);
-    }
-    document.getElementById("totalNum").innerText = total;
-    document.getElementById("finishNum").innerText = finish;
-    document.getElementById("percent").innerText = percent;
+    const done = getDoneList();
+    const doneNum = done.length;
+    const percent = (doneNum / 100) * 100;
+    document.getElementById("doneNum").innerText = doneNum;
     document.getElementById("progressBar").style.width = percent + "%";
 }
-
-// 渲染全部列表
-function renderAllList(){
-    renderSingleList("dailyList", taskData.daily, startIndexDaily);
-    renderSingleList("travelList", taskData.travel, startIndexTravel);
-    renderSingleList("romanticList", taskData.romantic, startIndexRomantic);
-    renderSingleList("foodList", taskData.food, startIndexFood);
-    renderSingleList("funList", taskData.fun, startIndexFun);
+// 渲染带图片列表
+function renderList(){
+    const wrap = document.getElementById("todoList");
+    const doneArr = getDoneList();
+    wrap.innerHTML = "";
+    thingList.forEach((item, idx)=>{
+        const num = idx + 1;
+        const card = document.createElement("div");
+        card.className = "item-card";
+        if(doneArr.includes(num)){
+            card.classList.add("finished");
+        }
+        card.innerHTML = `
+            <img class="item-img" src="${item.img}" alt="">
+            <div class="item-text">${num}.${item.text}</div>
+        `;
+        card.onclick = function(){
+            let arr = getDoneList();
+            if(arr.includes(num)){
+                arr = arr.filter(item=>item!==num);
+            }else{
+                arr.push(num);
+            }
+            saveDoneList(arr);
+            renderList();
+            updateProgress();
+            // 同步首页进度
+            if(window.opener && !window.opener.closed){
+                window.opener.updateProgress && window.opener.updateProgress();
+            }
+        }
+        wrap.appendChild(card);
+    })
     updateProgress();
 }
 
-// 强制页面加载后立即执行渲染
-renderAllList();
+window.onload = function(){
+    renderList();
+}
 </script>
 </body>
 </html>
