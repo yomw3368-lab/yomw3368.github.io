@@ -52,7 +52,7 @@
             90% {opacity: 0.7;}
             100% {transform: translateY(-100vh) rotate(360deg);opacity: 0;}
         }
-        /* 真人验证弹窗 */
+        /* 游客真人验证弹窗 */
         .verify-overlay{
             position:fixed;
             top:0;
@@ -239,6 +239,7 @@
             color:#d4af37;
             outline:none;
             width:120px;
+            placeholder-color:#999;
         }
     </style>
 </head>
@@ -258,6 +259,7 @@
     <div class="hidden-content" id="pageContent">
         <div class="decoration" id="decoration"></div>
 
+        <!-- 已加上恋爱酷跑导航 -->
         <div class="nav">
             <a href="index.html" class="active">相恋首页</a>
             <a href="time.html">时光回忆</a>
@@ -266,6 +268,7 @@
             <a href="message.html">公开留言</a>
             <a href="privatemsg.html">隐秘留言</a>
             <a href="diary.html">恋爱日记</a>
+            <a href="lovecool.html">恋爱酷跑</a>
         </div>
 
         <div class="title-section">
@@ -285,9 +288,9 @@
             <p class="progress-tip" id="progressTip">已完成 <span id="completedCount">0</span>/100 件小事</p>
         </div>
 
-        <!-- 暗号输入框 -->
+        <!-- 去掉「主人暗号」，只留简洁提示 -->
         <div class="pwd-input-box">
-            <input class="owner-input" id="ownerPwd" placeholder="输入主人暗号" onkeyup="unlockAdmin()">
+            <input class="owner-input" id="ownerPwd" placeholder="输入暗号" onkeyup="unlockAdmin()">
         </div>
         <!-- 访客管理 默认隐藏 -->
         <a href="visitor.html" class="admin-btn" id="adminBtn">访客管理</a>
@@ -298,7 +301,7 @@
 <script>
 let enterTime = Date.now();
 let verifyAnswer = 0;
-// 主人专属暗号
+// 专属暗号
 const MASTER_KEY = "owner";
 
 // 生成加法验证题
