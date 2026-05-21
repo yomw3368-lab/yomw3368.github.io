@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>访客数据管理中心</title>
+    <style>
+        body{background:#2b221a;color:#d4af37;padding:20px;line-height:1.8;}
+        h2{text-align:center;margin-bottom:20px;}
+        .item{border:1px solid #d4af37;border-radius:10px;padding:15px;margin:10px 0;}
+        .btn{padding:8px 20px;background:#d4af37;color:#2b221a;border:none;border-radius:20px;margin:5px;cursor:pointer;}
+        .back{display:block;text-align:center;margin:20px 0;color:#d4af37;}
+    </style>
+</head>
+<body>
+    <h2>全网访客统计记录</h2>
+    <div id="listBox"></div>
+    <div style="text-align:center;margin-top:30px;">
+        <button class="btn" onclick="clearData()">清空所有记录</button>
+        <a href="index.html" class="back">返回相恋主页</a>
+    </div>
+
+<script>
+function showData(){
+    let data = JSON.parse(localStorage.getItem("cloudVisitorData")||"[]");
+    let html = "";
+    if(data.length===0){
+        html = "<p style='text-align:center'>暂无访客记录</p>";
+    }else{
+        data.forEach((v,i)=>{
+            html += `
+            <div class="item">
+                <p>第${i+1}位访客</p>
+                <p>访问时间：${v.time}</p>
+                <p>访客IP：${v.ip}</p>
+                <p>访问页面：${v.page}</p>
+                <p>停留时长：${v.staySecond}秒</p>
+                <p>设备信息：${v.device.substring(0,80)}...</p>
+            </div>
+            `
+        })
+    }
+    document.getElementById("listBox").innerHTML = html;
+}
+function clearData(){
+    if(confirm("确定清空全部访客数据？不可恢复！")){
+        localStorage.removeItem("cloudVisitorData");
+        showData();
+    }
+}
+showData();
+</script>
+</body>
+</html>
