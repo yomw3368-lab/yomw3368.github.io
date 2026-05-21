@@ -104,17 +104,9 @@
             border-bottom:1px solid rgba(212,175,55,0.2);
             font-size:0.95rem;
             cursor:pointer;
-            gap:10px;
         }
         .item:last-child{
             border-bottom:none;
-        }
-        .item-img{
-            width:48px;
-            height:48px;
-            border-radius:8px;
-            object-fit:cover;
-            flex-shrink:0;
         }
         .item-text.done{
             text-decoration:line-through;
@@ -134,51 +126,6 @@
         .check-icon.checked{
             background:#d4af37;
             color:#2b221a;
-        }
-
-        /* 评论区样式 */
-        .comment-wrap{
-            margin-top:40px;
-            border-top:1px solid rgba(212,175,55,0.3);
-            padding-top:25px;
-        }
-        .comment-title{
-            font-size:1.3rem;
-            text-align:center;
-            margin-bottom:20px;
-        }
-        .comment-input{
-            width:100%;
-            height:100px;
-            background:rgba(0,0,0,0.2);
-            border:1px solid #d4af37;
-            border-radius:12px;
-            padding:12px;
-            color:#d4af37;
-            outline:none;
-            resize:none;
-            margin-bottom:12px;
-        }
-        .submit-btn{
-            padding:8px 25px;
-            background:#d4af37;
-            color:#2b221a;
-            border:none;
-            border-radius:20px;
-            cursor:pointer;
-            margin-bottom:20px;
-        }
-        .comment-item{
-            padding:12px;
-            border:1px solid rgba(212,175,55,0.2);
-            border-radius:10px;
-            margin-bottom:10px;
-            background:rgba(212,175,55,0.05);
-        }
-        .comment-time{
-            font-size:0.8rem;
-            color:#b89a67;
-            margin-top:6px;
         }
     </style>
 </head>
@@ -225,145 +172,81 @@
         <!-- 趣味互动 -->
         <h3 class="category-title">趣味互动</h3>
         <div class="list-box" id="funList"></div>
-
-        <!-- 公共评论区 -->
-        <div class="comment-wrap">
-            <h3 class="comment-title">大家留言讨论</h3>
-            <textarea class="comment-input" id="commentInput" placeholder="写下你的感想、祝福与评论..."></textarea>
-            <button class="submit-btn" onclick="addComment()">提交评论</button>
-            <div id="commentList"></div>
-        </div>
     </div>
 
 <script>
-// 总计100条情侣小事，附带对应配图
+// 总计100条情侣小事，5大分类
 const taskData = {
     daily: [
-        {txt:"一起早起吃一顿早餐",img:"https://img0.baidu.com/it/u=2280921392,3794223999&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"睡前互相温柔道晚安",img:"https://img2.baidu.com/it/u=1813294223,2990121199&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"牵手漫步夜晚街道",img:"https://img1.baidu.com/it/u=3943212713,1620239321&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"一起收拾整理房间",img:"https://img0.baidu.com/it/u=1609112913,213191219&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"闲暇时互相按摩放松",img:"https://img2.baidu.com/it/u=1129902122,3899192299&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"日常分享喜怒哀乐",img:"https://img0.baidu.com/it/u=202782912,1730402921&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"下雨天共撑一把伞同行",img:"https://img2.baidu.com/it/u=3102929211,2719121123&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"依偎在一起放空发呆",img:"https://img1.baidu.com/it/u=263921212,339219212&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"记住彼此生活小习惯",img:"https://img0.baidu.com/it/u=123921221,229312121&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"生病时贴心照顾对方",img:"https://img2.baidu.com/it/u=321922113,112921233&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"一起熬夜畅谈心事",img:"https://img1.baidu.com/it/u=112932122,321922211&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"早起互道早安问候",img:"https://img0.baidu.com/it/u=22192211,321921222&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"日常出门主动牵住双手",img:"https://img2.baidu.com/it/u=32112921,122932111&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"疲惫时给对方暖心鼓励",img:"https://img1.baidu.com/it/u=21292111,32192222&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"安静陪伴互不打扰时光",img:"https://img0.baidu.com/it/u=12192222,21293211&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"一起规划往后小日子",img:"https://img2.baidu.com/it/u=32192111,11292222&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"记住彼此偏爱与忌口",img:"https://img1.baidu.com/it/u=21292222,32192111&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"在家相拥慵懒追剧",img:"https://img0.baidu.com/it/u=11292211,21292111&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"天冷贴心提醒添衣物",img:"https://img2.baidu.com/it/u=32192122,12192211&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"闲暇并肩晒太阳吹风",img:"https://img1.baidu.com/it/u=21292111,32192222&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"}
+        "一起早起吃一顿早餐","睡前互相温柔道晚安","牵手漫步夜晚街道",
+        "一起收拾整理房间","闲暇时互相按摩放松","日常分享喜怒哀乐",
+        "下雨天共撑一把伞同行","依偎在一起放空发呆","记住彼此生活小习惯",
+        "生病时贴心照顾对方","一起熬夜畅谈心事","早起互道早安问候",
+        "日常出门主动牵住双手","疲惫时给对方暖心鼓励","安静陪伴互不打扰时光",
+        "一起规划往后小日子","记住彼此偏爱与忌口","在家相拥慵懒追剧",
+        "天冷贴心提醒添衣物","闲暇并肩晒太阳吹风"
     ],
     travel: [
-        {txt:"一同奔赴海边看日出",img:"https://img0.baidu.com/it/u=131452011,22334455&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"携手观赏唯美日落景色",img:"https://img2.baidu.com/it/u=22331144,55667788&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"短途自驾周边小城旅行",img:"https://img1.baidu.com/it/u=33225511,44668899&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"漫步海边沙滩踏浪玩耍",img:"https://img0.baidu.com/it/u=44116622,77991133&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"打卡城市网红特色景点",img:"https://img2.baidu.com/it/u=55227733,88112244&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"结伴攀爬山峰俯瞰全景",img:"https://img1.baidu.com/it/u=66338844,99223355&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"夜晚并肩仰望满天星空",img:"https://img0.baidu.com/it/u=77449955,11334466&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"乘坐游船欣赏两岸风光",img:"https://img2.baidu.com/it/u=88551166,22445577&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"逛古风街巷感受古韵气息",img:"https://img1.baidu.com/it/u=99662277,33556688&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"徒步林间小路呼吸新鲜空气",img:"https://img0.baidu.com/it/u=11773388,44667799&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"坐摩天轮俯瞰城市夜景",img:"https://img2.baidu.com/it/u=22884499,55778811&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"体验一次缆车高空观光",img:"https://img1.baidu.com/it/u=33995511,66889922&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"去往陌生城市探索游玩",img:"https://img0.baidu.com/it/u=44116622,77991133&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"乡间小路悠闲散步散心",img:"https://img2.baidu.com/it/u=55227733,88112244&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"雨天出行共赏雨中街景",img:"https://img1.baidu.com/it/u=66338844,99223355&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"逛动物园一起投喂小动物",img:"https://img0.baidu.com/it/u=77449955,11334466&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"参观博物馆了解人文历史",img:"https://img2.baidu.com/it/u=88551166,22445577&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"花海之中牵手拍照留念",img:"https://img1.baidu.com/it/u=99662277,33556688&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"夜市街头边走边逛玩乐",img:"https://img0.baidu.com/it/u=11773388,44667799&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"露营感受野外自然晚风",img:"https://img2.baidu.com/it/u=22884499,55778811&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"}
+        "一同奔赴海边看日出","携手观赏唯美日落景色",
+        "短途自驾周边小城旅行","漫步海边沙滩踏浪玩耍",
+        "打卡城市网红特色景点","结伴攀爬山峰俯瞰全景",
+        "夜晚并肩仰望满天星空","乘坐游船欣赏两岸风光",
+        "逛古风街巷感受古韵气息","徒步林间小路呼吸新鲜空气",
+        "坐摩天轮俯瞰城市夜景","体验一次缆车高空观光",
+        "去往陌生城市探索游玩","乡间小路悠闲散步散心",
+        "雨天出行共赏雨中街景","逛动物园一起投喂小动物",
+        "参观博物馆了解人文历史","花海之中牵手拍照留念",
+        "夜市街头边走边逛玩乐","露营感受野外自然晚风"
     ],
     romantic: [
-        {txt:"亲手书写情书赠予对方",img:"https://img0.baidu.com/it/u=11223344,55667788&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"纪念日准备惊喜小礼物",img:"https://img2.baidu.com/it/u=22334455,66778899&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"拍摄多张双人甜蜜合照",img:"https://img1.baidu.com/it/u=33445566,77889911&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"挑选饰品当作定情信物",img:"https://img0.baidu.com/it/u=44556677,88991122&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"烛光之下共进浪漫晚餐",img:"https://img2.baidu.com/it/u=55667788,99112233&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"为对方哼唱专属小情歌",img:"https://img1.baidu.com/it/u=66778899,11223344&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"深情拥抱诉说心底爱意",img:"https://img0.baidu.com/it/u=77889911,22334455&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"悄悄制造意外浪漫瞬间",img:"https://img2.baidu.com/it/u=88991122,33445566&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"对着星空许下相守诺言",img:"https://img1.baidu.com/it/u=99112233,44556677&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"一起挑选情侣同款配饰",img:"https://img0.baidu.com/it/u=11223344,55667788&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"手写心愿卡片留存心意",img:"https://img2.baidu.com/it/u=22334455,66778899&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"节日精心布置温馨小场景",img:"https://img1.baidu.com/it/u=33445566,77889911&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"偷偷准备对方心仪好物",img:"https://img0.baidu.com/it/u=44556677,88991122&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"晚风之中深情告白心意",img:"https://img2.baidu.com/it/u=55667788,99112233&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"相拥拍摄氛围感短视频",img:"https://img1.baidu.com/it/u=66778899,11223344&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"定制专属二人情侣头像",img:"https://img0.baidu.com/it/u=77889911,22334455&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"封存美好回忆纪念物件",img:"https://img2.baidu.com/it/u=88991122,33445566&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"跨年时刻一起倒数钟声",img:"https://img1.baidu.com/it/u=99112233,44556677&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"生日用心筹备暖心祝福",img:"https://img0.baidu.com/it/u=11223344,55667788&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"记录相处点滴美好瞬间",img:"https://img2.baidu.com/it/u=22334455,66778899&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"}
+        "亲手书写情书赠予对方","纪念日准备惊喜小礼物",
+        "拍摄多张双人甜蜜合照","挑选饰品当作定情信物",
+        "烛光之下共进浪漫晚餐","为对方哼唱专属小情歌",
+        "深情拥抱诉说心底爱意","悄悄制造意外浪漫瞬间",
+        "对着星空许下相守诺言","一起挑选情侣同款配饰",
+        "手写心愿卡片留存心意","节日精心布置温馨小场景",
+        "偷偷准备对方心仪好物","晚风之中深情告白心意",
+        "相拥拍摄氛围感短视频","定制专属二人情侣头像",
+        "封存美好回忆纪念物件","跨年时刻一起倒数钟声",
+        "生日用心筹备暖心祝福","记录相处点滴美好瞬间"
     ],
     food: [
-        {txt:"携手逛菜市场挑选食材",img:"https://img0.baidu.com/it/u=12345678,87654321&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"在家合作烹饪一顿饭菜",img:"https://img1.baidu.com/it/u=23456789,98765432&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"品尝街边特色风味小吃",img:"https://img2.baidu.com/it/u=34567890,09876543&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"打卡网红热门特色餐厅",img:"https://img0.baidu.com/it/u=45678901,10987654&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"一起制作香甜手工甜品",img:"https://img1.baidu.com/it/u=56789012,21098765&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"共享一杯口味相合饮品",img:"https://img2.baidu.com/it/u=67890123,32109876&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"火锅围坐一起涮煮美食",img:"https://img0.baidu.com/it/u=78901234,43210987&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"烧烤摊并肩撸串闲谈",img:"https://img1.baidu.com/it/u=89012345,54321098&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"早餐搭配营养美味餐食",img:"https://img2.baidu.com/it/u=90123456,65432109&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"下午茶共享点心与茶水",img:"https://img0.baidu.com/it/u=10234567,76543201&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"异国风味餐厅体验美食",img:"https://img1.baidu.com/it/u=21345678,87654312&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"家乡特色小吃一起品尝",img:"https://img2.baidu.com/it/u=32456789,98765423&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"分工合作包饺子馄饨",img:"https://img0.baidu.com/it/u=43567890,09876534&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"冰镇饮品夏日一起解暑",img:"https://img1.baidu.com/it/u=54678901,10987645&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"深夜夜宵相伴解馋小食",img:"https://img2.baidu.com/it/u=65789012,21098756&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"水果拼盘一起分享品尝",img:"https://img0.baidu.com/it/u=76890123,32109867&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"自制奶茶饮品互相品鉴",img:"https://img1.baidu.com/it/u=87901234,43210978&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"节日聚餐享用丰盛饭菜",img:"https://img2.baidu.com/it/u=98012345,54321089&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"喝粥闲谈舒缓惬意时光",img:"https://img0.baidu.com/it/u=19123456,65432191&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"零食堆满一起追剧享用",img:"https://img1.baidu.com/it/u=28234567,76543282&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"}
+        "携手逛菜市场挑选食材","在家合作烹饪一顿饭菜",
+        "品尝街边特色风味小吃","打卡网红热门特色餐厅",
+        "一起制作香甜手工甜品","共享一杯口味相合饮品",
+        "火锅围坐一起涮煮美食","烧烤摊并肩撸串闲谈",
+        "早餐搭配营养美味餐食","下午茶共享点心与茶水",
+        "异国风味餐厅体验美食","家乡特色小吃一起品尝",
+        "分工合作包饺子馄饨","冰镇饮品夏日一起解暑",
+        "深夜夜宵相伴解馋小食","水果拼盘一起分享品尝",
+        "自制奶茶饮品互相品鉴","节日聚餐享用丰盛饭菜",
+        "喝粥闲谈舒缓惬意时光","零食堆满一起追剧享用"
     ],
     fun: [
-        {txt:"闲暇组队玩趣味小游戏",img:"https://img0.baidu.com/it/u=13579246,86429753&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"互相给对方画可爱肖像",img:"https://img2.baidu.com/it/u=24681357,75318642&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"一起学习简单手工制作",img:"https://img1.baidu.com/it/u=35792468,86429753&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"合唱喜爱的经典流行歌曲",img:"https://img0.baidu.com/it/u=46813579,97531864&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"模仿搞笑动作逗乐彼此",img:"https://img2.baidu.com/it/u=57924681,18642975&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"互换穿搭趣味拍照玩耍",img:"https://img1.baidu.com/it/u=68135792,29753186&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"制定二人专属存钱计划",img:"https://img0.baidu.com/it/u=79246813,31864297&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"一起健身运动锻炼身体",img:"https://img2.baidu.com/it/u=81357924,42975318&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"拼图协作完成完整图案",img:"https://img1.baidu.com/it/u=92468135,53186429&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"猜谜语脑筋急转弯互动",img:"https://img0.baidu.com/it/u=13579246,86429753&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"翻看老照片回忆旧时光",img:"https://img2.baidu.com/it/u=24681357,75318642&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"学习同款简单生活技能",img:"https://img1.baidu.com/it/u=35792468,86429753&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"下棋打牌休闲娱乐消遣",img:"https://img0.baidu.com/it/u=46813579,97531864&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"给彼此起专属可爱昵称",img:"https://img2.baidu.com/it/u=57924681,18642975&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"模拟日常趣事角色扮演",img:"https://img1.baidu.com/it/u=68135792,29753186&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"一起养花照料绿植盆栽",img:"https://img0.baidu.com/it/u=79246813,31864297&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"阅读书籍互相交流感悟",img:"https://img2.baidu.com/it/u=81357924,42975318&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"学习简单舞蹈共同练习",img:"https://img1.baidu.com/it/u=92468135,53186429&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"收集车票门票纪念票据",img:"https://img0.baidu.com/it/u=13579246,86429753&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"},
-        {txt:"写下愿望清单逐一去实现",img:"https://img2.baidu.com/it/u=24681357,75318642&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"}
+        "闲暇组队玩趣味小游戏","互相给对方画可爱肖像",
+        "一起学习简单手工制作","合唱喜爱的经典流行歌曲",
+        "模仿搞笑动作逗乐彼此","互换穿搭趣味拍照玩耍",
+        "制定二人专属存钱计划","一起健身运动锻炼身体",
+        "拼图协作完成完整图案","猜谜语脑筋急转弯互动",
+        "翻看老照片回忆旧时光","学习同款简单生活技能",
+        "下棋打牌休闲娱乐消遣","给彼此起专属可爱昵称",
+        "模拟日常趣事角色扮演","一起养花照料绿植盆栽",
+        "阅读书籍互相交流感悟","学习简单舞蹈共同练习",
+        "收集车票门票纪念票据","写下愿望清单逐一去实现"
     ]
 };
 
-// 本地存储key
-const taskKey = "love_things_completed";
-const commentKey = "love_page_comment";
-let doneList = JSON.parse(localStorage.getItem(taskKey) || []);
-let commentList = JSON.parse(localStorage.getItem(commentKey) || []);
+const key = "love_things_completed";
+let doneList = JSON.parse(localStorage.getItem(key) || []);
 
-// 分类起始下标
+// 计算每个分类起始下标
 let startIndexDaily = 0;
 let startIndexTravel = taskData.daily.length;
 let startIndexRomantic = startIndexTravel + taskData.travel.length;
 let startIndexFood = startIndexRomantic + taskData.romantic.length;
 let startIndexFun = startIndexFood + taskData.food.length;
 
-// 渲染单分类列表+配图
+// 渲染单个分类
 function renderSingleList(boxId, taskArr, startIdx){
     const box = document.getElementById(boxId);
     let html = "";
@@ -372,8 +255,7 @@ function renderSingleList(boxId, taskArr, startIdx){
         const isDone = doneList.includes(realIdx);
         html += `
         <div class="item" onclick="toggleTask(${realIdx})">
-            <img class="item-img" src="${item.img}" alt="">
-            <span class="item-text ${isDone?'done':''}">${realIdx+1}. ${item.txt}</span>
+            <span class="item-text ${isDone?'done':''}">${realIdx+1}. ${item}</span>
             <span class="check-icon ${isDone?'checked':''}">${isDone?'✓':''}</span>
         </div>
         `;
@@ -381,7 +263,7 @@ function renderSingleList(boxId, taskArr, startIdx){
     box.innerHTML = html;
 }
 
-// 切换打卡状态
+// 切换完成状态
 function toggleTask(index){
     const pos = doneList.indexOf(index);
     if(pos > -1){
@@ -389,7 +271,7 @@ function toggleTask(index){
     }else{
         doneList.push(index);
     }
-    localStorage.setItem(taskKey, JSON.stringify(doneList));
+    localStorage.setItem(key, JSON.stringify(doneList));
     renderAllList();
 }
 
@@ -408,7 +290,7 @@ function updateProgress(){
     document.getElementById("progressBar").style.width = percent + "%";
 }
 
-// 渲染全部清单
+// 渲染全部列表
 function renderAllList(){
     renderSingleList("dailyList", taskData.daily, startIndexDaily);
     renderSingleList("travelList", taskData.travel, startIndexTravel);
@@ -416,50 +298,10 @@ function renderAllList(){
     renderSingleList("foodList", taskData.food, startIndexFood);
     renderSingleList("funList", taskData.fun, startIndexFun);
     updateProgress();
-    renderComment();
 }
 
-// 评论相关
-function addComment(){
-    const input = document.getElementById("commentInput");
-    const content = input.value.trim();
-    if(!content){
-        alert("评论内容不能为空");
-        return;
-    }
-    const now = new Date();
-    const timeStr = `${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()} ${now.getHours()}:${now.getMinutes()}`;
-    commentList.unshift({
-        content:content,
-        time:timeStr
-    });
-    localStorage.setItem(commentKey, JSON.stringify(commentList));
-    input.value = "";
-    renderComment();
-}
-
-function renderComment(){
-    const box = document.getElementById("commentList");
-    let html = "";
-    if(commentList.length === 0){
-        html = "<div style='text-align:center;color:#b89a67;padding:15px'>暂无评论，快来第一条留言吧</div>";
-    }else{
-        commentList.forEach(item=>{
-            html += `
-            <div class="comment-item">
-                <p>${item.content}</p>
-                <div class="comment-time">${item.time}</div>
-            </div>
-            `;
-        });
-    }
-    box.innerHTML = html;
-}
-
-// 页面加载初始化
-document.addEventListener("DOMContentLoaded", function(){
-    renderAllList();
-});
+// 强制页面加载后立即执行渲染
+renderAllList();
 </script>
 </body>
 </html>
