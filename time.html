@@ -19,7 +19,7 @@
         body.deepnight{background:var(--bg-color);}
         body{
             min-height:100vh;
-            font-family:"STSong", "SimSun", "serif"; /* 瘦金体 */
+            font-family:"STSong", "SimSun", "serif";
             color:var(--text);
             overflow-x:hidden;opacity:0;animation:nobleFade 1.5s cubic-bezier(0.22,1,0.36,1) forwards;transition:all 0.6s ease;
             cursor: pointer;
@@ -78,6 +78,7 @@
     <a href="words.html">百件小事</a>
     <a href="note.html">私密心事</a>
     <a href="message.html">公开留言</a>
+    <a href="javascript:goPrivate()">隐秘留言</a>
 </div>
 <h1>岁月温柔 · 皆是回忆</h1>
 <div class="divider"></div>
@@ -149,12 +150,8 @@ particles.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillS
 requestAnimationFrame(drawPart);}
 addEventListener("resize",setSize);setSize();drawPart();
 
-// 随机配色和图案生成函数
 function changeThemeAndPattern() {
-    // 清除旧图案
     document.querySelectorAll('.random-pattern').forEach(el => el.remove());
-    
-    // 生成随机颜色
     const randomHue = Math.floor(Math.random() * 360);
     const mainColor = `hsl(${randomHue}, 70%, 50%)`;
     const lightColor = `hsl(${randomHue}, 80%, 80%)`;
@@ -162,58 +159,44 @@ function changeThemeAndPattern() {
     const bgColor1 = `hsl(${randomHue}, 30%, 90%)`;
     const bgColor2 = `hsl(${randomHue}, 30%, 95%)`;
     const bgColor3 = `hsl(${randomHue}, 30%, 85%)`;
-
-    // 更新CSS变量
     const root = document.documentElement;
     root.style.setProperty('--main', mainColor);
     root.style.setProperty('--light', lightColor);
     root.style.setProperty('--text', textColor);
     root.style.setProperty('--bg-color', `linear-gradient(145deg, ${bgColor1}, ${bgColor2}, ${bgColor3})`);
-
-    // 生成随机图案
     const patterns = ['star', 'heart', 'circle', 'square'];
-    const patternCount = Math.floor(Math.random() * 10) + 5; // 5-15个图案
-
+    const patternCount = Math.floor(Math.random() * 10) + 5;
     for (let i = 0; i < patternCount; i++) {
         const pattern = document.createElement('div');
         pattern.classList.add('random-pattern');
-        
         const patternType = patterns[Math.floor(Math.random() * patterns.length)];
         switch(patternType) {
-            case 'star':
-                pattern.innerHTML = '★';
-                break;
-            case 'heart':
-                pattern.innerHTML = '❤';
-                break;
-            case 'circle':
-                pattern.innerHTML = '●';
-                break;
-            case 'square':
-                pattern.innerHTML = '■';
-                break;
+            case 'star': pattern.innerHTML = '★'; break;
+            case 'heart': pattern.innerHTML = '❤'; break;
+            case 'circle': pattern.innerHTML = '●'; break;
+            case 'square': pattern.innerHTML = '■'; break;
         }
-
         pattern.style.left = Math.random() * 100 + '%';
         pattern.style.top = Math.random() * 100 + '%';
         pattern.style.fontSize = Math.random() * 30 + 10 + 'px';
         pattern.style.color = lightColor;
         pattern.style.animation = `float ${Math.random() * 3 + 2}s linear infinite`;
-
         document.body.appendChild(pattern);
     }
 }
-
-// 添加浮动动画
 const style = document.createElement('style');
-style.textContent = `
-    @keyframes float {
-        0% { transform: translateY(0) rotate(0deg); }
-        50% { transform: translateY(-20px) rotate(180deg); }
-        100% { transform: translateY(0) rotate(360deg); }
-    }
-`;
+style.textContent = `@keyframes float {0%{transform:translateY(0)rotate(0deg)}50%{transform:translateY(-20px)rotate(180deg)}100%{transform:translateY(0)rotate(360deg)}}`;
 document.head.appendChild(style);
+
+function goPrivate(){
+    let status = localStorage.getItem("privateOpen");
+    if(status === "1"){
+        location.href="privatemsg.html";
+    }else{
+        alert("请先在首页输入专属暗号解锁权限！");
+        location.href="index.html";
+    }
+}
 </script>
 </body>
 </html>
