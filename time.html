@@ -7,58 +7,65 @@
     <style>
         *{margin:0;padding:0;box-sizing:border-box;}
         :root{--main:#e05275;--light:#ffd6e0;--text:#4a3b42;--glass:rgba(255,255,255,0.25);}
+        body.morning{background:linear-gradient(145deg,#f8eef2,#ffe6ee,#fff0f5);}
+        body.noon{background:linear-gradient(145deg,#fff3f7,#ffe8ef,#ffedf4);}
+        body.night{background:linear-gradient(145deg,#f3e8f8,#fcf0f6,#ffeef4);}
+        body.deepnight{background:linear-gradient(145deg,#e8dce2,#f0e3eb,#f5e8f0);}
         body{
-            background:linear-gradient(145deg,#f3e8f8,#fcf0f6,#ffeef4);
             min-height:100vh;font-family:"思源宋体",serif;color:var(--text);
-            overflow-x:hidden;position:relative;
-            opacity:0;animation:nobleFade 1.5s cubic-bezier(0.22,1,0.36,1) forwards;
-            transition:all 0.6s ease;
+            overflow-x:hidden;opacity:0;animation:nobleFade 1.5s cubic-bezier(0.22,1,0.36,1) forwards;transition:all 0.6s ease;
         }
         @keyframes nobleFade{0%{opacity:0;transform:translateY(30px) scale(0.98);}100%{opacity:1;transform:translateY(0) scale(1);}}
         #partCanvas{position:fixed;inset:0;z-index:-2;pointer-events:none;}
-        .nav{text-align:center;padding:25px 0;}
-        .nav a{margin:0 12px;padding:8px 18px;border-radius:30px;text-decoration:none;color:var(--text);
-        background:var(--glass);backdrop-filter:blur(8px);transition:0.3s;}
+        .nav{display:flex;justify-content:center;gap:12px;padding:25px 10px;flex-wrap:wrap;}
+        .nav a{flex:0 1 auto;min-width:90px;text-align:center;padding:8px 16px;border-radius:30px;
+        text-decoration:none;color:var(--text);background:var(--glass);backdrop-filter:blur(8px);transition:0.3s;font-size:15px;}
         .nav a.active{background:var(--main);color:#fff;}
         h1{text-align:center;color:var(--main);letter-spacing:5px;margin:20px 0;}
+        .divider{width:80%;max-width:400px;height:1px;background:linear-gradient(90deg,transparent,var(--main),transparent);margin:15px auto 25px;}
+        .time-greet{text-align:center;color:var(--main);font-size:16px;margin:8px 0;}
         .timeline{max-width:600px;margin:50px auto;padding:0 20px;}
-        .time-item{margin:30px 0;padding:20px;background:var(--glass);
-        backdrop-filter:blur(10px);border-radius:20px;border:1px solid rgba(255,255,255,0.4);transition:0.3s;}
+        .time-item{margin:30px 0;padding:20px;background:var(--glass);backdrop-filter:blur(10px);
+        border-radius:20px;border:1px solid rgba(255,255,255,0.4);transition:0.3s;position:relative;padding-left:50px;}
         .time-item:hover{transform:translateY(-4px);}
         .time-item h3{color:var(--main);margin-bottom:10px;}
+        .cat-icon{position:absolute;left:12px;top:18px;font-size:26px;}
         .foot{text-align:center;margin:80px 0 30px;font-size:14px;color:#b495a2;}
     </style>
 </head>
-<body>
+<body id="timeBody">
 <canvas id="partCanvas"></canvas>
 <div class="nav">
     <a href="index.html">相恋首页</a>
     <a href="time.html" class="active">时光回忆</a>
-    <a href="words.html">暖心情话</a>
+    <a href="words.html">百件小事</a>
     <a href="note.html">私密心事</a>
+    <a href="message.html">公开留言</a>
 </div>
 <h1>岁月温柔 · 皆是回忆</h1>
+<div class="divider"></div>
+<div class="time-greet" id="timeSay"></div>
 <div class="timeline">
-    <div class="time-item">
-        <h3>初见之日</h3>
-        <p>人海茫茫，有幸与你相逢，一眼便是满心欢喜。</p>
-    </div>
-    <div class="time-item">
-        <h3>确定心意</h3>
-        <p>褪去所有浮躁，只想安稳陪在彼此身边。</p>
-    </div>
-    <div class="time-item">
-        <h3>朝夕相伴</h3>
-        <p>平淡日常皆是浪漫，岁岁年年不离不弃。</p>
-    </div>
-    <div class="time-item">
-        <h3>未来期许</h3>
-        <p>往后余生，风雨同舟，喜乐共享。</p>
-    </div>
+    <div class="time-item"><span class="cat-icon">🐱</span><h3>初见之日</h3><p>人海相逢，一眼心生欢喜。</p></div>
+    <div class="time-item"><span class="cat-icon">😺</span><h3>心意相通</h3><p>褪去浮躁，只想安稳相伴。</p></div>
+    <div class="time-item"><span class="cat-icon">😸</span><h3>朝夕相守</h3><p>寻常烟火，日日皆是温情。</p></div>
+    <div class="time-item"><span class="cat-icon">😻</span><h3>满心期许</h3><p>往后路途，风雨并肩同行。</p></div>
+    <div class="time-item"><span class="cat-icon">🐈</span><h3>岁岁年年</h3><p>四季轮转不改初心，相守白头。</p></div>
 </div>
-<div class="foot">珍藏每一段与你走过的温柔时光</div>
+<div class="foot">珍藏每一段一同走过的温柔时光</div>
 <audio id="bgAudio" loop><source src="https://music.163.com/song/media/outer/url?id=1901371911.mp3">
 <script>
+const wishList = ["时光温柔，万事顺心","日子清净，抬头皆是温柔","岁岁无忧，喜乐常伴"];
+function setTimeBg(){
+    let h=new Date().getHours();
+    let b=document.getElementById("timeBody");
+    let s=document.getElementById("timeSay");
+    if(h>=5&&h<9){b.className="morning";s.innerText="清晨安好，回忆皆甜";}
+    else if(h>=9&&h<17){b.className="noon";s.innerText=wishList[Math.floor(Math.random()*wishList.length)];}
+    else if(h>=17&&h<23){b.className="night";s.innerText="夜色渐浓，好好休憩";}
+    else{b.className="deepnight";s.innerText="夜深人静，早点安歇呀";}
+}
+setTimeBg();
 const audio=document.getElementById("bgAudio");audio.volume=0.25;
 document.addEventListener("click",()=>audio.play().catch(e=>{}),{once:true});
 const canvas=document.getElementById("partCanvas"),ctx=canvas.getContext("2d");
