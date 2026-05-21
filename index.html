@@ -52,14 +52,14 @@
             90% {opacity: 0.7;}
             100% {transform: translateY(-100vh) rotate(360deg);opacity: 0;}
         }
-        /* 验证弹窗 */
+        /* 真人验证弹窗 */
         .verify-overlay{
             position:fixed;
             top:0;
             left:0;
             width:100%;
             height:100%;
-            background:rgba(0,0,0,0.8);
+            background:rgba(0,0,0,0.85);
             display:flex;
             align-items:center;
             justify-content:center;
@@ -220,25 +220,41 @@
             border-radius:20px;
             text-decoration:none;
             z-index:999;
+            display:none;
         }
         .hidden-content{
             display:none;
         }
+        .pwd-input-box{
+            position:fixed;
+            bottom:80px;
+            right:20px;
+            z-index:998;
+        }
+        .owner-input{
+            padding:8px 10px;
+            border-radius:15px;
+            border:1px solid #d4af37;
+            background:rgba(0,0,0,0.2);
+            color:#d4af37;
+            outline:none;
+            width:120px;
+        }
     </style>
 </head>
 <body>
-    <!-- 真人验证弹窗 -->
+    <!-- 游客真人验证弹窗 -->
     <div class="verify-overlay" id="verifyOverlay">
         <div class="verify-box">
-            <h3 class="verify-title">请完成简单验证，继续访问</h3>
+            <h3 class="verify-title">完成简易验证即可进入</h3>
             <div class="verify-question" id="verifyQuestion"></div>
-            <input type="text" class="verify-input" id="verifyInput" placeholder="请输入答案">
+            <input type="text" class="verify-input" id="verifyInput" placeholder="填写答案">
             <br>
-            <button class="verify-btn" onclick="checkVerify()">确认验证</button>
+            <button class="verify-btn" onclick="checkVerify()">确认进入</button>
         </div>
     </div>
 
-    <!-- 验证通过后才显示的内容 -->
+    <!-- 主页面内容 -->
     <div class="hidden-content" id="pageContent">
         <div class="decoration" id="decoration"></div>
 
@@ -269,15 +285,23 @@
             <p class="progress-tip" id="progressTip">已完成 <span id="completedCount">0</span>/100 件小事</p>
         </div>
 
-        <a href="visitor.html" class="admin-btn">访客管理</a>
+        <!-- 暗号输入框 -->
+        <div class="pwd-input-box">
+            <input class="owner-input" id="ownerPwd" placeholder="输入主人暗号" onkeyup="unlockAdmin()">
+        </div>
+        <!-- 访客管理 默认隐藏 -->
+        <a href="visitor.html" class="admin-btn" id="adminBtn">访客管理</a>
+
         <div class="safe-bottom"></div>
     </div>
 
 <script>
 let enterTime = Date.now();
 let verifyAnswer = 0;
+// 主人专属暗号
+const MASTER_KEY = "owner";
 
-// 生成简单数字题验证
+// 生成加法验证题
 function generateVerifyQuestion(){
     let a = Math.floor(Math.random()*10)+1;
     let b = Math.floor(Math.random()*10)+1;
@@ -285,25 +309,32 @@ function generateVerifyQuestion(){
     document.getElementById("verifyQuestion").innerText = `${a} + ${b} = ?`;
 }
 
-// 检查验证答案
+// 游客验证
 function checkVerify(){
-    let inputVal = parseInt(document.getElementById("verifyInput").value.trim());
-    if(inputVal === verifyAnswer){
-        // 验证成功，隐藏弹窗，显示页面内容
+    let val = parseInt(document.getElementById("verifyInput").value.trim());
+    if(val === verifyAnswer){
         document.getElementById("verifyOverlay").style.display = "none";
         document.getElementById("pageContent").style.display = "block";
-        // 初始化页面功能
         initPage();
-        // 保存访客数据
         saveVisitor();
     }else{
-        alert("答案错误，请重试");
+        alert("答案错误，请重新输入");
         document.getElementById("verifyInput").value = "";
         generateVerifyQuestion();
     }
 }
 
-// 保存访客数据（保留原系统）
+// 输入暗号解锁访客管理
+function unlockAdmin(){
+    let input = document.getElementById("ownerPwd").value.trim();
+    if(input === MASTER_KEY){
+        document.getElementById("adminBtn").style.display = "block";
+    }else{
+        document.getElementById("adminBtn").style.display = "none";
+    }
+}
+
+// 保存访客记录
 async function saveVisitor(){
     let ip = "";
     try{
@@ -311,7 +342,6 @@ async function saveVisitor(){
         let d = await res.json();
         ip = d.ip;
     }catch(e){ip="未知IP"}
-
     const stayTime = Math.floor((Date.now()-enterTime)/1000);
     const info = {
         time:new Date().toLocaleString(),
@@ -325,11 +355,11 @@ async function saveVisitor(){
     localStorage.setItem("cloudVisitorData",JSON.stringify(all));
 }
 
-// 相恋起始日期
+// 相恋起始时间
 const LOVE_START_DATE = new Date("2025-09-14");
 const completedKey = "love_things_completed";
 
-// 漂浮星星爱心
+// 漂浮装饰
 function createDecoration() {
     const container = document.getElementById("decoration");
     for (let i = 0; i < 30; i++) {
@@ -350,7 +380,7 @@ function createDecoration() {
     }
 }
 
-// 分时问候语
+// 分时问候
 function updateGreeting() {
     const hour = new Date().getHours();
     let greeting;
@@ -361,7 +391,7 @@ function updateGreeting() {
     document.getElementById("dynamicGreeting").textContent = greeting;
 }
 
-// 自动计算相恋天数
+// 计算相恋天数
 function calculateLoveDays() {
     const today = new Date();
     const diffTime = Math.abs(today - LOVE_START_DATE);
@@ -370,7 +400,7 @@ function calculateLoveDays() {
     document.getElementById("daysText").textContent = diffDays;
 }
 
-// 同步百件小事完成进度
+// 同步完成进度
 function updateProgress() {
     const completedList = JSON.parse(localStorage.getItem(completedKey) || "[]");
     document.getElementById("completedCount").textContent = completedList.length;
@@ -384,7 +414,6 @@ function initPage(){
     updateProgress();
 }
 
-// 页面加载时先显示验证弹窗
 window.onload = function(){
     generateVerifyQuestion();
 }
