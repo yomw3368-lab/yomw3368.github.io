@@ -127,7 +127,12 @@
             color: #2b221a;
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
         }
-        .nav a:hover {
+        .nav a.disabled-link{
+            pointer-events: none;
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+        .nav a:hover:not(.disabled-link) {
             transform: translateY(-2px);
             box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
         }
@@ -278,15 +283,13 @@
     <div class="hidden-content" id="pageContent">
         <div class="decoration" id="decoration"></div>
 
-        <!-- 导航已删掉恋爱酷跑 -->
         <div class="nav">
             <a href="index.html" class="active">相恋首页</a>
             <a href="time.html">时光回忆</a>
             <a href="words.html">百件小事</a>
             <a href="note.html">私密心事</a>
             <a href="message.html">公开留言</a>
-            <a href="privatemsg.html">隐秘留言</a>
-            <a href="diary.html">恋爱日记</a>
+            <a href="diary.html" id="diaryLink" class="disabled-link">恋爱日记</a>
         </div>
 
         <div class="title-section">
@@ -306,7 +309,6 @@
             <p class="progress-tip" id="progressTip">已完成 <span id="completedCount">0</span>/100 件小事</p>
         </div>
 
-        <!-- 暗号框：已去掉主人，只剩“输入暗号” -->
         <div class="pwd-input-box">
             <input class="owner-input" id="ownerPwd" placeholder="输入暗号" onkeyup="unlockAdmin(); checkEasterEggPwd(this.value);">
         </div>
@@ -315,7 +317,6 @@
         <div class="safe-bottom"></div>
     </div>
 
-    <!-- 彩蛋弹窗 -->
     <div class="easter-egg-popup" id="eggPopup">
         <h3>🎉 你发现了隐秘彩蛋！</h3>
         <p id="eggText"></p>
@@ -325,6 +326,10 @@
 let enterTime = Date.now();
 let verifyAnswer = 0;
 const MASTER_KEY = "owner";
+const ADMIN_VALID_TIME = 15 * 60 * 1000;
+let adminUnlockTime = 0;
+
+const diaryLink = document.getElementById('diaryLink');
 
 function generateVerifyQuestion(){
     let a = Math.floor(Math.random()*10)+1;
@@ -349,8 +354,37 @@ function checkVerify(){
 
 function unlockAdmin(){
     let input = document.getElementById("ownerPwd").value.trim();
-    document.getElementById("adminBtn").style.display = input === MASTER_KEY ? "block" : "none";
+    const nowTime = Date.now();
+    const adminBtn = document.getElementById("adminBtn");
+
+    if(input === MASTER_KEY){
+        adminUnlockTime = nowTime;
+        adminBtn.style.display = "block";
+        diaryLink.classList.remove('disabled-link');
+    }
+    else if(adminUnlockTime > 0){
+        if(nowTime - adminUnlockTime > ADMIN_VALID_TIME){
+            adminBtn.style.display = "none";
+            diaryLink.classList.add('disabled-link');
+            adminUnlockTime = 0;
+        }
+    }
+    else{
+        adminBtn.style.display = "none";
+        diaryLink.classList.add('disabled-link');
+    }
 }
+
+setInterval(function(){
+    if(adminUnlockTime > 0){
+        const now = Date.now();
+        if(now - adminUnlockTime > ADMIN_VALID_TIME){
+            document.getElementById("adminBtn").style.display = "none";
+            diaryLink.classList.add('disabled-link');
+            adminUnlockTime = 0;
+        }
+    }
+}, 30000);
 
 async function saveVisitor(){
     let ip = "";
@@ -421,15 +455,13 @@ function initPage(){
 
 window.onload = function(){
     generateVerifyQuestion();
-    initEasterEggs(); // 初始化彩蛋
+    initEasterEggs();
 };
 
-// -------------------------- 彩蛋部分 --------------------------
 let konamiCode = [];
 const konami = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","KeyB","KeyA"];
 
 function initEasterEggs(){
-    // 1. Konami代码彩蛋
     document.addEventListener("keydown", e => {
         konamiCode.push(e.code);
         konamiCode = konamiCode.slice(-10);
@@ -440,18 +472,15 @@ function initEasterEggs(){
         }
     });
 
-    // 2. 双击标题彩蛋
     const title = document.querySelector(".main-title");
     title.addEventListener("dblclick", () => {
         showEasterEgg("💖 双击触发隐秘告白：<br>岁岁年年，唯你一人。");
         document.getElementById("loveQuote").innerHTML = "❤ 隐秘彩蛋已激活 ❤<br>你找到了藏在岁月里的温柔";
     });
 
-    // 3. 控制台彩蛋（开发者工具）
     console.log("%c✨ 隐秘彩蛋已就位 ✨","color:#d4af37;font-size:18px;font-weight:bold;");
     console.log("%c输入专属暗号可解锁隐藏内容","color:#f0d88c;font-size:12px;");
 
-    // 4. 随机飘爱心彩蛋（每30秒）
     setInterval(()=>{
         for(let i=0;i<5;i++){
             let h = document.createElement("div");
@@ -465,7 +494,6 @@ function initEasterEggs(){
     },30000);
 }
 
-// 5. 暗号彩蛋（输入特定文字触发）
 function checkEasterEggPwd(val){
     if(val === "secret"){
         showEasterEgg("🔐 隐秘暗号正确！<br>你解锁了专属秘密空间～");
@@ -475,7 +503,6 @@ function checkEasterEggPwd(val){
     }
 }
 
-// 彩蛋弹出
 function showEasterEgg(text){
     const popup = document.getElementById("eggPopup");
     document.getElementById("eggText").innerHTML = text;
