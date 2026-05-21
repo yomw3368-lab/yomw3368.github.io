@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>时光回忆 · 情侣相册</title>
+    <title>时光回忆 | 相恋主页</title>
     <style>
         * {
             margin: 0;
@@ -16,157 +16,55 @@
             color: #d4af37;
             min-height: 100vh;
             padding: 20px 15px;
-            overflow-x: hidden;
+            background-image: linear-gradient(to bottom, rgba(43, 34, 26, 0.95), rgba(43, 34, 26, 0.85));
         }
         .nav {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 12px;
             margin-bottom: 40px;
             flex-wrap: wrap;
         }
         .nav a {
             text-decoration: none;
             color: #d4af37;
-            padding: 12px 30px;
+            padding: 10px 22px;
             border-radius: 30px;
-            background: rgba(212, 175, 55, 0.15);
-            border: 1px solid rgba(212, 175, 55, 0.3);
+            background: rgba(212,175,55,0.15);
+            border: 1px solid rgba(212,175,55,0.3);
             transition: all 0.3s;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
         .nav a.active {
             background: #d4af37;
             color: #2b221a;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            box-shadow: 0 0 15px rgba(212,175,55,0.5);
         }
         .nav a:hover {
             transform: translateY(-2px);
+            box-shadow: 0 0 10px rgba(212,175,55,0.3);
+        }
+        .container{
+            max-width:600px;
+            margin:0 auto;
+            text-align:center;
         }
         .title{
-            text-align:center;
-            font-size:2.2rem;
+            font-size:2rem;
             margin-bottom:30px;
-            letter-spacing:3px;
+            letter-spacing:2px;
         }
-        .lock-box{
-            text-align:center;
-            margin:30px 0;
-        }
-        .lock-tip{
-            font-size:1.1rem;
-            margin-bottom:15px;
-            color:#f0d88c;
-        }
-        .pwd-input{
-            padding:10px 15px;
-            width:260px;
-            border-radius:25px;
+        .time-card{
             border:1px solid #d4af37;
-            background:rgba(0,0,0,0.2);
-            color:#d4af37;
-            outline:none;
-            font-size:1rem;
-            text-align:center;
-        }
-        .unlock-btn{
-            margin-left:10px;
-            padding:10px 20px;
-            background:#d4af37;
-            color:#2b221a;
-            border:none;
-            border-radius:25px;
-            cursor:pointer;
-        }
-        .upload-box{
-            text-align:center;
-            margin-bottom:30px;
-            display:none;
-        }
-        #fileInput{
-            display:none;
-        }
-        .up-btn{
-            padding:10px 25px;
-            background:#d4af37;
-            color:#2b221a;
-            border:none;
-            border-radius:30px;
-            font-size:1rem;
-            cursor:pointer;
-        }
-        .del-btn{
-            margin-left:10px;
-            padding:10px 20px;
-            background:transparent;
-            color:#d4af37;
-            border:1px solid #d4af37;
-            border-radius:30px;
-            cursor:pointer;
-        }
-        .album{
-            max-width:900px;
-            margin:0 auto;
-            position:relative;
-            overflow:hidden;
             border-radius:20px;
-            box-shadow:0 0 30px rgba(212,175,55,0.25);
+            padding:25px;
+            background:rgba(212,175,55,0.1);
+            margin-bottom:25px;
         }
-        .img-list{
-            display:flex;
-            transition:0.5s ease;
-        }
-        .img-item{
-            min-width:100%;
-        }
-        .img-item img{
-            width:100%;
-            height:480px;
-            object-fit:cover;
-            border-radius:20px;
-        }
-        .prev,.next{
-            position:absolute;
-            top:50%;
-            transform:translateY(-50%);
-            width:45px;
-            height:45px;
-            border-radius:50%;
-            background:rgba(212,175,55,0.4);
-            color:#fff;
-            border:none;
-            font-size:20px;
-            cursor:pointer;
-            z-index:10;
-        }
-        .prev{left:15px;}
-        .next{right:15px;}
-        .text-show{
-            text-align:center;
-            margin:20px 0;
+        .time-item{
             font-size:1.2rem;
+            margin:15px 0;
             color:#f0d88c;
-        }
-        .dots{
-            display:flex;
-            justify-content:center;
-            gap:10px;
-            margin-bottom:40px;
-        }
-        .dot{
-            width:12px;
-            height:12px;
-            border-radius:50%;
-            background:rgba(212,175,55,0.3);
-            cursor:pointer;
-        }
-        .dot.active{
-            background:#d4af37;
-        }
-        @media(max-width:768px){
-            .img-item img{height:300px;}
-            .nav a{padding:8px 15px;font-size:0.95rem;}
-            .pwd-input{width:200px;}
         }
     </style>
 </head>
@@ -178,124 +76,27 @@
         <a href="note.html">私密心事</a>
         <a href="message.html">公开留言</a>
         <a href="privatemsg.html">隐秘留言</a>
+        <a href="diary.html">恋爱日记</a>
     </div>
 
-    <h2 class="title">爱意相册 · 珍藏朝夕</h2>
-
-    <div class="lock-box">
-        <p class="lock-tip">输入专属暗号，解锁上传权限</p>
-        <input type="text" class="pwd-input" id="secretKey" placeholder="请输入暗号">
-        <button class="unlock-btn" onclick="checkSecret()">确认解锁</button>
+    <div class="container">
+        <h2 class="title">共度美好时光</h2>
+        <div class="time-card">
+            <div class="time-item">相恋起始：2025年09月14日</div>
+            <div class="time-item" id="totalDay">相伴天数：加载中...</div>
+            <div class="time-item">岁岁年年，朝夕相伴</div>
+        </div>
     </div>
-
-    <div class="upload-box" id="uploadArea">
-        <input type="file" id="fileInput" accept="image/*" multiple>
-        <button class="up-btn" onclick="document.getElementById('fileInput').click()">点击上传情侣照片</button>
-        <button class="del-btn" onclick="clearAllPhoto()">清空所有相册</button>
-    </div>
-
-    <div class="album">
-        <button class="prev">&lt;</button>
-        <button class="next">&gt;</button>
-        <div class="img-list" id="imgBox"></div>
-    </div>
-
-    <div class="text-show" id="showText">每一张照片，都是温柔回忆</div>
-    <div class="dots" id="dotBox"></div>
 
 <script>
-    // 专属暗号：owner
-    const RIGHT_KEY = "owner";
-
-    const loveText = [
-        "初见倾心，万般欢喜",
-        "携手同行，岁岁安然",
-        "人间烟火，有你足矣",
-        "晚风告白，满心是你",
-        "四季轮回，爱意不变",
-        "往后余生，皆是良人",
-        "朝夕相伴，深情不负",
-        "人海相逢，万幸是你"
-    ];
-
-    let nowIndex = 0;
-    let photoArr = JSON.parse(localStorage.getItem("loveAlbumImg") || "[]");
-
-    function checkSecret(){
-        let inputVal = document.getElementById("secretKey").value.trim();
-        if(inputVal === RIGHT_KEY){
-            document.getElementById("uploadArea").style.display = "block";
-            alert("暗号正确，已解锁上传权限✨");
-        }else{
-            alert("暗号错误，无法开启上传功能❌");
-        }
-    }
-
-    function renderAlbum(){
-        let html = "";
-        let dotHtml = "";
-        photoArr.forEach((item,idx)=>{
-            html += `<div class="img-item"><img src="${item}" alt="情侣合照"></div>`;
-            dotHtml += `<span class="dot ${idx===nowIndex?'active':''}" onclick="switchPic(${idx})"></span>`;
-        })
-        document.getElementById("imgBox").innerHTML = html;
-        document.getElementById("dotBox").innerHTML = dotHtml;
-        changeText();
-    }
-
-    function switchPic(i){
-        nowIndex = i;
-        document.getElementById("imgBox").style.transform = `translateX(-${nowIndex*100}%)`;
-        renderAlbum();
-    }
-
-    function changeText(){
-        let t = loveText[nowIndex % loveText.length];
-        document.getElementById("showText").innerText = t;
-    }
-
-    document.querySelector(".prev").addEventListener("click",()=>{
-        nowIndex--;
-        if(nowIndex<0) nowIndex = photoArr.length-1;
-        switchPic(nowIndex);
-    })
-    document.querySelector(".next").addEventListener("click",()=>{
-        nowIndex++;
-        if(nowIndex>=photoArr.length) nowIndex=0;
-        switchPic(nowIndex);
-    })
-
-    document.getElementById("fileInput").addEventListener("change",function(e){
-        let files = e.target.files;
-        for(let file of files){
-            let reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = function(res){
-                photoArr.push(res.target.result);
-                localStorage.setItem("loveAlbumImg",JSON.stringify(photoArr));
-                renderAlbum();
-            }
-        }
-        this.value = "";
-    })
-
-    function clearAllPhoto(){
-        if(confirm("确定清空所有上传的情侣照片吗？不可恢复！")){
-            photoArr = [];
-            localStorage.removeItem("loveAlbumImg");
-            renderAlbum();
-        }
-    }
-
-    renderAlbum();
-
-    setInterval(()=>{
-        if(photoArr.length>0){
-            nowIndex++;
-            if(nowIndex>=photoArr.length) nowIndex=0;
-            switchPic(nowIndex);
-        }
-    },5000)
+const startDate = new Date("2025-09-14");
+function countDay(){
+    let now = new Date();
+    let diff = Math.abs(now - startDate);
+    let days = Math.floor(diff / (1000*60*60*24));
+    document.getElementById("totalDay").innerText = `相伴天数：${days} 天`;
+}
+window.onload = countDay;
 </script>
 </body>
 </html>
