@@ -3,52 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>访客数据管理中心</title>
+    <title>访客管理 | 相恋主页</title>
     <style>
-        body{background:#2b221a;color:#d4af37;padding:20px;line-height:1.8;}
-        h2{text-align:center;margin-bottom:20px;}
-        .item{border:1px solid #d4af37;border-radius:10px;padding:15px;margin:10px 0;}
-        .btn{padding:8px 20px;background:#d4af37;color:#2b221a;border:none;border-radius:20px;margin:5px;cursor:pointer;}
-        .back{display:block;text-align:center;margin:20px 0;color:#d4af37;}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Microsoft YaHei", serif;
+        }
+        body {
+            background: #2b221a;
+            color: #d4af37;
+            min-height: 100vh;
+            padding: 20px 15px;
+            background-image: linear-gradient(to bottom, rgba(43, 34, 26, 0.95), rgba(43, 34, 26, 0.85));
+        }
+        .back-btn{
+            display:inline-block;
+            padding:8px 20px;
+            background:#d4af37;
+            color:#2b221a;
+            text-decoration:none;
+            border-radius:20px;
+            margin-bottom:25px;
+        }
+        h2{
+            text-align:center;
+            font-size:2rem;
+            margin-bottom:30px;
+        }
+        .visit-item{
+            border:1px solid rgba(212,175,55,0.3);
+            border-radius:12px;
+            padding:15px;
+            margin-bottom:15px;
+            background:rgba(212,175,55,0.08);
+        }
     </style>
 </head>
 <body>
-    <h2>全网访客统计记录</h2>
-    <div id="listBox"></div>
-    <div style="text-align:center;margin-top:30px;">
-        <button class="btn" onclick="clearData()">清空所有记录</button>
-        <a href="index.html" class="back">返回相恋主页</a>
-    </div>
+    <a href="index.html" class="back-btn">返回首页</a>
+    <h2>访客访问记录</h2>
+    <div id="visitList"></div>
 
 <script>
-function showData(){
-    let data = JSON.parse(localStorage.getItem("cloudVisitorData")||"[]");
+function getVisitData(){
+    return JSON.parse(localStorage.getItem("cloudVisitorData") || "[]");
+}
+function renderVisit(){
+    let list = getVisitData();
     let html = "";
-    if(data.length===0){
-        html = "<p style='text-align:center'>暂无访客记录</p>";
+    if(list.length === 0){
+        html = "<div style='text-align:center;padding:30px;'>暂无访客记录</div>";
     }else{
-        data.forEach((v,i)=>{
+        list.reverse().forEach(item=>{
             html += `
-            <div class="item">
-                <p>第${i+1}位访客</p>
-                <p>访问时间：${v.time}</p>
-                <p>访客IP：${v.ip}</p>
-                <p>访问页面：${v.page}</p>
-                <p>停留时长：${v.staySecond}秒</p>
-                <p>设备信息：${v.device.substring(0,80)}...</p>
+            <div class="visit-item">
+                <p>访问时间：${item.time}</p>
+                <p>停留时长：${item.staySecond} 秒</p>
+                <p>访问页面：${item.page}</p>
             </div>
-            `
+            `;
         })
     }
-    document.getElementById("listBox").innerHTML = html;
+    document.getElementById("visitList").innerHTML = html;
 }
-function clearData(){
-    if(confirm("确定清空全部访客数据？不可恢复！")){
-        localStorage.removeItem("cloudVisitorData");
-        showData();
-    }
-}
-showData();
+window.onload = renderVisit;
 </script>
 </body>
 </html>
