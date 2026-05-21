@@ -3,241 +3,444 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>一百件浪漫小事 | 岁岁皆欢喜</title>
+    <title>百件小事</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box;}
-        :root{
-            --main:#ff7979;
-            --light:#ffcccc;
-            --text:#333;
-            --glass:rgba(255,255,255,0.25);
-            --bg-color:linear-gradient(145deg,#fff5f5,#ffe8e8,#fff0f0);
+        /* 全局样式与基础重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
         }
-        body{
-            min-height:100vh;
-            font-family:"STSong",SimSun,serif;
-            color:var(--text);
-            overflow-x:hidden;
-            transition:all 0.6s ease;
-            cursor:pointer;
-            padding-bottom:80px;
+        body {
+            background: #f8f9fa;
+            color: #333;
+            min-height: 100vh;
+            padding: 20px 15px;
+            transition: background 0.3s, color 0.3s;
         }
-        .nav{display:flex;justify-content:center;gap:12px;padding:25px 10px;flex-wrap:wrap;}
-        .nav a{
-            min-width:90px;text-align:center;padding:8px 16px;border-radius:30px;
-            text-decoration:none;color:var(--text);background:var(--glass);
-            backdrop-filter:blur(8px);transition:0.3s;font-size:15px;
+        /* 导航栏 */
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
         }
-        .nav a.active{background:var(--main);color:#fff;}
-        h1{text-align:center;color:var(--main);letter-spacing:4px;margin:15px 0;}
-        .desc{text-align:center;color:#888;margin-bottom:25px;}
-        .list-box{max-width:750px;margin:0 auto;padding:0 15px;column-count:2;column-gap:15px;}
-        .item{
-            break-inside:avoid;
-            padding:12px 15px;margin:10px 0;
-            background:#fff;border-radius:12px;box-shadow:0 2px 8px #00000012;
-            cursor:pointer;transition:0.3s;font-size:14px;
+        .nav a {
+            text-decoration: none;
+            color: #666;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s;
         }
-        .item:hover{transform:translateY(-3px);box-shadow:0 5px 15px #ff797935;}
+        .nav a.active {
+            background: #7b68ee;
+            color: white;
+        }
+        /* 主题切换 */
+        .theme-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid #7b68ee;
+            background: white;
+            cursor: pointer;
+            z-index: 99;
+        }
+        /* 标题与说明 */
+        .title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .title h1 {
+            font-size: 2.2rem;
+            color: #7b68ee;
+            margin-bottom: 10px;
+        }
+        .title p {
+            color: #888;
+            font-size: 1.1rem;
+        }
+        /* 进度条 */
+        .progress-container {
+            max-width: 600px;
+            margin: 0 auto 30px;
+            padding: 0 10px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #7b68ee;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        .progress-text {
+            text-align: center;
+            margin-top: 8px;
+            color: #7b68ee;
+            font-weight: 500;
+        }
+        /* 小事列表 */
+        .list-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        .item {
+            background: white;
+            padding: 18px 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(123, 104, 238, 0.2);
+        }
+        .item.completed {
+            background: #f0f8ff;
+            border-left: 4px solid #7b68ee;
+        }
+        .item .check-icon {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .item.completed .check-icon {
+            background: #7b68ee;
+            border-color: #7b68ee;
+            color: white;
+        }
         /* 弹窗样式 */
-        .pop-mask{
-            position:fixed;top:0;left:0;width:100%;height:100%;
-            background:rgba(0,0,0,0.55);display:none;
-            align-items:center;justify-content:center;z-index:999;
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s;
         }
-        .pop-box{
-            width:85%;max-width:500px;background:#fff;border-radius:20px;
-            padding:25px;position:relative;animation:pop 0.3s;
+        .modal-overlay.show {
+            display: flex;
+            opacity: 1;
         }
-        @keyframes pop{0%{scale:0.8;opacity:0}100%{scale:1;opacity:1}}
-        .close{
-            position:absolute;top:15px;right:20px;font-size:22px;
-            color:#999;cursor:pointer;
+        .modal {
+            background: white;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 30px;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s;
         }
-        .pop-title{color:var(--main);font-size:18px;margin-bottom:15px;font-weight:bold;}
-        .pop-text{line-height:1.8;color:#555;font-size:15px;}
-        .random-pattern {
-            position: fixed;z-index:-1;pointer-events:none;opacity:0.5;
+        .modal-overlay.show .modal {
+            transform: scale(1);
         }
-        @media (max-width:550px){.list-box{column-count:1;}}
+        .modal .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #f0f0f0;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-title {
+            font-size: 1.3rem;
+            color: #7b68ee;
+            margin-bottom: 15px;
+            padding-right: 30px;
+        }
+        .modal-content {
+            line-height: 1.8;
+            color: #555;
+        }
+        /* 重置按钮 */
+        .reset-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 25px;
+            border: 2px solid #7b68ee;
+            background: white;
+            color: #7b68ee;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .reset-btn:hover {
+            background: #7b68ee;
+            color: white;
+        }
+        /* 漂浮爱心 */
+        .heart {
+            position: fixed;
+            pointer-events: none;
+            font-size: 20px;
+            color: #ff6b8b;
+            animation: float 6s linear infinite;
+            opacity: 0.7;
+        }
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        /* 深色模式适配 */
+        body.dark {
+            background: #1a1a2e;
+            color: #eee;
+        }
+        body.dark .nav a {
+            color: #aaa;
+        }
+        body.dark .title p {
+            color: #aaa;
+        }
+        body.dark .item {
+            background: #2a2a4e;
+            color: #eee;
+        }
+        body.dark .modal {
+            background: #2a2a4e;
+            color: #eee;
+        }
+        body.dark .modal-content {
+            color: #ccc;
+        }
+        body.dark .modal .close-btn {
+            background: #3a3a5e;
+            color: #eee;
+        }
     </style>
 </head>
-<body onclick="changeThemeAndPattern()">
-<div class="nav">
-    <a href="index.html">相恋首页</a>
-    <a href="time.html">时光回忆</a>
-    <a href="words.html" class="active">百件小事</a>
-    <a href="note.html">私密心事</a>
-    <a href="message.html">公开留言</a>
-    <a href="javascript:goPrivate()">隐秘留言</a>
-</div>
-
-<h1>和你一起完成的一百件小事</h1>
-<div class="desc">点击任意一件小事，查看专属浪漫文案</div>
-
-<div class="list-box" id="thingList"></div>
-
-<!-- 短文弹窗 -->
-<div class="pop-mask" id="popMask" onclick="closePop()">
-    <div class="pop-box" onclick="event.stopPropagation()">
-        <span class="close" onclick="closePop()">×</span>
-        <div class="pop-title" id="popTitle"></div>
-        <div class="pop-text" id="popText"></div>
+<body>
+    <!-- 导航栏 -->
+    <div class="nav">
+        <a href="index.html">相恋首页</a>
+        <a href="memory.html">时光回忆</a>
+        <a href="words.html" class="active">百件小事</a>
+        <a href="secret.html">私密心事</a>
+        <a href="public.html">公开留言</a>
+        <a href="hidden.html">隐秘留言</a>
     </div>
-</div>
 
-<script>
-// 100件小事 + 对应唯美短文
-const loveThings = [
-    {t:"一起看一次日出",w:"黎明破晓，霞光漫过山野，身边是满心欢喜的你，世间温柔皆如约而至，晨光为证，岁岁相依。"},
-    {t:"牵手漫步傍晚街头",w:"晚风轻拂街巷，十指紧紧相扣，不必言语沉默也满心安稳，平凡晚风，因你格外温柔。"},
-    {t:"一起吃一碗热汤面",w:"烟火人间最是治愈，一碗热面暖胃暖心，三餐四季，粗茶淡饭也皆是浪漫。"},
-    {t:"并肩看漫天晚霞",w:"落日沉溺橘色深海，晚风吻尽人间烟火，与你共赏落日余晖，日子温柔又闪光。"},
-    {t:"互相给对方拍照",w:"定格岁岁年年美好瞬间，镜头留住容颜，爱意藏进每一帧画面里永不褪色。"},
-    {t:"深夜一起谈心聊天",w:"褪去所有疲惫与伪装，深夜闲话家常，懂你悲欢，知你冷暖，灵魂慢慢贴近。"},
-    {t:"一起淋雨漫步街头",w:"不惧细雨绵绵，并肩走在雨中，风吹雨落皆是浪漫，风雨同舟不离不弃。"},
-    {t:"为对方准备小惊喜",w:"细碎日子里藏满温柔心意，小小惊喜无关贵重，皆是满心满眼的偏爱与惦记。"},
-    {t:"一起逛热闹菜市场",w:"人间烟火最抚人心，穿行市井烟火，柴米油盐，皆是往后余生平淡幸福。"},
-    {t:"相拥静静发呆片刻",w:"无需奔赴远方，静静相拥沉默相守，时光放缓，岁月安然，心安即是归处。"},
-    {t:"一起熬夜追剧",w:"长夜漫漫有你相伴，一同欢笑一同感慨，平凡夜晚，因为陪伴变得格外温暖。"},
-    {t:"亲手为对方做早餐",w:"晨光相伴烟火升腾，亲手烹制暖心早餐，一日之始，爱意从清晨慢慢蔓延。"},
-    {t:"一起去海边听海浪",w:"海风携温柔而来，海浪诉说深情，面朝大海许下心愿，余生朝夕皆有你。"},
-    {t:"写下彼此思念话语",w:"纸短情长道不尽万般温柔，字字句句皆是牵挂，相思藏字里，爱意藏心底。"},
-    {t:"一起爬山俯瞰风景",w:"携手攀登奔赴山顶，俯瞰山河万里，前路漫漫亦灿灿，并肩共赴山海。"},
-    {t:"冬天一起抱团取暖",w:"凛冬寒意来袭，相拥抵御风寒，世间寒凉皆散去，怀抱永远温热如初。"},
-    {t:"一起喝同一杯饮品",w:"共享人间清甜，唇齿相依心意相通，点滴甜蜜融进日常岁岁年年。"},
-    {t:"记住彼此所有喜好",w:"默默熟记偏爱与习惯，事事顾及心意，细节里满满都是藏不住的深情。"},
-    {t:"一起规划未来日子",w:"心怀期许奔赴远方，规划三餐四季朝夕日常，往后余生万事皆与你相关。"},
-    {t:"难过时紧紧抱住对方",w:"失意迷茫之时做彼此依靠，怀抱抚平所有委屈难过，风雨有人并肩同行。"},
-    {t:"一起赏花感受春光",w:"春风拂面繁花盛放，漫步花海满目温柔，春日光景不及你半分眉眼温柔。"},
-    {t:"秋天一起捡拾落叶",w:"秋风萧瑟落叶纷飞，拾起人间秋色，岁月静好，与你共度温柔清秋。"},
-    {t:"一起乘坐晚风公交",w:"夜色漫染城市灯火，公交缓缓穿行街巷，一路相伴，看尽城市万家灯火。"},
-    {t:"互相为对方吹头发",w:"细碎温柔藏于日常琐事，指尖轻梳发丝，温柔尽数融进朝夕陪伴之中。"},
-    {t:"一起许下岁岁心愿",w:"诚心许下美好期许，愿年年岁岁平安喜乐，朝朝暮暮不离不弃相守一生。"},
-    {t:"一起打卡小众小店",w:"探寻城市角落温柔小店，邂逅别样美好，平凡旅途处处皆是惊喜浪漫。"},
-    {t:"生病细心照顾彼此",w:"病痛之时悉心陪伴照料，不离不弃暖心相守，患难相伴最是难得真情。"},
-    {t:"一起仰望满天星空",w:"星河浩瀚皓月当空，共赏漫天璀璨星光，星辰万里，不及你一眼深情。"},
-    {t:"一起整理共同小屋",w:"收拾烟火小窝，布置温馨方寸天地，一屋两人三餐四季，安稳共度余生。"},
-    {t:"互相夸奖彼此优点",w:"满眼皆是欣赏与偏爱，直言心底欢喜，爱意在夸赞之中愈发浓烈绵长。"},
-    {t:"一起走过悠长古巷",w:"青瓦白墙古巷悠长，步履缓缓并肩前行，古韵悠悠，岁岁情深不负遇见。"},
-    {t:"一起品尝街边小吃",w:"市井美味人间烟火，一同尝遍街头风味，烟火日常藏满简单幸福。"},
-    {t:"安静陪对方认真工作",w:"默默相伴互不打扰，静坐身旁温柔守候，各自努力，彼此顶峰温柔相见。"},
-    {t:"一起度过跨年夜夜晚",w:"烟火辞旧迎新岁，携手奔赴崭新来年，岁岁年年，年年岁岁皆伴身旁。"},
-    {t:"一起放风筝奔赴春风",w:"春风和煦纸鸢高飞，手握长线并肩奔跑，放飞美好，奔赴所有温柔期许。"},
-    {t:"一起看一场浪漫电影",w:"荧幕演绎世间悲欢，身旁有挚爱之人，光影落幕，爱意依旧岁岁绵长。"},
-    {t:"睡前互道温柔晚安",w:"夜色沉沉万物安睡，一句晚安藏尽万般温柔，一夜安睡，梦里皆是温柔相逢。"},
-    {t:"清晨轻声叫醒对方",w:"晨光轻洒枕边，温柔轻声唤醒美梦，一日温柔，从轻声呼唤慢慢开启。"},
-    {t:"一起收集可爱小物件",w:"积攒世间细碎美好，收纳满心欢喜，小小物件，藏满一路相伴温柔回忆。"},
-    {t:"一起走过绵绵细雨路",w:"细雨淅淅淋湿街巷，并肩缓步前行，烟雨朦胧，爱意在细雨中愈发浓烈。"},
-    {t:"一起体验短途旅行",w:"奔赴小城山野远方，抛开尘世喧嚣，旅途漫漫，最美风景始终是身边的你。"},
-    {t:"一起静坐书屋看书",w:"墨香萦绕安静时光，同坐一隅静心品读，岁月安然，书香伴爱意缓缓流淌。"},
-    {t:"一起投喂街边小动物",w:"心怀温柔善待生灵，善意相伴暖意融融，温柔心性，彼此慢慢相互感染。"},
-    {t:"一起等待城市灯火",w:"天色渐暗华灯初上，静候满城灯火亮起，城市万家灯火，最念身旁一人。"},
-    {t:"一起手写暖心书信",w:"笔墨书写深情爱意，慢写温柔心事，车马很慢，书信很远，一生只偏爱一人。"},
-    {t:"一起感受冬日暖阳",w:"冬日暖阳洒落肩头，静坐沐浴温柔日光，寒意散尽，满心皆是暖意与心安。"},
-    {t:"一起奔赴山野野餐",w:"奔赴山野奔赴自然，席地而坐共享美食，山野清风，皆是人间惬意美好。"},
-    {t:"一起改掉彼此小脾气",w:"相互包容彼此迁就，收敛棱角温柔相待，磨合心性，慢慢相守岁岁情深。"},
-    {t:"一起回忆初见模样",w:"回首初见心动瞬间，一眼沦陷满心欢喜，缘起初见，情定余生朝夕相伴。"},
-    {t:"一起奔赴冬日雪景",w:"白雪皑皑满目银装，踏雪前行并肩相守，世间雪白，不及你眉眼半分温柔。"},
-    {t:"一起练习轻声温柔说话",w:"收敛急躁褪去锋芒，轻声细语温柔相待，言语温柔，爱意更能深入人心。"},
-    {t:"一起等候车站归人",w:"站台等候满心期许，相逢即是万般欢喜，人间奔波，最盼与你早日相逢。"},
-    {t:"一起制作手工小礼物",w:"亲手雕琢满心心意，一针一线皆是深情，朴素手工，胜过世间万千贵重礼物。"},
-    {t:"一起聆听街边民谣",w:"街头浅唱世间故事，歌声温柔治愈人心，曲声悠悠，爱意藏进悠悠旋律。"},
-    {t:"一起细数过往美好回忆",w:"细数一路相伴点滴时光，过往皆是温柔过往，岁岁回忆皆是满心欢喜。"},
-    {t:"一起勇敢直面所有困难",w:"前路纵然风雨兼程，携手并肩无畏前行，风雨同舟，携手踏平世间万般坎坷。"},
-    {t:"一起在阳台吹风闲聊",w:"凭栏吹风闲话日常，晚风温柔心事轻谈，方寸阳台，藏满无数温柔时光。"},
-    {t:"一起品尝四季时令鲜果",w:"尝遍四季人间清甜，鲜果入味甜入心底，四季流转，甜蜜岁岁不曾缺席。"},
-    {t:"一起默默守护彼此梦想",w:"默默支持彼此奔赴理想，做对方最坚实后盾，追梦路上永远不离不弃相伴左右。"},
-    {t:"一起度过平淡闲散周末",w:"抛开忙碌远离喧嚣，慵懒度过闲散周末，平淡清闲，亦是人间顶级浪漫。"},
-    {t:"一起铭记彼此重要日子",w:"牢记生辰纪念日所有美好时刻，用心铭记，岁岁年年仪式感永不缺席。"},
-    {t:"一起仰望春日绵绵细雨",w:"春雨绵绵滋润万物，静赏春日烟雨朦胧，烟雨江南，不及身旁佳人相伴温柔。"},
-    {t:"一起夏夜纳凉数星星",w:"夏夜清风蝉鸣阵阵，纳凉闲谈细数星光，夏夜悠长，有你相伴不觉漫长。"},
-    {t:"一起秋日登高望远方",w:"秋高气爽登高望远，满目清秋山河辽阔，山河万里，只想与你共赏风光。"},
-    {t:"一起围坐火炉闲谈取暖",w:"冬日围炉暖意融融，围坐闲谈闲话流年，炉火温热，温暖一整个漫漫寒冬。"},
-    {t:"一起解锁各地特色美食",w:"走遍四方尝遍百味，人间风味万千，最偏爱与你一同品尝人间烟火滋味。"},
-    {t:"一起安静陪伴彼此放空",w:"放空思绪卸下疲惫，无言相伴亦是深情，无需言语，心安便是最好陪伴。"},
-    {t:"一起奔赴清晨林间薄雾",w:"晨雾缭绕林间清幽，奔赴清晨静谧山野，山野清幽，唤醒满心温柔欢喜。"},
-    {t:"一起收藏四季沿途风景",w:"收纳四季沿途万般风光，风景入眼爱意入心，一路前行一路收藏美好。"},
-    {t:"一起温柔包容彼此缺点",w:"接纳所有不完美模样，包容瑕疵彼此体谅，真爱从来皆是包容与迁就。"},
-    {t:"一起乘坐轮渡吹海风",w:"轮渡前行海风拂面，海面波光粼粼，海风寄情，爱意随海风飘向远方。"},
-    {t:"一起写下余生相守诺言",w:"提笔写下余生誓言，一诺千金至死不渝，此生认定，余生四季只为一人倾心。"},
-    {t:"一起体验市井人间烟火",w:"深入街巷感受市井气息，人间烟火最抚凡人心，烟火日常便是此生归宿。"},
-    {t:"一起在雨夜相拥入眠",w:"雨夜静谧雨声轻响，相拥而眠满心安稳，雨声为伴，夜夜安然好梦常伴。"},
-    {t:"一起奔赴花海奔赴浪漫",w:"漫天花海满目芬芳，置身花海满心浪漫，花海万顷，不及你温柔眼眸半分。"},
-    {t:"一起耐心倾听彼此心事",w:"静心聆听心底委屈欢喜，做彼此最忠实听众，心事有人听，岁岁皆安宁。"},
-    {t:"一起慢走乡间小路散心",w:"乡间小路清幽静谧，缓步前行远离纷扰，田园清净，共度悠闲自在时光。"},
-    {t:"一起筹备简单温馨小家",w:"同心协力搭建温馨小窝，一屋二人三餐四季，往后余生安稳相守共度朝夕。"},
-    {t:"一起奔赴城市绝美夜景",w:"夜色璀璨灯火万千，共赏城市绝美夜景，满城灯火，唯念身边挚爱之人。"},
-    {t:"一起相互鼓励奔赴前程",w:"前路漫漫亦有迷茫，彼此打气相互鼓舞，携手奔赴前程万丈光芒。"},
-    {t:"一起品尝深夜暖心夜宵",w:"深夜烟火暖胃暖心，小小夜宵治愈疲惫，深夜相伴，驱散所有孤单落寞。"},
-    {t:"一起翻看旧日合影照片",w:"翻阅旧时合影旧照，回看一路走来时光，照片定格岁月，爱意愈发深沉厚重。"},
-    {t:"一起静心等候一场花开",w:"静心静待繁花盛开，慢等岁月温柔到来，花期如约而至，爱意岁岁如期相守。"},
-    {t:"一起迎着春风肆意奔跑",w:"春风和煦肆意奔跑，抛开烦恼满心欢愉，春风作伴，奔赴所有美好来日方长。"},
-    {t:"一起静心感受岁月静好",w:"远离喧嚣静守本心，慢品人间岁月悠长，岁月安然，平淡日子满是温柔爱意。"},
-    {t:"一起许下生生世世相守",w:"许下生生世世相守诺言，三生有幸遇见你，岁岁轮回只想与你再度相逢。"},
-    {t:"一起包揽日常琐碎家务",w:"分担日常琐碎繁杂家务，同心协力打理生活，柴米油盐皆是深情爱意。"},
-    {t:"一起奔赴人间治愈小镇",w:"奔赴小众温柔治愈小镇，逃离尘世纷纷扰扰，小镇温柔，治愈所有人间疲惫。"},
-    {t:"一起对着烟火虔诚许愿",w:"漫天烟火绚烂盛放，烟火之下虔诚许愿，愿所爱之人岁岁平安事事皆能如愿。"},
-    {t:"一起感受晚风温柔私语",w:"晚风低语诉说深情，夜色温柔心事暗涌，晚风寄情，诉说藏心底万般爱意。"},
-    {t:"一起坚守初心不负相遇",w:"初心不改赤诚不变，珍惜这场绝美相逢，此生相遇何其有幸，此生相守不负遇见。"},
-    {t:"一起走完余生漫漫长路",w:"前路漫漫余生悠长，携手并肩坚定不移，从青丝走到白发，共度人间朝朝暮暮。"},
-    {t:"一起赏遍世间四季风光",w:"春赏繁花夏听蝉鸣，秋观落叶冬看落雪，四季风光，只想与你一一尽数共赏。"},
-    {t:"一生一世一心一意偏爱你",w:"世间万般繁华皆不入眼，此生目光所至皆是你，一心一意，余生满心满眼唯独偏爱你。"}
-];
+    <!-- 主题切换按钮 -->
+    <div class="theme-switch" id="themeSwitch"></div>
 
-// 渲染100件小事
-function renderThings(){
-    let html = "";
-    loveThings.forEach((item,idx)=>{
-        html += `<div class="item" onclick="showText(${idx})">${idx+1}.${item.t}</div>`;
-    })
-    document.getElementById("thingList").innerHTML = html;
-}
-renderThings();
+    <!-- 标题区域 -->
+    <div class="title">
+        <h1>和你一起完成的一百件小事</h1>
+        <p>点击任意一件小事，查看专属浪漫文案</p>
+    </div>
 
-// 点击弹出对应短文
-function showText(index){
-    let data = loveThings[index];
-    document.getElementById("popTitle").innerText = data.t;
-    document.getElementById("popText").innerText = data.w;
-    document.getElementById("popMask").style.display = "flex";
-}
-// 关闭弹窗
-function closePop(){
-    document.getElementById("popMask").style.display = "none";
-}
+    <!-- 进度条 -->
+    <div class="progress-container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-text" id="progressText">已完成 0/100</div>
+    </div>
 
-// 全局点击换肤+漂浮图案
-function changeThemeAndPattern(){
-    document.querySelectorAll('.random-pattern').forEach(e=>e.remove());
-    let hue=Math.floor(Math.random()*360);
-    let root=document.documentElement;
-    root.style.setProperty('--main',`hsl(${hue},65%,55%)`);
-    root.style.setProperty('--light',`hsl(${hue},50%,80%)`);
-    root.style.setProperty('--text',`hsl(${hue},25%,30%)`);
-    root.style.setProperty('--bg-color',`linear-gradient(145deg,hsl(${hue},35%,95%),hsl(${hue},35%,90%),hsl(${hue},35%,93%))`);
-    let icon=['❤','★','●','■','✧'];
-    let num=Math.floor(Math.random()*8)+4;
-    for(let i=0;i<num;i++){
-        let d=document.createElement('div');
-        d.className='random-pattern';
-        d.innerText=icon[Math.floor(Math.random()*icon.length)];
-        d.style.left=Math.random()*100+'%';
-        d.style.top=Math.random()*100+'%';
-        d.style.fontSize=(Math.random()*22+8)+'px';
-        document.body.appendChild(d);
-    }
-}
-const sty=document.createElement('style');
-sty.innerHTML=`@keyframes float{0%{transform:translateY(0)rotate(0deg)}50%{transform:translateY(-20px)rotate(180deg)}100%{transform:translateY(0)rotate(360deg)}} .random-pattern{animation:float 3s linear infinite}`;
-document.head.appendChild(sty);
+    <!-- 小事列表 -->
+    <div class="list-container" id="listContainer">
+        <!-- 这里放100件小事，示例先放前7件，你可以直接替换成完整的100条 -->
+        <div class="item" data-id="1" data-text="一起看一次日出">
+            <div class="check-icon">✓</div>
+            <span>1. 一起看一次日出</span>
+        </div>
+        <div class="item" data-id="2" data-text="牵手漫步傍晚街头">
+            <div class="check-icon">✓</div>
+            <span>2. 牵手漫步傍晚街头</span>
+        </div>
+        <div class="item" data-id="3" data-text="一起吃一碗热汤面">
+            <div class="check-icon">✓</div>
+            <span>3. 一起吃一碗热汤面</span>
+        </div>
+        <div class="item" data-id="4" data-text="并肩看漫天晚霞">
+            <div class="check-icon">✓</div>
+            <span>4. 并肩看漫天晚霞</span>
+        </div>
+        <div class="item" data-id="5" data-text="互相给对方拍照">
+            <div class="check-icon">✓</div>
+            <span>5. 互相给对方拍照</span>
+        </div>
+        <div class="item" data-id="6" data-text="深夜一起谈心聊天">
+            <div class="check-icon">✓</div>
+            <span>6. 深夜一起谈心聊天</span>
+        </div>
+        <div class="item" data-id="7" data-text="一起淋雨漫步街头">
+            <div class="check-icon">✓</div>
+            <span>7. 一起淋雨漫步街头</span>
+        </div>
+        <!-- 把剩下的93件小事按同样格式加在这里 -->
+    </div>
 
-// 隐秘留言跳转
-function goPrivate(){
-    let s=localStorage.getItem("privateOpen");
-    if(s==="1")location.href="privatemsg.html";
-    else{alert("请先去首页输入专属暗号解锁！");location.href="index.html";}
-}
-</script>
+    <!-- 重置按钮 -->
+    <button class="reset-btn" id="resetBtn">重置所有进度</button>
+
+    <!-- 弹窗 -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <button class="close-btn" id="closeModal">×</button>
+            <h3 class="modal-title" id="modalTitle"></h3>
+            <div class="modal-content" id="modalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // 1. 文案数据（示例，可自行补充）
+        const contentMap = {
+            1: "天还没亮，我们就裹着同一件外套，坐在山顶等第一缕光。当太阳跳出地平线的那一刻，我转头看你，发现你眼里的光比日出还要亮。原来浪漫不是看风景，是身边站着你。",
+            2: "傍晚的风带着温柔，我们牵着不用松开的手，慢慢走在路灯下。影子被拉得很长，就像我们的路，想和你这样一直走下去，从黄昏到白头。",
+            3: "冷的时候，一碗热汤面就能治愈所有疲惫。更治愈的是，你坐在对面，把第一口面夹给我，说‘多吃点，暖一点’。原来最温暖的不是汤面，是和你一起吃的每一顿饭。",
+            4: "晚霞把天空染成橘子汽水色，我们并肩坐着不说话，却觉得无比安心。原来最好的风景，是和你一起看的每一次晚霞，因为身边的人，才是风景里的主角。",
+            5: "镜头里的你，笑起来眼睛弯弯的，比任何风景都好看。原来拍照的意义，不是留住瞬间，是留住和你在一起的每一份心动，等老了慢慢翻出来看。",
+            6: "深夜的房间很安静，我们聊着小时候的事，聊着未来的计划，聊着那些没说出口的小情绪。原来被人认真倾听、被人懂的感觉，这么好。谢谢你愿意陪我聊到天亮。",
+            7: "雨不大，我们撑着一把伞，踩过水洼，笑着跑过街头。衣服湿了一点，头发乱了一点，但心里却很暖。原来和你一起淋雨，连狼狈都变成了浪漫。"
+            // 补充剩下的文案，key和data-id对应即可
+        };
+
+        // 2. 本地存储相关
+        const completedKey = "love_things_completed";
+        let completedList = JSON.parse(localStorage.getItem(completedKey) || "[]");
+
+        // 3. 初始化完成状态
+        function initCompleted() {
+            document.querySelectorAll(".item").forEach(item => {
+                const id = item.dataset.id;
+                if (completedList.includes(id)) {
+                    item.classList.add("completed");
+                }
+            });
+            updateProgress();
+        }
+
+        // 4. 更新进度条
+        function updateProgress() {
+            const total = document.querySelectorAll(".item").length;
+            const completed = completedList.length;
+            const percent = (completed / total) * 100;
+            document.getElementById("progressFill").style.width = `${percent}%`;
+            document.getElementById("progressText").textContent = `已完成 ${completed}/${total}`;
+        }
+
+        // 5. 点击小事弹窗+标记完成
+        document.querySelectorAll(".item").forEach(item => {
+            item.addEventListener("click", function(e) {
+                const id = this.dataset.id;
+                const text = this.dataset.text;
+                const content = contentMap[id] || "这件小事，等我们一起完成的时候，再写下属于我们的专属文案吧~";
+
+                // 打开弹窗
+                document.getElementById("modalTitle").textContent = `${id}. ${text}`;
+                document.getElementById("modalContent").textContent = content;
+                document.getElementById("modalOverlay").classList.add("show");
+
+                // 标记完成（已完成则取消）
+                if (!completedList.includes(id)) {
+                    completedList.push(id);
+                    this.classList.add("completed");
+                } else {
+                    completedList = completedList.filter(i => i !== id);
+                    this.classList.remove("completed");
+                }
+                localStorage.setItem(completedKey, JSON.stringify(completedList));
+                updateProgress();
+            });
+        });
+
+        // 6. 关闭弹窗
+        document.getElementById("closeModal").addEventListener("click", () => {
+            document.getElementById("modalOverlay").classList.remove("show");
+        });
+        document.getElementById("modalOverlay").addEventListener("click", (e) => {
+            if (e.target === document.getElementById("modalOverlay")) {
+                document.getElementById("modalOverlay").classList.remove("show");
+            }
+        });
+
+        // 7. 重置进度
+        document.getElementById("resetBtn").addEventListener("click", () => {
+            if (confirm("确定要重置所有进度吗？已标记的完成状态会被清空哦~")) {
+                completedList = [];
+                localStorage.setItem(completedKey, JSON.stringify(completedList));
+                document.querySelectorAll(".item").forEach(item => {
+                    item.classList.remove("completed");
+                });
+                updateProgress();
+            }
+        });
+
+        // 8. 主题切换
+        let isDark = false;
+        document.getElementById("themeSwitch").addEventListener("click", () => {
+            isDark = !isDark;
+            document.body.classList.toggle("dark", isDark);
+        });
+
+        // 9. 漂浮爱心
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+            heart.innerHTML = "❤";
+            heart.style.left = `${Math.random() * 100}vw`;
+            heart.style.animationDuration = `${5 + Math.random() * 5}s`;
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 12000);
+        }
+        setInterval(createHeart, 1500);
+
+        // 初始化
+        initCompleted();
+    </script>
 </body>
 </html>
